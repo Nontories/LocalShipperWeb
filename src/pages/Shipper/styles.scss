@@ -1,0 +1,166 @@
+.shipper {
+    width: 104.5%;
+    height: auto;
+
+    .header {
+        width: 100%;
+        padding: 10px;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+        background-color: white;
+    }
+
+    .body {
+        width: 93%;
+        height: auto;
+        min-height: 90vh;
+        padding: 10px;
+        border: 2px solid rgba(0, 0, 0, 0.3);
+        margin: 10px;
+        background-color: white;
+
+        .title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .body_header {
+            display: flex;
+            border-bottom: 3px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 5px -5px rgba(0, 0, 0, 0.1);
+            justify-content: space-between;
+
+            .shipper_status {
+                display: flex;
+                margin: 20px 0;
+
+                .type_button {
+                    padding: 15px 25px;
+                    padding-bottom: 12px;
+                    border-radius: 50px;
+                    margin-right: 20px;
+                    color: rgba(0, 0, 0, 0.5);
+                    background-color: #F2F4F8;
+                    transition: 0.3s;
+                    user-select: none;
+                }
+
+                .button_active {
+                    background-color: rgba(114, 175, 211, 0.4);
+                    color: white;
+                    transition: 0.3s;
+                }
+
+                .type_button:hover {
+                    cursor: pointer;
+                }
+            }
+
+            .search {
+                position: relative;
+                display: flex;
+                width: 400px;
+                align-items: center;
+
+                img {
+                    position: absolute;
+                    margin-left: 5px;
+                }
+
+                .search_field {
+                    width: 200px;
+                    padding: 8px 10px;
+                    padding-left: 35px;
+                    border: 1px solid rgba(0, 0, 0, 0.3);
+                    border-radius: 8px;
+                }
+
+                .add_button {
+                    display: flex;
+                    height: 24px;
+                    padding: 7px 15px;
+                    border-radius: 5px;
+                    margin-left: 10px;
+                    align-items: center;
+                    justify-content: center;
+                    color: white;
+                    background-color: #72AFD3;
+                    user-select: none;
+
+                    img {
+                        position: unset;
+                        margin: 0;
+                    }
+                }
+
+                .add_button:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .shipper_list {
+            width: 100%;
+
+            .shipper_tab {
+                display: flex;
+                width: 100%;
+                padding: 20px 0;
+                border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+
+                .tab_name {
+                    width: 15%;
+                }
+
+                .tab_phone {
+                    width: 15%;
+                }
+
+                .tab_mail {
+                    width: 15%;
+                }
+
+                .tab_address {
+                    width: 15%;
+                }
+
+                .tab_vehicle {
+                    width: 15%;
+                }
+
+                .tab_status {
+                    width: 15%;
+                }
+
+                .tab_button{
+                    display: flex;
+                    width: 10%;
+                    justify-content: center;
+
+                    .button{
+                        display: flex;
+                        width: 20px;
+                        padding: 0 5px;
+                        height: 100%;
+                        // border: 1px solid rgba(0, 0, 0, 0.3);
+                        border-radius: 5px;
+                        background-color: rgba(0, 0, 0, 0.1);
+                        justify-content: center;
+                        align-items: center;
+
+                        .button_circle{
+                            width: 4px;
+                            height: 4px;
+                            border-radius: 50px;
+                            background-color: rgba(0, 0, 0, 0.3);
+                            margin: 0 1px;
+                        }
+                    }
+
+                    .button:hover{
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+}

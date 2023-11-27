@@ -1,0 +1,154 @@
+.order_tab {
+    width: 800px;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    margin: 30px 0;
+    overflow: hidden;
+
+    .tab_header {
+        position: relative;
+        display: flex;
+        width: 100%;
+        align-items: center;
+        background-color: #F8F9FB;
+
+        .tab_name {
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #72AFD3;
+            text-decoration: underline;
+        }
+
+        .shipper_name{
+            
+            padding: 6px 10px;
+            border-radius: 50px;
+            margin-left: 30px;
+            color: #F19E4A;
+            font-size: 12px;
+            font-weight: 600;
+            background-color: #FDF4E9;
+        }
+
+        .three_dot_icon {
+            position: absolute;
+            right: 15px;
+        }
+
+        .three_dot_icon:hover {
+            cursor: pointer;
+        }
+    }
+
+    .tab_body {
+        width: 100%;
+        padding-bottom: 10px;
+
+        .tab_flex_column {
+            display: flex;
+            width: 95%;
+            margin: 0 auto;
+            margin-top: 10px;
+            justify-content: space-between;
+
+            .left {
+                position: relative;
+                width: 60%;
+                font-size: 13px;
+                transform: translateX(30px);
+
+                .circle {
+                    position: absolute;
+                    width: 5px;
+                    height: 5px;
+                    border: 4px solid rgba(114, 175, 211, 0.3);
+                    border-radius: 50px;
+                    left: -10%;
+                    transform: translateX(23px);
+                }
+
+                .maker {
+                    position: absolute;
+                    width: 25px;
+                    height: 25px;
+                    left: -10%;
+                    transform: translateX(17px) translateY(-10px);
+                }
+
+                .maker::before {
+                    content: "";
+                    position: absolute;
+                    width: 2.5px;
+                    height: 20px;
+                    border-radius: 5px;
+                    background-color: rgba(114, 175, 211, 0.3);
+                    top: -110%;
+                    left: 11.5px;
+                    // transform: translateX(17px) translateY(-10px);
+                }
+
+                .tab_name {
+                    font-weight: 600;
+                }
+
+                .tab_address {
+                    margin-top: 5px;
+                    color: rgba(0, 0, 0, 0.5);
+                }
+            }
+
+            .right {
+                display: flex;
+                width: auto;
+                font-size: 13px;
+                font-weight: 600;
+                align-items: center;
+
+                .right_text {
+                    color: rgba(0, 0, 0, 0.5);
+                }
+
+                .center_dot {
+                    width: 6px;
+                    height: 6px;
+                    border-radius: 50px;
+                    margin: 0 5px;
+                    background-color: rgba(0, 0, 0, 0.5);
+                }
+
+                .total_price {
+                    color: #72AFD3;
+                }
+            }
+        }
+
+        .assign {
+            display: flex;
+            width: 95%;
+            height: 40px;
+            margin: 0 auto;
+            margin-top: 10px;
+            justify-content: end;
+
+            .assign_button {
+                display: flex;
+                padding: 7px 20px;
+                font-weight: 600;
+                color: white;
+                align-items: center;
+                background-color: rgba(114, 175, 211, 0.9);
+                opacity: 0.5;
+                user-select: none;
+
+                img {
+                    margin-right: 2px;
+                }
+            }
+
+            .assigned {
+                opacity: 1;
+            }
+        }
+    }
+}
