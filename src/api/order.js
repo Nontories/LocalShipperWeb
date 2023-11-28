@@ -63,7 +63,7 @@ export const PutOrder = async (id, data, token) => {
 
     try {
         const instance = createAxiosInstance(token);
-        const response = await instance.post(`${LINK_API}` + "orders?id=" + id, data);
+        const response = await instance.put(`${LINK_API}` + "orders?id=" + id, data);
         return response;
     } catch (error) {
         console.log("PutOrder in api/order.js error : ", error);
@@ -88,5 +88,29 @@ export const InteractOrder = async (data, token) => {
     } catch (error) {
         console.log("InteractOrder in api/order.js error : ", error);
         return error;
+    }
+};
+
+export const CreateOrder = async (data, token) => {
+
+    try {
+        const instance = createAxiosInstance(token);
+        const response = await instance.post(`${LINK_API}` + "orders/create", data);
+        return response;
+    } catch (error) {
+        console.log("CreateOrder in api/order.js error : ", error);
+        return [];
+    }
+};
+
+export const DeleteOrder = async (id, token) => {
+
+    try {
+        const instance = createAxiosInstance(token);
+        const response = await instance.delete(`${LINK_API}` + "orders?id=" + id);
+        return response;
+    } catch (error) {
+        console.log("DeleteOrder in api/order.js error : ", error);
+        return [];
     }
 };

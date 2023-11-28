@@ -9,6 +9,10 @@ import { GetShipper } from "../../api/shipper"
 import { getObjectByValue, getObjectByValueInObj } from '../../utils/utils';
 
 import Helmet from '../../components/shared/Helmet/helmet'
+import ShipperTab from '../../components/ShipperTab/ShipperTab';
+import ConfirmModal from "../../components/modal/ConfirmModal/ConfirmModal"
+import AddShipper from '../../components/modal/AddShipper/AddShipper';
+import ChangePassword from '../../components/modal/ChangePassword/ChangePassword';
 
 import searchIcon from "../../assets/search.svg"
 import addIcon from "../../assets/add.svg"
@@ -33,6 +37,8 @@ const Shipper = () => {
   const [filterValue, setFilterValue] = useState(SHIPPERSTATUS.ONLINE.value)
   const [searchValue, setSearchValue] = useState("")
   const [shipperList, setShipperList] = useState([])
+  const [focusShipper, setFocusShipper] = useState({})
+  const [modalVisible, setModalVisible] = useState({ confirmDelete: false, addShipper: false, changePassword: false })
   const { store, token } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -59,11 +65,21 @@ const Shipper = () => {
   }
 
   const addShipperModal = () => {
-    console.log("addShipper");
+    setModalVisible({ ...modalVisible, addShipper: true })
   }
 
   const hanldeAddShipper = () => {
     console.log("addShipper");
+  }
+
+  const handleSubmitDeleteConfirm = () => {
+    console.log("delete");
+    setModalVisible({ ...modalVisible, confirmDelete: false })
+  }
+
+  const handleCloseDeleteConfirm = () => {
+    console.log("cancle delete");
+    setModalVisible({ ...modalVisible, confirmDelete: false })
   }
 
   const handleSearch = (e) => {
@@ -107,26 +123,15 @@ const Shipper = () => {
             {
               shipperList?.map((item, key) => {
                 return (
-                  <div className="shipper_tab" key={key}>
-                    <div className="tab_name">{item?.fullName}</div>
-                    <div className="tab_phone">{item?.phoneShipper}</div>
-                    <div className="tab_mail">{item?.emailShipper}</div>
-                    <div className="tab_address">{item?.addressShipper}</div>
-                    <div className="tab_vehicle">{getObjectByValueInObj(VEHICLETYPE ,item?.transport?.typeId)?.name}</div>
-                    <div className="tab_status">{getObjectByValue(shipperType ,item?.status)?.name}</div>
-                    <div className="tab_button">
-                      <div className="button">
-                        <div className="button_circle"></div>
-                        <div className="button_circle"></div>
-                        <div className="button_circle"></div>
-                      </div>
-                    </div>
-                  </div>
+                  <ShipperTab item={item} setFocusShipper={setFocusShipper} parentModal={modalVisible} setParentModal={setModalVisible} key={key} />
                 )
               })
             }
           </div>
         </div>
+        <ChangePassword visible={modalVisible.changePassword} shipper={focusShipper} onCancle={() => setModalVisible({ ...modalVisible, changePassword: false })} />
+        <AddShipper visible={modalVisible.addShipper} onCancle={() => setModalVisible({ ...modalVisible, addShipper: false })} />
+        <ConfirmModal visible={modalVisible.confirmDelete} setVisible={handleCloseDeleteConfirm} title={"Xác nhận"} content={`Xác nhận xoá shipper ${focusShipper?.fullName}`} onConfirm={handleSubmitDeleteConfirm} onCancle={handleCloseDeleteConfirm} />
       </div>
     </Helmet>
   )

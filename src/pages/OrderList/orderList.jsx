@@ -4,13 +4,14 @@ import { toast } from 'react-toastify';
 import './styles.scss'
 
 import { UserContext } from '../../context/StoreContext';
-import { GetOrder } from '../../api/order';
+import { GetOrder, DeleteOrder, InteractOrder } from '../../api/order';
 import { ORDER } from "../../constants/order"
 
 import OrderTab from '../../components/OrderTab/OrderTab';
 import Helmet from '../../components/shared/Helmet/helmet'
 import OrderDetailModal from '../../components/modal/OrderDetailModal/OrderDetailModal';
 import ChooseShipperOrder from '../../components/modal/ChooseShipperOrder/ChooseShipperOrder';
+import ConfirmModal from '../../components/modal/ConfirmModal/ConfirmModal';
 
 const orderType = [
   {
@@ -50,7 +51,7 @@ const OrderList = () => {
   const [filterValue, setFilterValue] = useState(ORDER.ALL.value)
   const [orderList, setOrderList] = useState([])
   const [orderDetail, setOrderDetail] = useState({})
-  const [modalVisible, setModalVisible] = useState({ orderDetail: false, chooseShipper: false })
+  const [modalVisible, setModalVisible] = useState({ orderDetail: false, chooseShipper: false, confirmDelete: false })
   const { store, token } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -77,20 +78,24 @@ const OrderList = () => {
 
   const handleOpenDetailModal = (order) => {
     setOrderDetail(order)
-    setModalVisible({...modalVisible, orderDetail: true})
+    setModalVisible({ ...modalVisible, orderDetail: true })
+  }
+
+  const setOrderFocus = (order) => {
+    setOrderDetail(order)
   }
 
   const handleModalCancle = () => {
-    setModalVisible({...modalVisible, orderDetail: false})
+    setModalVisible({ ...modalVisible, orderDetail: false })
   }
 
   const handleOpenShipperModal = (order) => {
     setOrderDetail(order)
-    setModalVisible({...modalVisible, chooseShipper: true})
+    setModalVisible({ ...modalVisible, chooseShipper: true })
   }
 
   const handleShipperCancle = () => {
-    setModalVisible({...modalVisible, chooseShipper: false})
+    setModalVisible({ ...modalVisible, chooseShipper: false })
   }
 
   const handleFilter = (value) => {
@@ -103,6 +108,20 @@ const OrderList = () => {
         orderList.filter(item => item?.status === value)
       )
     }
+  }
+
+  const handleSubmitDeleteConfirm = async () => {
+    const response = await DeleteOrder(orderDetail.id, token)
+    if (response?.status === 200) {
+      toast.success('Xoá đơn hàng thành công');
+    } else {
+      toast.error('Xoá đơn hàng thất bại');
+    }
+    setModalVisible({ ...modalVisible, confirmDelete: false })
+  }
+
+  const handleCloseDeleteConfirm = () => {
+    setModalVisible({ ...modalVisible, confirmDelete: false })
   }
 
   return (
@@ -121,13 +140,14 @@ const OrderList = () => {
           {
             handleFilter(filterValue)?.map((item, key) => {
               return (
-                <OrderTab item={item} key={key} setDetail={handleOpenDetailModal} setChooseShipper={handleOpenShipperModal}/>
+                <OrderTab item={item} key={key} setDetail={handleOpenDetailModal} setChooseShipper={handleOpenShipperModal} setOrder={setOrderFocus} parentModal={modalVisible} setParentModal={setModalVisible} setOrderList={setOrderList} orderList={orderList}/>
               )
             })
           }
         </div>
         <OrderDetailModal visible={modalVisible.orderDetail} order={orderDetail} onCancle={handleModalCancle} />
-        <ChooseShipperOrder visible={modalVisible.chooseShipper} order={orderDetail} onCancle={handleShipperCancle} />
+        <ChooseShipperOrder visible={modalVisible.chooseShipper} order={orderDetail} orderList={orderList} setOrderList={setOrderList} onCancle={handleShipperCancle} />
+        <ConfirmModal visible={modalVisible.confirmDelete} setVisible={handleCloseDeleteConfirm} title={"Xác nhận"} content={`Xác nhận xoá đơn hàng #${orderDetail?.trackingNumber}`} onConfirm={handleSubmitDeleteConfirm} onCancle={handleCloseDeleteConfirm} />
       </div>
     </Helmet>
   )

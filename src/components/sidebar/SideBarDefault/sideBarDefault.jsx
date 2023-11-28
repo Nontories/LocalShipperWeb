@@ -22,13 +22,13 @@ const itemList = [
   },
   {
     className: "logo defautl_icon",
-    name: "Thêm đơn hàng",
+    name: "Danh sách đơn hàng",
     img: orderIcon,
     action: "/order-list"
   },
   {
     className: "logo defautl_icon",
-    name: "Thêm đơn hàng",
+    name: "Danh sách shipper",
     img: shipperIcon,
     action: "/shipper"
   },

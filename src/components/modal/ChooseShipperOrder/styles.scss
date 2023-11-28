@@ -1,0 +1,95 @@
+.choose_shipper {
+    position: fixed;
+    display: flex;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    align-items: center;
+    justify-content: center;
+
+    .layout {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: var(--grey-background);
+        z-index: 998;
+    }
+
+    .content {
+        width: 600px;
+        padding: 20px 30px;
+        border: 1px solid var(--grey-background);
+        border-radius: 5px;
+        background-color: #FFFFFF;
+        z-index: 999;
+
+        .choose_shipper_header {
+            display: flex;
+            margin: 20px 0;
+            margin-top: 0;
+            font-size: 20px;
+            font-weight: 600;
+            align-items: center;
+            justify-content: space-between;
+
+            .close {
+                border-radius: 3px;
+                background-color: var(--grey-background);
+
+                img {
+                    padding: 5px;
+                    padding-bottom: 0;
+                }
+            }
+
+            .close:hover {
+                background-color: rgba(0, 0, 0, 0.2);
+                cursor: pointer;
+            }
+        }
+
+        .table {
+            width: 100%;
+
+            .column_head {
+                font-weight: 700;
+            }
+
+            .column {
+                display: flex;
+                width: 100%;
+                padding: 10px 30px;
+                transform: translateX(-30px);
+
+                .index {
+                    width: 5%;
+                }
+
+                .name {
+                    width: 40%;
+                }
+
+                .type {
+                    width: 40%;
+                }
+
+                .status {
+                    width: 15%;
+                }
+            }
+
+            .column:hover {
+                cursor: pointer;
+                background-color: var(--grey-background);
+            }
+
+            .column_head:hover {
+                cursor: auto;
+                background-color:    white;
+            }
+        }
+    }
+}

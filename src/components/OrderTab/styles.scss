@@ -20,8 +20,8 @@
             text-decoration: underline;
         }
 
-        .shipper_name{
-            
+        .shipper_name {
+
             padding: 6px 10px;
             border-radius: 50px;
             margin-left: 30px;
@@ -31,7 +31,7 @@
             background-color: #FDF4E9;
         }
 
-        .three_dot_icon {
+        .dropdown_list {
             position: absolute;
             right: 15px;
         }
@@ -134,11 +134,11 @@
             .assign_button {
                 display: flex;
                 padding: 7px 20px;
+                border-radius: 5px;
                 font-weight: 600;
                 color: white;
                 align-items: center;
                 background-color: rgba(114, 175, 211, 0.9);
-                opacity: 0.5;
                 user-select: none;
 
                 img {
@@ -146,8 +146,9 @@
                 }
             }
 
-            .assigned {
-                opacity: 1;
+            .assign_button:hover {
+                cursor: pointer;
+                background-color: rgba(114, 175, 211, 1);
             }
         }
     }

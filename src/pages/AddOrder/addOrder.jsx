@@ -1,12 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react'
 import axios from 'axios';
-import Select from 'react-select'
+import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import './styles.scss'
 
 import Helmet from '../../components/shared/Helmet/helmet'
 
 import { UserContext } from '../../context/StoreContext';
+import { CreateOrder } from '../../api/order';
 import { ACTION } from '../../constants/action'
 import { getObjectByValue, formatPhoneNumber, isValidEmail, truncateString } from "../../utils/utils"
 
@@ -25,7 +26,7 @@ const formData = {
   capacity: "",
   volume: "",
   price: "",
-  type: "cash",
+  type: "1",
   action: 1,
   payment: "",
   other: "",
@@ -55,7 +56,7 @@ const AddOrder = () => {
 
   const handleChangePayment = (event) => {
     const selectedValue = event.target.value;
-    setFormInfor({ ...formInfor, type: selectedValue });
+    setFormInfor({ ...formInfor, payment: selectedValue });
   }
 
   const hanldeChangePhoneNumber = (input) => {
@@ -65,8 +66,35 @@ const AddOrder = () => {
     }
   };
 
-  const hanldeCreateOrder = () => {
-    console.log(formInfor);
+  const hanldeCreateOrder = async () => {
+    const data = {
+      storeId: store?.id,
+      other: formInfor?.other,
+      orderTime: formInfor.date,
+      capacity: formInfor.volume,
+      packageWeight: "",
+      packageWidth: "",
+      packageHeight: "",
+      packageLength: "",
+      customerCity: formInfor.city,
+      customerCommune: formInfor.address,
+      customerDistrict: formInfor.district,
+      customerPhone: formInfor.phone,
+      customerName: formInfor.name,
+      customerEmail: formInfor.email,
+      actionId: formInfor.action,
+      typeId: 0,
+      eta: 0,
+    }
+
+    console.log(data);
+
+    // const response = await CreateOrder(data, token)
+    // if (response?.status === 200) {
+    //   toast.success('Tạo đơn hàng thành công');
+    // }else{
+    //   toast.warning('Tạo đơn hàng thất bại');
+    // }
   }
 
   const getHeaderContent = (id) => {
@@ -208,14 +236,14 @@ const AddOrder = () => {
   function validateMassInput(input) {
     const pattern = /^[0-9,.]*$/;
     if (pattern.test(input.target.value)) {
-      setFormInfor({...formInfor, capacity: input.target.value})
+      setFormInfor({ ...formInfor, capacity: input.target.value })
     }
   }
 
   function validateNumber(input) {
     const pattern = /^[0-9]*$/;
     if (pattern.test(input.target.value)) {
-      setFormInfor({...formInfor, price: input.target.value})
+      setFormInfor({ ...formInfor, price: input.target.value })
     }
   }
 
@@ -256,9 +284,9 @@ const AddOrder = () => {
               <div className="custommer_infor_content">
                 <div className="input_title">BẠN MUỐN GIAO HÀNG ĐẾN ĐÂU?</div>
                 <div className="input_box">
-                  <input type="text" className="name" placeholder='Nhập họ và tên *' value={formInfor.name} onChange={(e) => setFormInfor({...formInfor, name: e.target.value})} />
+                  <input type="text" className="name" placeholder='Nhập họ và tên *' value={formInfor.name} onChange={(e) => setFormInfor({ ...formInfor, name: e.target.value })} />
                   <input type="tel" className="phone" placeholder='Số điện thoại *' value={formInfor.phone} onChange={(e) => hanldeChangePhoneNumber(e.target)} />
-                  <input type="text" className="email" placeholder='Địa chỉ Email *' value={formInfor.email} onChange={(e) => setFormInfor({...formInfor, email: e.target.value})} />
+                  <input type="text" className="email" placeholder='Địa chỉ Email *' value={formInfor.email} onChange={(e) => setFormInfor({ ...formInfor, email: e.target.value })} />
                   <div className="city" style={{ color: formInfor?.city ? "" : "rgba(0,0,0,0.7)" }}>
                     <div className="city_over_layout" onClick={handleChooseAddressModal} />
                     {
@@ -303,14 +331,14 @@ const AddOrder = () => {
                       </div>
                     }
                   </div>
-                  <input type="text" className="address" placeholder='Địa chỉ cụ thể *' value={formInfor.address} onChange={(e) => setFormInfor({...formInfor, address: e.target.value})}/>
+                  <input type="text" className="address" placeholder='Địa chỉ cụ thể *' value={formInfor.address} onChange={(e) => setFormInfor({ ...formInfor, address: e.target.value })} />
                 </div>
                 <div className="input_title">THÔNG TIN GÓI HÀNG</div>
                 <div className="input_box">
-                  <input type="text" className="name" placeholder='Khối lượng (kg) *' value={formInfor.capacity} onChange={validateMassInput}/>
-                  <input type="text" className="address" placeholder='Chiều dài x Chiều rộng x Chiều cao (cm)' value={formInfor.volume} onChange={(e) => setFormInfor({...formInfor, volume: e.target.value})}/>
-                  <input type="text" className="city" placeholder='Thu hộ' value={formInfor.price} onChange={validateNumber}/>
-                  <input type="text" className="address" placeholder='Loại hàng hóa' value={formInfor.type} onChange={(e) => setFormInfor({...formInfor, type: e.target.value})}/>
+                  <input type="text" className="name" placeholder='Khối lượng (kg) *' value={formInfor.capacity} onChange={validateMassInput} />
+                  <input type="text" className="address" placeholder='Chiều dài x Chiều rộng x Chiều cao (cm)' value={formInfor.volume} onChange={(e) => setFormInfor({ ...formInfor, volume: e.target.value })} />
+                  <input type="text" className="city" placeholder='Thu hộ' value={formInfor.price} onChange={validateNumber} />
+                  <input type="text" className="address" placeholder='Loại hàng hóa' value={formInfor.type} onChange={(e) => setFormInfor({ ...formInfor, type: e.target.value })} />
                 </div>
               </div>
             </div>
@@ -324,18 +352,18 @@ const AddOrder = () => {
             <div className="input_Title">
               HÌNH THỨC THANH TOÁN
             </div>
-            <select className="select_input" name="type" id='type' onChange={handleChangePayment} value={formInfor.type}>
-              <option className="input_option" value="cash">
+            <select className="select_input" name="type" id='type' onChange={handleChangePayment} value={formInfor.payment}>
+              <option className="input_option" value="1">
                 Tiền mặt
               </option>
-              <option className="input_option" value="transfer">
+              <option className="input_option" value="2">
                 Thu hộ
               </option>
             </select>
             <div className="input_Title">
               GHI CHỨ CHO TÀI XẾ
             </div>
-            <input type="text" className="input" placeholder='Ghi chú cho tài xế' value={formInfor.other} onChange={(e) => setFormInfor({...formInfor, other: e.target.value})}/>
+            <input type="text" className="input" placeholder='Ghi chú cho tài xế' value={formInfor.other} onChange={(e) => setFormInfor({ ...formInfor, other: e.target.value })} />
             <div className="input_Title">
               GIAO TRƯỚC
             </div>
@@ -344,7 +372,7 @@ const AddOrder = () => {
               className="input input_date"
               placeholder='Thời gian bắt buộc shipper giao hàng trước (AM/PM)'
               min={getCurrentDateTime()}
-              onChange={(e) => setFormInfor({...formInfor, date: e.target.value})}
+              onChange={(e) => setFormInfor({ ...formInfor, date: e.target.value })}
             />
 
             <div className="line" />
