@@ -44,4 +44,9 @@ export const ORDER = {
         name: "Đã Xoá",
         sign: "DELETED"
     },
+    RETURN: {
+        value: 9,
+        name: "Từ Chối",
+        sign: "RETURN"
+    },
 }

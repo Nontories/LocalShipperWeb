@@ -1,7 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react'
 import './styles.scss'
+import { toast } from 'react-toastify';
 
 import { UserContext } from '../../../context/StoreContext'
+import { CreateShipper } from '../../../api/shipper';
 
 import closeIcon from "../../../assets/close.svg"
 
@@ -20,7 +22,18 @@ const AddShipper = ({ visible, onCancle }) => {
     const { store, token } = useContext(UserContext);
 
     const handleSubmit = async () => {
-        console.log("create shipper");
+        const data = {
+            fullName: formInput?.name,
+            email: formInput?.email,
+            phone: formInput?.phone,
+            password: formInput?.shipperPassword,
+            confirmPassword: formInput?.rePassword,
+        }
+        const response = await CreateShipper( store?.id,data, token)
+        if (response?.status === 200) {
+            toast.success('Thêm shipper thành công');
+            onCancle()
+        }
     }
 
     return (

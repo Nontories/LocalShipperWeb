@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react'
+import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import './styles.scss'
 
 import { UserContext } from '../../context/StoreContext';
 import { SHIPPERSTATUS } from "../../constants/shipper"
 import { VEHICLETYPE } from '../../constants/vehicle';
-import { GetShipper } from "../../api/shipper"
+import { GetShipper, CreateShipper, DeleteShipper } from "../../api/shipper"
 import { getObjectByValue, getObjectByValueInObj } from '../../utils/utils';
 
 import Helmet from '../../components/shared/Helmet/helmet'
@@ -68,18 +69,31 @@ const Shipper = () => {
     setModalVisible({ ...modalVisible, addShipper: true })
   }
 
-  const hanldeAddShipper = () => {
-    console.log("addShipper");
-  }
-
-  const handleSubmitDeleteConfirm = () => {
-    console.log("delete");
+  const handleSubmitDeleteConfirm = async () => {
+    const response = await DeleteShipper(focusShipper?.id, token)
+    if (response?.status === 200) {
+      toast.success('Xoá shipperthành công');
+    } else {
+      toast.error('Xoá shipper thất bại');
+    }
     setModalVisible({ ...modalVisible, confirmDelete: false })
   }
 
   const handleCloseDeleteConfirm = () => {
     console.log("cancle delete");
     setModalVisible({ ...modalVisible, confirmDelete: false })
+  }
+
+  const handleFilter = (value) => {
+    // if (value === ORDER.ALL.value) {
+    //   return (
+    //     orderList
+    //   )
+    // } else {
+      return (
+        shipperList.filter(item => item?.status === value)
+      )
+    // }
   }
 
   const handleSearch = (e) => {
@@ -121,7 +135,7 @@ const Shipper = () => {
               <div className="tab_button"></div>
             </div>
             {
-              shipperList?.map((item, key) => {
+              handleFilter(filterValue)?.map((item, key) => {
                 return (
                   <ShipperTab item={item} setFocusShipper={setFocusShipper} parentModal={modalVisible} setParentModal={setModalVisible} key={key} />
                 )

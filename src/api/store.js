@@ -2,6 +2,7 @@ import axios from "axios";
 
 const LINK_API = process.env.REACT_APP_API_LINK;
 const LINK_API_SHIPPER = process.env.REACT_APP_API_LINK_SHIPPER;
+const LINK_API_DEFAULT = process.env.REACT_APP_API_LINK_DEFAULT;
 
 const createAxiosInstance = (token) => {
     return axios.create({
@@ -31,4 +32,6 @@ export const GetStore = async (data, token) => {
         return [];
     }
 };
+
+
 

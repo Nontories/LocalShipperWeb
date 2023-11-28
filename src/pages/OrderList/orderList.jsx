@@ -146,7 +146,7 @@ const OrderList = () => {
           }
         </div>
         <OrderDetailModal visible={modalVisible.orderDetail} order={orderDetail} onCancle={handleModalCancle} />
-        <ChooseShipperOrder visible={modalVisible.chooseShipper} order={orderDetail} orderList={orderList} setOrderList={setOrderList} onCancle={handleShipperCancle} />
+        <ChooseShipperOrder visible={modalVisible.chooseShipper} order={orderDetail} orderList={orderList} setOrderList={setOrderList} onCancle={handleShipperCancle}/>
         <ConfirmModal visible={modalVisible.confirmDelete} setVisible={handleCloseDeleteConfirm} title={"Xác nhận"} content={`Xác nhận xoá đơn hàng #${orderDetail?.trackingNumber}`} onConfirm={handleSubmitDeleteConfirm} onCancle={handleCloseDeleteConfirm} />
       </div>
     </Helmet>

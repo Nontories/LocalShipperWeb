@@ -79,11 +79,12 @@ const ChooseShipperOrder = ({ visible, order, onCancle, orderList, setOrderList 
             shipperId: shipper?.id,
             status: ORDER.WAITING.value
         }
+        console.log(data);
         const response = await InteractOrder(data, token)
         if (response?.status === 200) {
             const index = findOrderIndexById(orderList, order?.id)
             const updateList = [...orderList]
-            updateList[index].status = ORDER.WAITING.value
+            updateList[index] = { ...updateList[index], status: ORDER.WAITING.value, shipper: { fullName: shipper?.fullName, id: shipper?.id } }
             setOrderList(updateList)
             setConfirmModal(false)
             onCancle()

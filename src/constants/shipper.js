@@ -4,11 +4,11 @@ export const SHIPPERSTATUS = {
         name: "vô hiệu hoá",
     },
     ONLINE: {
-        value: 2,
+        value: 3,
         name: "trực tuyến",
     },
     OFFLINE: {
-        value: 3,
+        value: 2,
         name: "ngoại tuyến",
     },
     DELIVERING: {

@@ -7,9 +7,9 @@ import './styles.scss'
 import Helmet from '../../components/shared/Helmet/helmet'
 
 import { UserContext } from '../../context/StoreContext';
-import { CreateOrder } from '../../api/order';
+import { CreateOrder, GetTypeList, GetDistainPrice } from '../../api/order';
 import { ACTION } from '../../constants/action'
-import { getObjectByValue, formatPhoneNumber, isValidEmail, truncateString } from "../../utils/utils"
+import { getObjectByValue, formatPhoneNumber, isValidEmail, truncateString, formatPrice } from "../../utils/utils"
 
 import storeIcon from "../../assets/addOrder/storeIcon.svg"
 import custommerIcon from "../../assets/addOrder/custommerIcon.svg"
@@ -30,7 +30,14 @@ const formData = {
   action: 1,
   payment: "",
   other: "",
-  date: ""
+  date: null,
+
+  height: "",
+  length: "",
+  weight: "",
+  width: "",
+
+  distancePrice: 0
 }
 
 const AddOrder = () => {
@@ -38,6 +45,7 @@ const AddOrder = () => {
   const [formInfor, setFormInfor] = useState(formData)
   const [switchBooleen, setSwitchBooleen] = useState({ button: false })
   const [chooseAddressVisible, setChooseAddressVisible] = useState(false)
+  const [typeList, setTypeList] = useState([]);
   const [provincesList, setProvincesList] = useState([]);
   const [districtsList, setDistrictsList] = useState([]);
   const [wardsList, setWardsList] = useState([])
@@ -51,8 +59,33 @@ const AddOrder = () => {
       navigate("/");
     } else {
       apiGetPublicProvinces()
+      getTypeList()
     }
   }, [])
+
+  const getTypeList = async () => {
+    const response = await GetTypeList(token)
+    if (response?.status === 200) {
+      setTypeList(response?.data)
+      setFormInfor({ ...formInfor, type: `${response?.data[0].id}` })
+    }
+  }
+
+  const getDistainPrice = async () => {
+    if (formInfor.city && formInfor.district && formInfor.ward && formInfor.address != "") {
+      console.log("get in");
+      const data = {
+        addressStore: store?.storeAddress,
+        address: formInfor.city + " " + formInfor.district + " " + formInfor.ward + " " + formInfor.address,
+        storeId: store?.id
+      }
+
+      const response = await GetDistainPrice(data, token)
+      if (response?.status === 200) {
+        setFormInfor({ ...formInfor, distancePrice: response?.data })
+      }
+    }
+  }
 
   const handleChangePayment = (event) => {
     const selectedValue = event.target.value;
@@ -71,11 +104,11 @@ const AddOrder = () => {
       storeId: store?.id,
       other: formInfor?.other,
       orderTime: formInfor.date,
-      capacity: formInfor.volume,
-      packageWeight: "",
-      packageWidth: "",
-      packageHeight: "",
-      packageLength: "",
+      capacity: parseInt(formInfor.capacity, 10),
+      packageWeight: parseInt(formInfor.capacity, 10),
+      packageWidth: parseInt(formInfor.width, 10),
+      packageHeight: parseInt(formInfor.height, 10),
+      packageLength: parseInt(formInfor.length, 10),
       customerCity: formInfor.city,
       customerCommune: formInfor.address,
       customerDistrict: formInfor.district,
@@ -83,18 +116,31 @@ const AddOrder = () => {
       customerName: formInfor.name,
       customerEmail: formInfor.email,
       actionId: formInfor.action,
-      typeId: 0,
+      typeId: parseInt(formInfor.type, 10),
       eta: 0,
+      distancePrice: Number(formInfor.distancePrice),
+      cod: Number(formInfor.price)
     }
 
     console.log(data);
 
-    // const response = await CreateOrder(data, token)
-    // if (response?.status === 200) {
-    //   toast.success('Tạo đơn hàng thành công');
-    // }else{
-    //   toast.warning('Tạo đơn hàng thất bại');
-    // }
+    if (
+      formInfor.name != "" &&
+      formInfor.phone != "" &&
+      formInfor.email != "" &&
+      formInfor.city &&
+      formInfor.district &&
+      formInfor.address != "" &&
+      formInfor.capacity != ""
+    ) {
+      console.log(data);
+      const response = await CreateOrder(data, token)
+      if (response?.status === 200) {
+        toast.success('Tạo đơn hàng thành công');
+      } else {
+        toast.warning('Tạo đơn hàng thất bại');
+      }
+    }
   }
 
   const getHeaderContent = (id) => {
@@ -245,6 +291,8 @@ const AddOrder = () => {
     if (pattern.test(input.target.value)) {
       setFormInfor({ ...formInfor, price: input.target.value })
     }
+    console.log("price ", formInfor.price);
+    console.log("input ", input.target.value);
   }
 
   return (
@@ -331,14 +379,30 @@ const AddOrder = () => {
                       </div>
                     }
                   </div>
-                  <input type="text" className="address" placeholder='Địa chỉ cụ thể *' value={formInfor.address} onChange={(e) => setFormInfor({ ...formInfor, address: e.target.value })} />
+                  <input type="text" className="address" placeholder='Địa chỉ cụ thể *' value={formInfor.address} onChange={(e) => { setFormInfor({ ...formInfor, address: e.target.value }) }} onBlur={() => { getDistainPrice() }} />
                 </div>
                 <div className="input_title">THÔNG TIN GÓI HÀNG</div>
                 <div className="input_box">
                   <input type="text" className="name" placeholder='Khối lượng (kg) *' value={formInfor.capacity} onChange={validateMassInput} />
-                  <input type="text" className="address" placeholder='Chiều dài x Chiều rộng x Chiều cao (cm)' value={formInfor.volume} onChange={(e) => setFormInfor({ ...formInfor, volume: e.target.value })} />
+                  <input type="text" className="address" placeholder='Chiều cao (cm)' value={formInfor.height} onChange={(e) => setFormInfor({ ...formInfor, height: e.target.value })} />
+                  <input type="text" className="name" placeholder='Chiều dài (cm)' value={formInfor.length} onChange={(e) => setFormInfor({ ...formInfor, length: e.target.value })} />
+                  <input type="text" className="address" placeholder='Chiều rộng (cm)' value={formInfor.width} onChange={(e) => setFormInfor({ ...formInfor, width: e.target.value })} />
+
+
                   <input type="text" className="city" placeholder='Thu hộ' value={formInfor.price} onChange={validateNumber} />
-                  <input type="text" className="address" placeholder='Loại hàng hóa' value={formInfor.type} onChange={(e) => setFormInfor({ ...formInfor, type: e.target.value })} />
+
+                  <select className="type_input" name="type" id='type' onChange={(e) => setFormInfor({ ...formInfor, type: e.target.value })} value={formInfor.type}>
+                    {
+                      typeList?.map((item, index) => {
+                        return (
+                          <option value={item.id} key={index}>
+                            {item.packageType1}
+                          </option>
+                        )
+                      })
+                    }
+                  </select>
+                  {/* <input type="text" className="address" placeholder='Loại hàng hóa' value={formInfor.type} onChange={(e) => setFormInfor({ ...formInfor, type: e.target.value })} /> */}
                 </div>
               </div>
             </div>
@@ -349,19 +413,19 @@ const AddOrder = () => {
             <div className="title">
               Thanh toán
             </div>
-            <div className="input_Title">
+            {/* <div className="input_Title">
               HÌNH THỨC THANH TOÁN
             </div>
-            <select className="select_input" name="type" id='type' onChange={handleChangePayment} value={formInfor.payment}>
-              <option className="input_option" value="1">
-                Tiền mặt
-              </option>
+            <select className="select_input" name="type" id='type' onChange={handleChangePayment} value={formInfor.payment} disabled>
               <option className="input_option" value="2">
                 Thu hộ
               </option>
-            </select>
+              <option className="input_option" value="1">
+                Tiền mặt
+              </option>
+            </select> */}
             <div className="input_Title">
-              GHI CHỨ CHO TÀI XẾ
+              GHI CHÚ CHO TÀI XẾ
             </div>
             <input type="text" className="input" placeholder='Ghi chú cho tài xế' value={formInfor.other} onChange={(e) => setFormInfor({ ...formInfor, other: e.target.value })} />
             <div className="input_Title">
@@ -379,7 +443,7 @@ const AddOrder = () => {
 
             <div className="fee">
               <div className="fee_name">Phí vận chuyển</div>
-              <div className="fee_price">0 đ</div>
+              <div className="fee_price">{formatPrice(formInfor?.distancePrice)} đ</div>
             </div>
             <div className="fee">
               <div className="fee_name">Phí phát sinh</div>
@@ -387,11 +451,11 @@ const AddOrder = () => {
             </div>
             <div className="fee">
               <div className="fee_name">Phí thu hộ</div>
-              <div className="fee_price">0 đ</div>
+              <div className="fee_price">{formInfor?.price != "" ? formatPrice(formInfor?.price) : 0} đ</div>
             </div>
             <div className="fee">
               <div className="total_fee_name">Tổng số tiền</div>
-              <div className="total_fee_price">0 đ</div>
+              <div className="total_fee_price">{formatPrice(Number(formInfor?.distancePrice) + Number(formInfor?.price))}  đ</div>
             </div>
 
             <div className="button" onClick={hanldeCreateOrder}>Tạo đơn hàng</div>

@@ -114,3 +114,34 @@ export const DeleteOrder = async (id, token) => {
         return [];
     }
 };
+
+export const GetTypeList = async (token) => {
+    try {
+        const instance = createAxiosInstance(token);
+        const response = await instance.get(`${LINK_API}` + "package-types");
+        return response;
+    } catch (error) {
+        console.log("DeleteOrder in api/order.js error : ", error);
+        return [];
+    }
+};
+
+export const GetDistainPrice = async (data,token) => {
+
+    let path = ""
+
+    for (let key in data) {
+        if (data.hasOwnProperty(key)) {
+            path += `${key}=${data[key]}&`
+        }
+    }
+
+    try {
+        const instance = createAxiosInstance(token);
+        const response = await instance.get(`${LINK_API}orders/convert-distance?${path}`);
+        return response;
+    } catch (error) {
+        console.log("DeleteOrder in api/order.js error : ", error);
+        return [];
+    }
+};

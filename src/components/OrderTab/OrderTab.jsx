@@ -44,9 +44,25 @@ const OrderTab = (props) => {
     }
 
     const hanldeUnAssign = async () => {
+        console.log(item?.id);
         const data = {
             id: item?.id,
-            // shipperId: null,
+            shipperId: item?.shipper?.id,
+            status: ORDER.IDLE.value
+        }
+        const response = await InteractOrder(data, token)
+        if (response?.status === 200) {
+            const index = findOrderIndexById(orderList, item?.id)
+            const updateList = [...orderList]
+            updateList[index].status = ORDER.IDLE.value
+            setOrderList(updateList)
+        }
+    }
+
+    const hanldePublic = async (item) => {
+        const data = {
+            id: item?.id,
+            shipperId: 0,
             status: ORDER.ASSIGNING.value
         }
         const response = await InteractOrder(data, token)
@@ -88,8 +104,9 @@ const OrderTab = (props) => {
         <div className="order_tab" key={key}>
             <div className="tab_header">
                 {
+
                     item?.status === ORDER.WAITING.value &&
-                    <div className="shipper_name">Đang chờ {item?.shipper?.fullName}</div>
+                    <div className="shipper_name">Đang chờ {item?.shipper?.fullName ? item?.shipper?.fullName : "shipper"} Nhận đơn</div>
                 }
                 <div className="tab_name" onClick={() => setDetail(item)}>#{item?.trackingNumber}</div>
                 <div className="dropdown_list" onClick={handleDropdownVisible}>
@@ -126,18 +143,24 @@ const OrderTab = (props) => {
                     <div className="right">
                         <div className="right_text">{formatDate(item?.createTime)}</div>
                         <div className="center_dot"></div>
-                        <span className="total_price"> {formatPrice(item?.totalPrice)} đ</span>
+                        <span className="total_price"> {formatPrice(item?.distancePrice + item?.subtotalPrice + item?.cod)} đ</span>
                     </div>
                 </div>
                 {
-                    item?.status === ORDER.WAITING.value || item?.status === ORDER.IDLE.value || item?.status === ORDER.ASSIGNING.value ?
+                    item?.status === ORDER.WAITING.value || item?.status === ORDER.IDLE.value ?
                         <div className="assign">
                             {
                                 item?.status !== ORDER.WAITING.value ?
-                                    <div className="assign_button" onClick={() => { hanldeAssign(item) }}>
-                                        <img src={addIcon} alt="" />
-                                        Assign
-                                    </div>
+                                    <>
+                                        <div className="assign_button" style={{ marginRight: 20 }} onClick={() => { hanldePublic(item) }}>
+                                            {/* <img src={addIcon} alt="" /> */}
+                                            Công khai
+                                        </div>
+                                        <div className="assign_button" onClick={() => { hanldeAssign(item) }}>
+                                            <img src={addIcon} alt="" />
+                                            Assign
+                                        </div>
+                                    </>
                                     :
                                     <div className="assign_button assigned" onClick={() => { hanldeUnAssign() }}>
                                         Unassign
