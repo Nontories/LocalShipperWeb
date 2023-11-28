@@ -122,9 +122,9 @@ const TrackingOrder = () => {
                                     }
                                     <div className="circle">
                                         <img
-                                            src={index + 1 >= order?.status ? item.imgDefault : item.img}
+                                            src={!getTrackingTime(item.value) ? item.imgDefault : item.img}
                                             alt=""
-                                            style={{ borderColor: index + 1 >= order?.status ? "rgba(0, 0, 0, 0.5)" : "#72AFD3" }}
+                                            style={{ borderColor: !getTrackingTime(item.value) ? "rgba(0, 0, 0, 0.5)" : "#72AFD3" }}
                                         />
                                         <div className="detail">
                                             <div className="detail_name">{getTrackingText(item.value)}</div>

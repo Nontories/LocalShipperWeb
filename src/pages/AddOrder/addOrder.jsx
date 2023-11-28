@@ -119,7 +119,8 @@ const AddOrder = () => {
       typeId: parseInt(formInfor.type, 10),
       eta: 0,
       distancePrice: Number(formInfor.distancePrice),
-      cod: Number(formInfor.price)
+      cod: Number(formInfor.price),
+      totalPrice: Number(formInfor.distancePrice) + Number(formInfor.price),
     }
 
     console.log(data);

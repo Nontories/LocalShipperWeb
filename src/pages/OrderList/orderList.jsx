@@ -69,8 +69,9 @@ const OrderList = () => {
     }
     const response = await GetOrder(data, token)
     if (response?.status === 200) {
-      setOrderList(response?.data)
-      setOrderDetail(response?.data[0])
+      const updateList = [...response?.data].reverse();
+      setOrderList(updateList)
+      setOrderDetail(updateList[0])
     } else {
       toast.warning('Truy xuất dữ liệu không thành công');
     }
