@@ -64,7 +64,11 @@
             justify-content: flex-end;
 
             div {
-                padding: 10px 20px;
+                position: relative;
+                width: 80px;
+                text-align: center;
+                border-radius: 5px;
+                padding: 10px 0;
                 border-radius: 5px;
                 margin-top: 20px;
                 margin-left: 20px;

@@ -42,7 +42,7 @@ export const CreateShipper = async (id, data, token) => {
         return response;
     } catch (error) {
         console.log("GetOrder in api/order.js error : ", error);
-        return [];
+        return error;
     }
 };
 
@@ -54,6 +54,6 @@ export const DeleteShipper = async (id, token) => {
         return response;
     } catch (error) {
         console.log("GetOrder in api/order.js error : ", error);
-        return [];
+        return error;
     }
 };

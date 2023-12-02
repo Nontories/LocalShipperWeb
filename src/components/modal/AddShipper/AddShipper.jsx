@@ -5,13 +5,14 @@ import { toast } from 'react-toastify';
 import { UserContext } from '../../../context/StoreContext'
 import { CreateShipper } from '../../../api/shipper';
 
+import SpinnerButton from "../../SpinnerButton/SpinnerButton";
+
 import closeIcon from "../../../assets/close.svg"
 
 const formInputDefault = {
     name: "",
     phone: "",
     email: "",
-    storePassword: "",
     shipperPassword: "",
     rePassword: "",
 }
@@ -19,20 +20,37 @@ const formInputDefault = {
 const AddShipper = ({ visible, onCancle }) => {
 
     const [formInput, setFormInput] = useState(formInputDefault)
+    const [loading, setLoading] = useState(false)
     const { store, token } = useContext(UserContext);
 
     const handleSubmit = async () => {
-        const data = {
-            fullName: formInput?.name,
-            email: formInput?.email,
-            phone: formInput?.phone,
-            password: formInput?.shipperPassword,
-            confirmPassword: formInput?.rePassword,
-        }
-        const response = await CreateShipper( store?.id,data, token)
-        if (response?.status === 200) {
-            toast.success('Thêm shipper thành công');
-            onCancle()
+        if (!loading) {
+            setLoading(true)
+            if (
+                formInput?.name !== "" &&
+                formInput?.email !== "" &&
+                formInput?.phone !== "" &&
+                formInput?.shipperPassword !== "" &&
+                formInput?.rePassword !== ""
+            ) {
+                const data = {
+                    fullName: formInput?.name,
+                    email: formInput?.email,
+                    phone: formInput?.phone,
+                    password: formInput?.shipperPassword,
+                    confirmPassword: formInput?.rePassword,
+                }
+                const response = await CreateShipper(store?.id, data, token)
+                if (response?.status === 200) {
+                    toast.success('Thêm shipper thành công');
+                    onCancle()
+                } else {
+                    toast.error(`Thêm shipper thất bại : ${response?.response?.data}`);
+                }
+            } else {
+                toast.warning('Thông tin chưa đủ');
+            }
+            setLoading(false)
         }
     }
 
@@ -57,10 +75,6 @@ const AddShipper = ({ visible, onCancle }) => {
                     <input type="text" id='mail' className='mail' value={formInput.email} onChange={(e) => setFormInput({ ...formInput, email: e.target.value })} />
                 </div>
                 <div className="input_lable">
-                    <label htmlFor="store_password">Mật khẩu Store</label>
-                    <input type="password" id='store_password' className='store_password' value={formInput.storePassword} onChange={(e) => setFormInput({ ...formInput, storePassword: e.target.value })} />
-                </div>
-                <div className="input_lable">
                     <label htmlFor="shipper_password">Mật khẩu tạm thời</label>
                     <input type="password" id='shipper_password' className='shipper_password' value={formInput.shipperPassword} onChange={(e) => setFormInput({ ...formInput, shipperPassword: e.target.value })} />
                 </div>
@@ -70,7 +84,9 @@ const AddShipper = ({ visible, onCancle }) => {
                 </div>
                 <div className="button_pack">
                     <div className="cancle_button" onClick={onCancle}>Hủy</div>
-                    <div className="add_button" onClick={handleSubmit}>Thêm</div>
+                    <div className="add_button" onClick={handleSubmit}>
+                        <SpinnerButton isLoading={loading} content={"Thêm"} />
+                    </div>
                 </div>
             </div>
         </div>

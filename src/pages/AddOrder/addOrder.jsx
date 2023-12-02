@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import './styles.scss'
 
 import Helmet from '../../components/shared/Helmet/helmet'
+import SpinnerButton from '../../components/SpinnerButton/SpinnerButton'
 
 import { UserContext } from '../../context/StoreContext';
 import { CreateOrder, GetTypeList, GetDistainPrice } from '../../api/order';
@@ -50,6 +51,7 @@ const AddOrder = () => {
   const [districtsList, setDistrictsList] = useState([]);
   const [wardsList, setWardsList] = useState([])
   const [result, setResult] = useState("");
+  const [loading, setLoading] = useState(false)
   const [addressSelected, setAddressSelected] = useState({ province: false, district: false });
   const { store, token } = useContext(UserContext);
   const navigate = useNavigate();
@@ -100,47 +102,62 @@ const AddOrder = () => {
   };
 
   const hanldeCreateOrder = async () => {
-    const data = {
-      storeId: store?.id,
-      other: formInfor?.other,
-      orderTime: formInfor.date,
-      capacity: parseInt(formInfor.capacity, 10),
-      packageWeight: parseInt(formInfor.capacity, 10),
-      packageWidth: parseInt(formInfor.width, 10),
-      packageHeight: parseInt(formInfor.height, 10),
-      packageLength: parseInt(formInfor.length, 10),
-      customerCity: formInfor.city,
-      customerCommune: formInfor.address,
-      customerDistrict: formInfor.district,
-      customerPhone: formInfor.phone,
-      customerName: formInfor.name,
-      customerEmail: formInfor.email,
-      actionId: formInfor.action,
-      typeId: parseInt(formInfor.type, 10),
-      eta: 0,
-      distancePrice: Number(formInfor.distancePrice),
-      cod: Number(formInfor.price),
-      totalPrice: Number(formInfor.distancePrice) + Number(formInfor.price),
-    }
+    // setLoading(true);
 
-    console.log(data);
-
-    if (
-      formInfor.name != "" &&
-      formInfor.phone != "" &&
-      formInfor.email != "" &&
-      formInfor.city &&
-      formInfor.district &&
-      formInfor.address != "" &&
-      formInfor.capacity != ""
-    ) {
-      console.log(data);
-      const response = await CreateOrder(data, token)
-      if (response?.status === 200) {
-        toast.success('Tạo đơn hàng thành công');
-      } else {
-        toast.warning('Tạo đơn hàng thất bại');
+    // setTimeout(() => {
+    //   setLoading(false);
+    // }, 2000);
+    if (!loading) {
+      setLoading(true)
+      const data = {
+        storeId: store?.id,
+        other: formInfor?.other,
+        orderTime: formInfor.date,
+        capacity: parseInt(formInfor.capacity, 10),
+        packageWeight: parseInt(formInfor.capacity, 10),
+        packageWidth: parseInt(formInfor.width, 10),
+        packageHeight: parseInt(formInfor.height, 10),
+        packageLength: parseInt(formInfor.length, 10),
+        customerCity: formInfor.city,
+        customerCommune: formInfor.address,
+        customerDistrict: formInfor.district,
+        customerPhone: formInfor.phone,
+        customerName: formInfor.name,
+        customerEmail: formInfor.email,
+        actionId: formInfor.action,
+        typeId: Number(formInfor.type),
+        eta: 0,
+        distancePrice: Number(formInfor.distancePrice),
+        cod: Number(formInfor.price),
+        totalPrice: Number(formInfor.distancePrice) + Number(formInfor.price),
       }
+
+      console.log(data);
+
+      if (
+        formInfor.name != "" &&
+        formInfor.phone != "" &&
+        formInfor.email != "" &&
+        formInfor.city &&
+        formInfor.district &&
+        formInfor.address != "" &&
+        formInfor.capacity != "" &&
+        formInfor.date &&
+        formInfor.width != "" &&
+        formInfor.height != "" &&
+        formInfor.length != ""
+      ) {
+        console.log(data);
+        const response = await CreateOrder(data, token)
+        if (response?.status === 200) {
+          toast.success('Tạo đơn hàng thành công');
+        } else {
+          toast.warning('Tạo đơn hàng thất bại');
+        }
+      } else {
+        toast.warning('Thông tin tạo đơn hàng chưa đủ');
+      }
+      setLoading(false)
     }
   }
 
@@ -458,8 +475,9 @@ const AddOrder = () => {
               <div className="total_fee_name">Tổng số tiền</div>
               <div className="total_fee_price">{formatPrice(Number(formInfor?.distancePrice) + Number(formInfor?.price))}  đ</div>
             </div>
-
-            <div className="button" onClick={hanldeCreateOrder}>Tạo đơn hàng</div>
+            <div className="button" onClick={hanldeCreateOrder}>
+              <SpinnerButton isLoading={loading} content={"Tạo đơn hàng"} />
+            </div>
           </div>
 
         </div>

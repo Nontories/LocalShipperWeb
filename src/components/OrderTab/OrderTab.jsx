@@ -154,16 +154,16 @@ const OrderTab = (props) => {
                                     <>
                                         <div className="assign_button" style={{ marginRight: 20 }} onClick={() => { hanldePublic(item) }}>
                                             {/* <img src={addIcon} alt="" /> */}
-                                            Công khai
+                                            Công Khai
                                         </div>
                                         <div className="assign_button" onClick={() => { hanldeAssign(item) }}>
                                             <img src={addIcon} alt="" />
-                                            Assign
+                                            Chọn Shipper
                                         </div>
                                     </>
                                     :
                                     <div className="assign_button assigned" onClick={() => { hanldeUnAssign() }}>
-                                        Unassign
+                                        Bỏ Chọn
                                     </div>
                             }
                         </div>

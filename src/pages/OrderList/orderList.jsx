@@ -51,6 +51,8 @@ const OrderList = () => {
   const [filterValue, setFilterValue] = useState(ORDER.ALL.value)
   const [orderList, setOrderList] = useState([])
   const [orderDetail, setOrderDetail] = useState({})
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
   const [modalVisible, setModalVisible] = useState({ orderDetail: false, chooseShipper: false, confirmDelete: false })
   const { store, token } = useContext(UserContext);
   const navigate = useNavigate();
@@ -61,7 +63,7 @@ const OrderList = () => {
     } else {
       getOrderList()
     }
-  }, [])
+  }, [currentPage])
 
   const getOrderList = async () => {
     const data = {
@@ -100,16 +102,33 @@ const OrderList = () => {
   }
 
   const handleFilter = (value) => {
-    if (value === ORDER.ALL.value) {
-      return (
-        orderList
-      )
-    } else {
-      return (
-        orderList.filter(item => item?.status === value)
-      )
-    }
+    const filteredOrders = value === ORDER.ALL.value
+      ? orderList
+      : orderList.filter(item => item?.status === value);
+
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+
+    return filteredOrders.slice(startIndex, endIndex);
   }
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const renderPaginationButtons = () => {
+    const totalPages = Math.ceil(orderList.length / itemsPerPage);
+
+    return Array.from({ length: totalPages }, (_, index) => index + 1).map(page => (
+      <button
+        key={page}
+        onClick={() => handlePageChange(page)}
+        className={currentPage === page ? 'pagination_button active' : 'pagination_button'}
+      >
+        {page}
+      </button>
+    ));
+  };
 
   const handleSubmitDeleteConfirm = async () => {
     const response = await DeleteOrder(orderDetail.id, token)
@@ -141,13 +160,16 @@ const OrderList = () => {
           {
             handleFilter(filterValue)?.map((item, key) => {
               return (
-                <OrderTab item={item} key={key} setDetail={handleOpenDetailModal} setChooseShipper={handleOpenShipperModal} setOrder={setOrderFocus} parentModal={modalVisible} setParentModal={setModalVisible} setOrderList={setOrderList} orderList={orderList}/>
+                <OrderTab item={item} key={key} setDetail={handleOpenDetailModal} setChooseShipper={handleOpenShipperModal} setOrder={setOrderFocus} parentModal={modalVisible} setParentModal={setModalVisible} setOrderList={setOrderList} orderList={orderList} />
               )
             })
           }
+          <div className="pagination-buttons">
+            {renderPaginationButtons()}
+          </div>
         </div>
         <OrderDetailModal visible={modalVisible.orderDetail} order={orderDetail} onCancle={handleModalCancle} />
-        <ChooseShipperOrder visible={modalVisible.chooseShipper} order={orderDetail} orderList={orderList} setOrderList={setOrderList} onCancle={handleShipperCancle}/>
+        <ChooseShipperOrder visible={modalVisible.chooseShipper} order={orderDetail} orderList={orderList} setOrderList={setOrderList} onCancle={handleShipperCancle} />
         <ConfirmModal visible={modalVisible.confirmDelete} setVisible={handleCloseDeleteConfirm} title={"Xác nhận"} content={`Xác nhận xoá đơn hàng #${orderDetail?.trackingNumber}`} onConfirm={handleSubmitDeleteConfirm} onCancle={handleCloseDeleteConfirm} />
       </div>
     </Helmet>

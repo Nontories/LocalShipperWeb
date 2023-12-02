@@ -1,5 +1,5 @@
 .shipper {
-    width: 104.5%;
+    width: 100%;
     height: auto;
 
     .header {
@@ -10,12 +10,12 @@
     }
 
     .body {
-        width: 93%;
+        width: 100%;
         height: auto;
         min-height: 90vh;
         padding: 10px;
-        border: 2px solid rgba(0, 0, 0, 0.3);
-        margin: 10px;
+        // border: 2px solid rgba(0, 0, 0, 0.3);
+        // margin: 10px;
         background-color: white;
 
         .title {

@@ -1,5 +1,5 @@
 .order_list {
-    width: 104.5%;
+    width: 100%;
     height: auto;
 
     .header {
@@ -10,12 +10,12 @@
     }
 
     .body {
-        width: 93%;
+        width: 100%;
         height: auto;
         min-height: 90vh;
         padding: 10px;
-        border: 2px solid rgba(0, 0, 0, 0.3);
-        margin: 10px;
+        // border: 2px solid rgba(0, 0, 0, 0.3);
+        // margin: 10px;
         background-color: white;
 
         .title {
@@ -49,6 +49,30 @@
 
             .type_button:hover {
                 cursor: pointer;
+            }
+        }
+
+        .pagination-buttons {
+            width: fit-content;
+            border-radius: 5px;
+            margin-bottom: 40px;
+            overflow: hidden;
+
+            .pagination_button {
+                padding: 10px 15px;
+            }
+
+            .active {
+                background-color: var(--assign);
+            }
+
+            .pagination_button:hover {
+                cursor: pointer;
+                background-color: var(--grey-background);
+            }
+
+            .active:hover {
+                background-color: var(--assign);
             }
         }
     }

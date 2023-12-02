@@ -72,7 +72,7 @@ const Shipper = () => {
   const handleSubmitDeleteConfirm = async () => {
     const response = await DeleteShipper(focusShipper?.id, token)
     if (response?.status === 200) {
-      toast.success('Xoá shipperthành công');
+      toast.success('Xoá shipper thành công');
     } else {
       toast.error('Xoá shipper thất bại');
     }
