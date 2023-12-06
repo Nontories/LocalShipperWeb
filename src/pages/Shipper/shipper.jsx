@@ -61,8 +61,6 @@ const Shipper = () => {
     if (response?.status === 200) {
       setShipperList(response?.data)
     }
-
-    console.log(response?.data);
   }
 
   const addShipperModal = () => {

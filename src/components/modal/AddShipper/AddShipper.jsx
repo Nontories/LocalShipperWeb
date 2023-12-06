@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 
 import { UserContext } from '../../../context/StoreContext'
 import { CreateShipper } from '../../../api/shipper';
+import { checkMail } from '../../../api/auth';
 
 import SpinnerButton from "../../SpinnerButton/SpinnerButton";
 
@@ -20,6 +21,7 @@ const formInputDefault = {
 const AddShipper = ({ visible, onCancle }) => {
 
     const [formInput, setFormInput] = useState(formInputDefault)
+    const [valid, setValid] = useState(false)
     const [loading, setLoading] = useState(false)
     const { store, token } = useContext(UserContext);
 
@@ -33,25 +35,40 @@ const AddShipper = ({ visible, onCancle }) => {
                 formInput?.shipperPassword !== "" &&
                 formInput?.rePassword !== ""
             ) {
-                const data = {
-                    fullName: formInput?.name,
-                    email: formInput?.email,
-                    phone: formInput?.phone,
-                    password: formInput?.shipperPassword,
-                    confirmPassword: formInput?.rePassword,
-                }
-                const response = await CreateShipper(store?.id, data, token)
-                if (response?.status === 200) {
-                    toast.success('Thêm shipper thành công');
-                    onCancle()
+                if (valid) {
+                    const data = {
+                        fullName: formInput?.name,
+                        email: formInput?.email,
+                        phone: formInput?.phone,
+                        password: formInput?.shipperPassword,
+                        confirmPassword: formInput?.rePassword,
+                    }
+                    const response = await CreateShipper(store?.id, data, token)
+                    if (response?.status === 200) {
+                        toast.success('Thêm shipper thành công');
+                        onCancle()
+                    } else {
+                        toast.error(`Thêm shipper thất bại : ${response?.response?.data}`);
+                    }
                 } else {
-                    toast.error(`Thêm shipper thất bại : ${response?.response?.data}`);
+                    toast.warning('Mail đã được đăng ký');
                 }
             } else {
                 toast.warning('Thông tin chưa đủ');
             }
             setLoading(false)
         }
+    }
+
+    const handleCheckMailValid = async (mail) => {
+        setLoading(true)
+        const response = await checkMail(mail, token)
+        if (response?.data === "Valid") {
+            setValid(true)
+        } else {
+            setValid(false)
+        }
+        setLoading(false)
     }
 
     return (
@@ -72,7 +89,21 @@ const AddShipper = ({ visible, onCancle }) => {
                 </div>
                 <div className="input_lable">
                     <label htmlFor="mail">Email *</label>
-                    <input type="text" id='mail' className='mail' value={formInput.email} onChange={(e) => setFormInput({ ...formInput, email: e.target.value })} />
+                    <input
+                        type="text"
+                        id='mail'
+                        className='mail'
+                        value={formInput.email}
+                        onChange={(e) => setFormInput({ ...formInput, email: e.target.value })}
+                        onBlur={(e) => handleCheckMailValid(e.target.value)}
+                    />
+                    {
+                        formInput.email !== "" ?
+                            !valid &&
+                            <div className="error_message">Email đã được đăng ký</div>
+                            :
+                            ""
+                    }
                 </div>
                 <div className="input_lable">
                     <label htmlFor="shipper_password">Mật khẩu tạm thời</label>

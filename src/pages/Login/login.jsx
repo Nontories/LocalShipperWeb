@@ -9,6 +9,7 @@ import { signIn, getStoreInfor } from '../../api/auth'
 import { GetStore } from '../../api/store';
 
 import Helmet from '../../components/shared/Helmet/helmet'
+import { ACCOUNT } from '../../constants/account';
 
 const Login = () => {
 
@@ -41,11 +42,17 @@ const Login = () => {
     const handleSignin = async () => {
         const response = await signIn(form)
         if (response?.status === 200) {
-            if (response?.data?.role == "Store") {
+            await updateToken(response?.data?.accessToken)
+            localStorage.setItem('token', JSON.stringify(response?.data?.accessToken))
+            if (response?.data?.role === ACCOUNT.STORE.value) {
                 await updateToken(response?.data?.accessToken)
                 localStorage.setItem('token', JSON.stringify(response?.data?.accessToken))
                 await getStoreData(response?.data?.id, response?.data?.accessToken)
                 navigate("/add-order");
+            } else if (response?.data?.role === ACCOUNT.STAFF.value) {
+                navigate("/zone-list");
+            } else {
+                toast.warning('Bạn không được cấp quyền vào hệ thông này');
             }
         } else {
             toast.warning('Sai email hoặc mật khẩu.');

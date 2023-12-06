@@ -13,7 +13,6 @@ const createAxiosInstance = (token) => {
 };
 
 export const signIn = async (data) => {
-    console.log(LINK_API);
     try {
         const response = await axios.post(`${LINK_API}` + "logins", data);
         return response;
@@ -82,6 +81,26 @@ export const getStoreInfor = async (token) => {
     try {
         const instance = createAxiosInstance(token);
         const response = await instance.get(`${LINK_API}` + "logins/accesstoken-to-infostore");
+        return response;
+    } catch (error) {
+        return error;
+    }
+};
+
+export const getRole = async (token) => {
+    try {
+        const instance = createAxiosInstance(token);
+        const response = await instance.get(`${LINK_API}` + "logins/accesstoken-to-role");
+        return response;
+    } catch (error) {
+        return error;
+    }
+};
+
+export const checkMail = async (email, token) => {
+    try {
+        const instance = createAxiosInstance(token);
+        const response = await instance.get(`${LINK_API}logins/check-email?email=${email}`);
         return response;
     } catch (error) {
         return error;

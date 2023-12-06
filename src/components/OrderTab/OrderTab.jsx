@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react'
 import './styles.scss'
+import { toast } from 'react-toastify';
 
 import CustomOptionDropdown from '../CustomOptionDropdown/CustomOptionDropdown';
 
@@ -20,6 +21,7 @@ const OrderTab = (props) => {
 
     const item = props?.item
     const key = props?.tabIndex
+    const timeAssign = props?.timeAssign
     const setOrder = props?.setOrder
     const setDetail = props?.setDetail
     const setChooseShipper = props?.setChooseShipper
@@ -60,17 +62,21 @@ const OrderTab = (props) => {
     }
 
     const hanldePublic = async (item) => {
-        const data = {
-            id: item?.id,
-            shipperId: 0,
-            status: ORDER.ASSIGNING.value
-        }
-        const response = await InteractOrder(data, token)
-        if (response?.status === 200) {
-            const index = findOrderIndexById(orderList, item?.id)
-            const updateList = [...orderList]
-            updateList[index].status = ORDER.ASSIGNING.value
-            setOrderList(updateList)
+        if (timeAssign) {
+            const data = {
+                id: item?.id,
+                shipperId: 0,
+                status: ORDER.ASSIGNING.value
+            }
+            const response = await InteractOrder(data, token)
+            if (response?.status === 200) {
+                const index = findOrderIndexById(orderList, item?.id)
+                const updateList = [...orderList]
+                updateList[index].status = ORDER.ASSIGNING.value
+                setOrderList(updateList)
+            }
+        } else {
+            toast.warning('Chưa chọn thời gian giao hàng');
         }
     }
 

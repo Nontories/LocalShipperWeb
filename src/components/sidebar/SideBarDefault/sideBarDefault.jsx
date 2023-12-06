@@ -4,6 +4,8 @@ import './styles.scss'
 
 import { UserContext } from '../../../context/StoreContext';
 
+import { ACCOUNT } from '../../../constants/account';
+
 import ConfirmModal from '../../modal/ConfirmModal/ConfirmModal';
 
 import Logo from "../../../assets/Logo.svg"
@@ -16,21 +18,52 @@ import signoutIcon from "../../../assets/sidebar/Sign_out.svg"
 const itemList = [
   {
     className: "logo defautl_icon",
+    role: ACCOUNT.STORE.value,
     name: "Thêm đơn hàng",
     img: addIcon,
     action: "/add-order"
   },
   {
     className: "logo defautl_icon",
+    role: ACCOUNT.STORE.value,
     name: "Danh sách đơn hàng",
     img: orderIcon,
     action: "/order-list"
   },
   {
     className: "logo defautl_icon",
+    role: ACCOUNT.STORE.value,
     name: "Danh sách shipper",
     img: shipperIcon,
     action: "/shipper"
+  },
+  {
+    className: "logo defautl_icon",
+    role: ACCOUNT.STAFF.value,
+    name: "Danh sách khu vực",
+    img: shipperIcon,
+    action: "/zone-list"
+  },
+  {
+    className: "logo defautl_icon",
+    role: ACCOUNT.STAFF.value,
+    name: "Danh sách cửa hàng",
+    img: shipperIcon,
+    action: "/store-list"
+  },
+  {
+    className: "logo defautl_icon",
+    role: ACCOUNT.STAFF.value,
+    name: "Danh sách shipper",
+    img: shipperIcon,
+    action: "/shipper-list"
+  },
+  {
+    className: "logo defautl_icon",
+    role: ACCOUNT.STAFF.value,
+    name: "Các thanh toán",
+    img: shipperIcon,
+    action: "/payment-list"
   },
 ]
 
@@ -39,7 +72,7 @@ const SideBarDefault = () => {
   const [activeKey, setActiveKey] = useState(0);
   const [sideBarWide, setSideBarWide] = useState(false)
   const [logoutModal, setLogoutModal] = useState(false)
-  const { store, token, updateStore, updateToken } = useContext(UserContext);
+  const { store, token, role, updateStore, updateToken } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleItemClick = (item, key) => {
@@ -53,8 +86,16 @@ const SideBarDefault = () => {
     navigate("/")
   }
 
+  const getNavList = () => {
+    if (role === ACCOUNT.STAFF.value) {
+      return itemList.filter(item => item.role === ACCOUNT.STAFF.value);
+    } else {
+      return itemList.filter(item => item.role !== ACCOUNT.STAFF.value);
+    }
+  };
+
   return (
-    <div className={`side-bar-default ${sideBarWide ? "side-bar-wide" : ""}`} style={{overflow: logoutModal ? "visible" : "hidden"}}>
+    <div className={`side-bar-default ${sideBarWide ? "side-bar-wide" : ""}`} style={{ overflow: logoutModal ? "visible" : "hidden" }}>
       <div className="logo_icon">
         <img
           className={`logo`}
@@ -76,20 +117,21 @@ const SideBarDefault = () => {
       </div>
 
       <div className="item_list">
-        {itemList.map((item, key) => {
-          return (
-            <div className={`nav_button  ${sideBarWide ? "nav_button-wide" : ""}`} onClick={() => handleItemClick(item, key)} key={key}>
-              <img
-                className={`${item.className} icon `}
-                src={item.img}
-                alt={item.className}
-                draggable="false"
-              />
-              <div className={`nav_button_name ${!sideBarWide ? "hidden" : ""}`}>{item.name}</div>
-            </div>
-
-          )
-        })}
+        {
+          getNavList().map((item, key) => {
+            return (
+              <div className={`nav_button  ${sideBarWide ? "nav_button-wide" : ""}`} onClick={() => handleItemClick(item, key)} key={key}>
+                <img
+                  className={`${item.className} icon `}
+                  src={item.img}
+                  alt={item.className}
+                  draggable="false"
+                />
+                <div className={`nav_button_name ${!sideBarWide ? "hidden" : ""}`}>{item.name}</div>
+              </div>
+            )
+          })
+        }
         <div className={`background_active ${sideBarWide ? "wide" : ""}`} style={{ position: 'absolute', top: ((45 * activeKey) + (20 * activeKey)) }}></div>
       </div>
 

@@ -74,7 +74,7 @@ const AddOrder = () => {
   }
 
   const getDistainPrice = async () => {
-    if (formInfor.city && formInfor.district && formInfor.ward && formInfor.address != "") {
+    if (formInfor.city && formInfor.district && formInfor.ward && formInfor.address !== "") {
       console.log("get in");
       const data = {
         addressStore: store?.storeAddress,
@@ -135,17 +135,17 @@ const AddOrder = () => {
       console.log(data);
 
       if (
-        formInfor.name != "" &&
-        formInfor.phone != "" &&
-        formInfor.email != "" &&
+        formInfor.name !== "" &&
+        formInfor.phone !== "" &&
+        formInfor.email !== "" &&
         formInfor.city &&
         formInfor.district &&
-        formInfor.address != "" &&
-        formInfor.capacity != "" &&
+        formInfor.address !== "" &&
+        formInfor.capacity !== "" &&
         formInfor.date &&
-        formInfor.width != "" &&
-        formInfor.height != "" &&
-        formInfor.length != ""
+        formInfor.width !== "" &&
+        formInfor.height !== "" &&
+        formInfor.length !== ""
       ) {
         console.log(data);
         const response = await CreateOrder(data, token)
@@ -290,6 +290,8 @@ const AddOrder = () => {
     const result = inputString.replace(/Thành phố |Huyện |Tỉnh |Quận |Xã/g, match => vietnameseMap[match.trim()]);
     return result;
   }
+
+  console.log(store);
 
   function getCurrentDateTime() {
     const now = new Date();
@@ -469,7 +471,7 @@ const AddOrder = () => {
             </div>
             <div className="fee">
               <div className="fee_name">Phí thu hộ</div>
-              <div className="fee_price">{formInfor?.price != "" ? formatPrice(formInfor?.price) : 0} đ</div>
+              <div className="fee_price">{formInfor?.price !== "" ? formatPrice(formInfor?.price) : 0} đ</div>
             </div>
             <div className="fee">
               <div className="total_fee_name">Tổng số tiền</div>

@@ -53,6 +53,7 @@ const OrderList = () => {
   const [orderDetail, setOrderDetail] = useState({})
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
+  const [timeAssign, setTimeAssign] = useState(undefined)
   const [modalVisible, setModalVisible] = useState({ orderDetail: false, chooseShipper: false, confirmDelete: false })
   const { store, token } = useContext(UserContext);
   const navigate = useNavigate();
@@ -93,8 +94,12 @@ const OrderList = () => {
   }
 
   const handleOpenShipperModal = (order) => {
-    setOrderDetail(order)
-    setModalVisible({ ...modalVisible, chooseShipper: true })
+    if (timeAssign) {
+      setOrderDetail(order)
+      setModalVisible({ ...modalVisible, chooseShipper: true })
+    } else {
+      toast.warning('Chưa chọn thời gian giao hàng');
+    }
   }
 
   const handleShipperCancle = () => {
@@ -112,12 +117,20 @@ const OrderList = () => {
     return filteredOrders.slice(startIndex, endIndex);
   }
 
+  const getFilterLength = (value) => {
+    const filteredOrders = value === ORDER.ALL.value
+      ? orderList
+      : orderList.filter(item => item?.status === value);
+
+    return filteredOrders.length;
+  }
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
   const renderPaginationButtons = () => {
-    const totalPages = Math.ceil(orderList.length / itemsPerPage);
+    const totalPages = Math.ceil(getFilterLength(filterValue) / itemsPerPage);
 
     return Array.from({ length: totalPages }, (_, index) => index + 1).map(page => (
       <button
@@ -144,6 +157,14 @@ const OrderList = () => {
     setModalVisible({ ...modalVisible, confirmDelete: false })
   }
 
+  function getCurrentDateTime() {
+    const now = new Date();
+    now.setHours(now.getHours() + 1);
+    now.setDate(now.getDate() + 1);
+    const formattedDate = now.toISOString().slice(0, 16);
+    return formattedDate;
+  }
+
   return (
     <Helmet title={"Order List | "}>
       <div className="order_list">
@@ -153,23 +174,44 @@ const OrderList = () => {
           <div className="order_status">
             {orderType.map((item, key) => {
               return (
-                <div className={`type_button ${filterValue == item.value && "button_active"}`} key={key} onClick={() => { setFilterValue(item.value) }}>{item.name}</div>
+                <div className={`type_button ${filterValue == item.value && "button_active"}`} key={key} onClick={() => { setFilterValue(item.value); handlePageChange(1) }}>{item.name}</div>
               )
             })}
+            <div className="assign_time">
+              <input
+                type="datetime-local"
+                value={timeAssign}
+                onChange={(e) => { setTimeAssign(e.target.value) }}
+                min={getCurrentDateTime()}
+              ></input>
+            </div>
           </div>
-          {
-            handleFilter(filterValue)?.map((item, key) => {
-              return (
-                <OrderTab item={item} key={key} setDetail={handleOpenDetailModal} setChooseShipper={handleOpenShipperModal} setOrder={setOrderFocus} parentModal={modalVisible} setParentModal={setModalVisible} setOrderList={setOrderList} orderList={orderList} />
-              )
-            })
-          }
+          <div className="order_list">
+            {
+              handleFilter(filterValue)?.map((item, key) => {
+                return (
+                  <OrderTab
+                    item={item}
+                    timeAssign={timeAssign}
+                    setDetail={handleOpenDetailModal}
+                    setChooseShipper={handleOpenShipperModal}
+                    setOrder={setOrderFocus}
+                    parentModal={modalVisible}
+                    setParentModal={setModalVisible}
+                    setOrderList={setOrderList}
+                    orderList={orderList}
+                    key={key}
+                  />
+                )
+              })
+            }
+          </div>
           <div className="pagination-buttons">
             {renderPaginationButtons()}
           </div>
         </div>
         <OrderDetailModal visible={modalVisible.orderDetail} order={orderDetail} onCancle={handleModalCancle} />
-        <ChooseShipperOrder visible={modalVisible.chooseShipper} order={orderDetail} orderList={orderList} setOrderList={setOrderList} onCancle={handleShipperCancle} />
+        <ChooseShipperOrder visible={modalVisible.chooseShipper} order={orderDetail} orderList={orderList} timeAssign={timeAssign} setOrderList={setOrderList} onCancle={handleShipperCancle} />
         <ConfirmModal visible={modalVisible.confirmDelete} setVisible={handleCloseDeleteConfirm} title={"Xác nhận"} content={`Xác nhận xoá đơn hàng #${orderDetail?.trackingNumber}`} onConfirm={handleSubmitDeleteConfirm} onCancle={handleCloseDeleteConfirm} />
       </div>
     </Helmet>

@@ -30,7 +30,7 @@ const shipperType = [
     }
 ]
 
-const ChooseShipperOrder = ({ visible, order, onCancle, orderList, setOrderList }) => {
+const ChooseShipperOrder = ({ visible, order, onCancle, orderList, setOrderList, timeAssign }) => {
 
     const [shipperList, setShipperList] = useState([])
     const [shipper, setShipper] = useState({})

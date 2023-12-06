@@ -24,6 +24,7 @@
         }
 
         .order_status {
+            position: relative;
             display: flex;
             border-bottom: 3px solid rgba(0, 0, 0, 0.2);
             box-shadow: 0 10px 5px -5px rgba(0, 0, 0, 0.1);
@@ -50,6 +51,24 @@
             .type_button:hover {
                 cursor: pointer;
             }
+
+            .assign_time {
+                position: absolute;
+                right: 20px;
+                background-color: #F2F4F8;
+                border-radius: 50px;
+
+                input {
+                    padding: 15px;
+                    background-color: #F2F4F8;
+                    border-radius: 50px;
+                }
+            }
+        }
+
+        .order_list {
+            display: flex;
+            flex-wrap: wrap;
         }
 
         .pagination-buttons {
