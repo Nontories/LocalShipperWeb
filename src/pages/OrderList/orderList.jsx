@@ -12,12 +12,18 @@ import Helmet from '../../components/shared/Helmet/helmet'
 import OrderDetailModal from '../../components/modal/OrderDetailModal/OrderDetailModal';
 import ChooseShipperOrder from '../../components/modal/ChooseShipperOrder/ChooseShipperOrder';
 import ConfirmModal from '../../components/modal/ConfirmModal/ConfirmModal';
+import { UpdateStoreTimeDelivery } from '../../api/store';
 
 const orderType = [
   {
     value: ORDER.ALL.value,
     name: "Đơn đã lưu",
     sign: ORDER.ALL.sign,
+  },
+  {
+    value: ORDER.IDLE.value,
+    name: "Đơn chưa giao",
+    sign: ORDER.IDLE.sign,
   },
   {
     value: ORDER.WAITING.value,
@@ -52,7 +58,7 @@ const OrderList = () => {
   const [orderList, setOrderList] = useState([])
   const [orderDetail, setOrderDetail] = useState({})
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
+  const [itemsPerPage] = useState(6);
   const [timeAssign, setTimeAssign] = useState(undefined)
   const [modalVisible, setModalVisible] = useState({ orderDetail: false, chooseShipper: false, confirmDelete: false })
   const { store, token } = useContext(UserContext);
@@ -65,6 +71,10 @@ const OrderList = () => {
       getOrderList()
     }
   }, [currentPage])
+
+  useEffect(() => {
+    UpdateStoreTimeDelivery(store?.id, timeAssign, token)
+  }, [timeAssign])
 
   const getOrderList = async () => {
     const data = {

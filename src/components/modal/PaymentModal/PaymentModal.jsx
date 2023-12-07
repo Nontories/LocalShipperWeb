@@ -3,11 +3,12 @@ import './styles.scss'
 import { toast } from 'react-toastify';
 
 import { UserContext } from '../../../context/StoreContext'
-import { CreateTransaction } from '../../../api/transaction';
+import { CreateTransaction, SendTransactionOtp, UpdateWalletBalance } from '../../../api/transaction';
 
 import SpinnerButton from "../../SpinnerButton/SpinnerButton";
 
 import closeIcon from "../../../assets/close.svg"
+import PaymentOTP from '../PaymentOTP/PaymentOTP';
 
 const formInputDefault = {
     name: "",
@@ -19,6 +20,8 @@ const formInputDefault = {
 const PaymentModal = ({ visible, onCancle, type }) => {
 
     const [formInput, setFormInput] = useState(formInputDefault)
+    const [otpVisible, setOtpVisible] = useState(false)
+    const [otp, setOtp] = useState()
     const [loading, setLoading] = useState(false)
     const { store, token } = useContext(UserContext);
 
@@ -33,23 +36,54 @@ const PaymentModal = ({ visible, onCancle, type }) => {
                 formInput?.phone !== "" &&
                 formInput?.amount !== 0
             ) {
-                const data = {
-                    fullName: formInput?.name,
-                    email: formInput?.email,
-                    phone: formInput?.phone,
+                const response = await SendTransactionOtp(formInput?.email, token)
+                if (response?.status === 200) {
+                    if (type !== "withdraw") {
+                        await handleTransaction()
+                    } else {
+                        toast.success('Đã gửi OTP xác nhận');
+                        setOtpVisible(true)
+                    }
+                } else {
+                    toast.error(`Gửi OTP xác nhận thất bại : ${response?.response?.data}`);
                 }
-                // const response = await CreateTransaction(store?.id, data, token)
-                // if (response?.status === 200) {
-                //     toast.success('Thanh toán thành công');
-                //     onCancle()
-                // } else {
-                //     toast.error(`Thanh toán thành công : ${response?.response?.data}`);
-                // }
             } else {
                 toast.warning('Thông tin chưa đủ');
             }
             setLoading(false)
         }
+    }
+
+    const handleTransaction = async () => {
+
+        let data = {}
+        if (type === "withdraw") {
+            data = {
+                email: formInput?.email,
+                balance: formInput?.amount,
+                OTP: otp,
+                type: 2
+            }
+        } else {
+            data = {
+                email: formInput?.email,
+                balance: formInput?.amount,
+                type: 1
+            }
+        }
+
+        const response = await UpdateWalletBalance(data, token)
+        if (response?.status === 200) {
+            toast.success('Giao dịch thành công');
+            setOtpVisible(true)
+        } else {
+            toast.error(`Giao dịch thất bại : ${response?.response?.data}`);
+        }
+        setLoading(false)
+    }
+
+    const handleCloseOtpModal = () => {
+        setOtpVisible(false)
     }
 
     return (
@@ -95,6 +129,7 @@ const PaymentModal = ({ visible, onCancle, type }) => {
                     </div>
                 </div>
             </div>
+            <PaymentOTP visible={otpVisible} otp={otp} setOtp={setOtp} onSubmit={handleTransaction} onCancle={handleCloseOtpModal} />
         </div>
     )
 }

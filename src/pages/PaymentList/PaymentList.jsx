@@ -3,6 +3,8 @@ import { toast } from 'react-toastify';
 import './styles.scss'
 
 import { UserContext } from '../../context/StoreContext';
+import { GetAllTransaction } from '../../api/transaction';
+
 import Helmet from '../../components/shared/Helmet/helmet'
 import PaymentTab from '../../components/PaymentTab/PaymentTab';
 import PaymentModal from '../../components/modal/PaymentModal/PaymentModal';
@@ -14,18 +16,18 @@ const PaymentList = () => {
     const [modalVisible, setModalVisible] = useState({ paymment: false, type: "" })
     const { store, token } = useContext(UserContext);
 
-    // useEffect(() => {
-    //     loadData()
-    // }, [])
+    useEffect(() => {
+        loadData()
+    }, [])
 
-    // const loadData = async () => {
-    //     const response = await GetAllShipper()
-    //     if (response?.status === 200) {
-    //         setShipperList(response?.data)
-    //     } else {
-    //         toast.warning('Tải thông tin thât bại');
-    //     }
-    // }
+    const loadData = async () => {
+        const response = await GetAllTransaction(token)
+        if (response?.status === 200) {
+            setTransactionList(response?.data)
+        } else {
+            toast.warning('Tải thông tin giao dịch thât bại');
+        }
+    }
 
     const handleSearch = (list, value) => {
         if (value === "") {
@@ -34,7 +36,7 @@ const PaymentList = () => {
             const newFilteredData = list?.filter(item =>
                 // item.name.toLowerCase().includes(value) ||
                 // item.email.toLowerCase().includes(value) ||
-                String(item.amount).includes(value)
+                String(item.amount).includes(value.toLowerCase())
             );
 
             return newFilteredData

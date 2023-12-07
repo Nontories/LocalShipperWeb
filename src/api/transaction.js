@@ -14,17 +14,6 @@ const createAxiosInstance = (token) => {
     });
 };
 
-export const GetAllShipper = async (token) => {
-    try {
-        const instance = createAxiosInstance(token);
-        const response = await instance.get(`${LINK_API}` + "accounts?role=" + ACCOUNT.SHIPPER.value);
-        return response;
-    } catch (error) {
-        console.log("GetAllShipper in api/account.js error : ", error);
-        return [];
-    }
-};
-
 export const CreateTransaction = async (fromId, toId, amount, token) => {
 
     const data = {
@@ -38,7 +27,50 @@ export const CreateTransaction = async (fromId, toId, amount, token) => {
         const response = await instance.get(`${LINK_API}` + "wallets​/create-wallet-transaction", data);
         return response;
     } catch (error) {
-        console.log("GetAllShipper in api/account.js error : ", error);
+        console.log("CreateTransaction in api/transaction.js error : ", error);
         return [];
+    }
+};
+
+export const GetAllTransaction = async (token) => {
+
+    try {
+        const instance = createAxiosInstance(token);
+        const response = await instance.get(`${LINK_API}` + "wallets/wallet-transaction");
+        return response;
+    } catch (error) {
+        console.log("GetAllTransaction in api/transaction.js error : ", error);
+        return [];
+    }
+};
+
+export const SendTransactionOtp = async (mail, token) => {
+    try {
+        const instance = createAxiosInstance(token);
+        const response = await instance.get(`${LINK_API}` + "accounts/send-otp-wallet?email=" + mail);
+        return response;
+    } catch (error) {
+        console.log("SendTransactionOtp in api/transaction.js error : ", error);
+        return error;
+    }
+};
+
+export const UpdateWalletBalance = async (data, token) => {
+
+    let path = ""
+    
+    for (let key in data) {
+        if (data.hasOwnProperty(key)) {
+            path += `${key}=${data[key]}&`
+        }
+    }
+
+    try {
+        const instance = createAxiosInstance(token);
+        const response = await instance.put(`${LINK_API}` + "wallets?" + path);
+        return response;
+    } catch (error) {
+        console.log("UpdateWalletBalance in api/transaction.js error : ", error);
+        return error;
     }
 };

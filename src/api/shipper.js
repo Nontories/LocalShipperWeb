@@ -3,6 +3,7 @@ import axios from "axios";
 const LINK_API = process.env.REACT_APP_API_LINK;
 const LINK_API_SHIPPER = process.env.REACT_APP_API_LINK_SHIPPER;
 const LINK_API_DEFAULT = process.env.REACT_APP_API_LINK_DEFAULT;
+const LINK_API_STAFF = process.env.REACT_APP_API_LINK_STAFF;
 
 const createAxiosInstance = (token) => {
     return axios.create({
@@ -53,7 +54,31 @@ export const DeleteShipper = async (id, token) => {
         const response = await instance.delete(`${LINK_API}` + "shippers?id=?" + id);
         return response;
     } catch (error) {
-        console.log("GetOrder in api/order.js error : ", error);
+        console.log("DeleteShipper in api/order.js error : ", error);
+        return error;
+    }
+};
+
+export const ActiveShipper = async (accountId, zoneId, token) => {
+    console.log((`${LINK_API_STAFF}` + `accounts/active-shipper?accountId=${accountId}&zoneId=${zoneId}`));
+    try {
+        const instance = createAxiosInstance(token);
+        const response = await instance.put(`${LINK_API_STAFF}` + `accounts/active-shipper?accountId=${accountId}&zoneId=${zoneId}`);
+        return response;
+    } catch (error) {
+        console.log("ActiveShipper in api/shipper.js error : ", error);
+        return error;
+    }
+};
+
+export const DeactiveShipper = async (accountId, token) => {
+
+    try {
+        const instance = createAxiosInstance(token);
+        const response = await instance.put(`${LINK_API_STAFF}` + `accounts/inactive-shipper?accountId=${accountId}`);
+        return response;
+    } catch (error) {
+        console.log("DeactiveShipper in api/shipper.js error : ", error);
         return error;
     }
 };
