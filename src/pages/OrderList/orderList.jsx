@@ -189,7 +189,7 @@ const OrderList = () => {
             })}
             <div className="assign_time">
               <input
-                type="datetime-local"
+                type="number"
                 value={timeAssign}
                 onChange={(e) => { setTimeAssign(e.target.value) }}
                 min={getCurrentDateTime()}
