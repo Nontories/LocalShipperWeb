@@ -9,60 +9,72 @@ import { ACCOUNT } from '../../../constants/account';
 import ConfirmModal from '../../modal/ConfirmModal/ConfirmModal';
 
 import Logo from "../../../assets/Logo.svg"
+import signoutIcon from "../../../assets/sidebar/Sign_out.svg"
 import navIcon from "../../../assets/sidebar/threeLine.svg"
+
 import addIcon from "../../../assets/sidebar/addCircle.svg"
 import orderIcon from "../../../assets/sidebar/order.svg"
 import shipperIcon from "../../../assets/sidebar/shipper.svg"
-import signoutIcon from "../../../assets/sidebar/Sign_out.svg"
+import transactionIcon from "../../../assets/sidebar/TransactionIcon.svg"
+
+import storeIcon from "../../../assets/sidebar/storeIcon.svg"
+import zoneList from "../../../assets/sidebar/ZoneList.svg"
 
 const itemList = [
   {
     className: "logo defautl_icon",
-    role: ACCOUNT.STORE.value,
+    role: ACCOUNT.STORE.role,
     name: "Thêm đơn hàng",
     img: addIcon,
     action: "/add-order"
   },
   {
     className: "logo defautl_icon",
-    role: ACCOUNT.STORE.value,
+    role: ACCOUNT.STORE.role,
     name: "Danh sách đơn hàng",
     img: orderIcon,
     action: "/order-list"
   },
   {
     className: "logo defautl_icon",
-    role: ACCOUNT.STORE.value,
+    role: ACCOUNT.STORE.role,
     name: "Danh sách shipper",
     img: shipperIcon,
     action: "/shipper"
   },
   {
     className: "logo defautl_icon",
-    role: ACCOUNT.STAFF.value,
+    role: ACCOUNT.STORE.role,
+    name: "Lịch sử giao dịch",
+    img: transactionIcon,
+    action: "/transaction"
+  },
+  {
+    className: "logo defautl_icon",
+    role: ACCOUNT.STAFF.role,
     name: "Danh sách khu vực",
-    img: shipperIcon,
+    img: zoneList,
     action: "/zone-list"
   },
   {
     className: "logo defautl_icon",
-    role: ACCOUNT.STAFF.value,
+    role: ACCOUNT.STAFF.role,
     name: "Danh sách cửa hàng",
-    img: shipperIcon,
+    img: storeIcon,
     action: "/store-list"
   },
   {
     className: "logo defautl_icon",
-    role: ACCOUNT.STAFF.value,
+    role: ACCOUNT.STAFF.role,
     name: "Danh sách shipper",
     img: shipperIcon,
     action: "/shipper-list"
   },
   {
     className: "logo defautl_icon",
-    role: ACCOUNT.STAFF.value,
+    role: ACCOUNT.STAFF.role,
     name: "Các thanh toán",
-    img: shipperIcon,
+    img: transactionIcon,
     action: "/payment-list"
   },
 ]
@@ -87,10 +99,10 @@ const SideBarDefault = () => {
   }
 
   const getNavList = () => {
-    if (role === ACCOUNT.STAFF.value) {
-      return itemList.filter(item => item.role === ACCOUNT.STAFF.value);
+    if (role === ACCOUNT.STAFF.role) {
+      return itemList.filter(item => item.role === ACCOUNT.STAFF.role);
     } else {
-      return itemList.filter(item => item.role !== ACCOUNT.STAFF.value);
+      return itemList.filter(item => item.role !== ACCOUNT.STAFF.role);
     }
   };
 

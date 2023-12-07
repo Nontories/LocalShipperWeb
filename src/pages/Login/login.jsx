@@ -44,12 +44,10 @@ const Login = () => {
         if (response?.status === 200) {
             await updateToken(response?.data?.accessToken)
             localStorage.setItem('token', JSON.stringify(response?.data?.accessToken))
-            if (response?.data?.role === ACCOUNT.STORE.value) {
-                await updateToken(response?.data?.accessToken)
-                localStorage.setItem('token', JSON.stringify(response?.data?.accessToken))
+            if (response?.data?.role === ACCOUNT.STORE.role) {
                 await getStoreData(response?.data?.id, response?.data?.accessToken)
                 navigate("/add-order");
-            } else if (response?.data?.role === ACCOUNT.STAFF.value) {
+            } else if (response?.data?.role === ACCOUNT.STAFF.role) {
                 navigate("/zone-list");
             } else {
                 toast.warning('Bạn không được cấp quyền vào hệ thông này');

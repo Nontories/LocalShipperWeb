@@ -1,0 +1,57 @@
+.shipper_staff_tab {
+    display: flex;
+    width: 100%;
+    padding: 20px 0;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+
+    .tab_name {
+        width: 20%;
+    }
+
+    .tab_phone {
+        width: 15%;
+    }
+
+    .tab_mail {
+        width: 20%;
+    }
+
+    .tab_date_assign {
+        width: 20%;
+    }
+
+    .tab_status {
+        width: 15%;
+    }
+
+    .tab_button {
+        position: relative;
+        display: flex;
+        width: 3%;
+        justify-content: center;
+
+        .button {
+            display: flex;
+            width: 20px;
+            padding: 0 5px;
+            height: 100%;
+            // border: 1px solid rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.1);
+            justify-content: center;
+            align-items: center;
+
+            .button_circle {
+                width: 4px;
+                height: 4px;
+                border-radius: 50px;
+                background-color: rgba(0, 0, 0, 0.3);
+                margin: 0 1px;
+            }
+        }
+
+        .button:hover {
+            cursor: pointer;
+        }
+    }
+}

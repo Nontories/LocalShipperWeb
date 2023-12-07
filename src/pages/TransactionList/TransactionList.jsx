@@ -4,15 +4,15 @@ import './styles.scss'
 
 import Helmet from '../../components/shared/Helmet/helmet'
 
-const StoreList = () => {
+const TransactionList = () => {
 
     return (
-        <Helmet title={"Store list | "}>
-            <div className="store_list">
-                StoreList
+        <Helmet title={"Transaction List | "}>
+            <div className="transaction_list">
+            TransactionList
             </div>
         </Helmet>
     )
 }
 
-export default StoreList
+export default TransactionList

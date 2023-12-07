@@ -10,7 +10,7 @@ import TrackingOrder from "../pages/TrackingOrder/TrackingOrder";
 import AddOrder from "../pages/AddOrder/addOrder";
 import OrderList from "../pages/OrderList/orderList"
 import Shipper from "../pages/Shipper/shipper"
-
+import TransactionList from "../pages/TransactionList/TransactionList";
 
 // admin
 import ZoneList from "../pages/ZoneList/ZoneList"
@@ -22,7 +22,7 @@ import { ACCOUNT } from "../constants/account";
 const Router = () => {
 
   const { role } = useContext(UserContext);
-
+  
   return (
     <Routes>
 
@@ -31,7 +31,7 @@ const Router = () => {
 
       <Route element={<UserLayout />}>
         {
-          role === ACCOUNT.STAFF.value || role === ACCOUNT.ADMIN.value ?
+          role === ACCOUNT.STAFF.role ?
             (
               <>
                 <Route path="/zone-list" element={<ZoneList />} />
@@ -46,6 +46,7 @@ const Router = () => {
                 <Route path="/add-order" element={<AddOrder />} />
                 <Route path="/order-list" element={<OrderList />} />
                 <Route path="/shipper" element={<Shipper />} />
+                <Route path="/transaction" element={<TransactionList />} />
               </>
             )
         }

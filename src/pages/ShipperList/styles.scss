@@ -1,0 +1,70 @@
+.shipper_list {
+    width: 100%;
+    height: auto;
+
+    .header {
+        width: 100%;
+        padding: 10px;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+        background-color: white;
+    }
+
+    .body {
+        width: 100%;
+        height: auto;
+        min-height: 92vh;
+        padding: 10px;
+        // border: 2px solid rgba(0, 0, 0, 0.3);
+        // margin: 10px;
+        background-color: white;
+
+        .title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .shipper_status {
+            position: relative;
+            display: flex;
+            border-bottom: 3px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 5px -5px rgba(0, 0, 0, 0.1);
+            padding-bottom: 20px;
+            margin: 20px 0;
+
+            .type_button {
+                padding: 15px;
+                padding-bottom: 12px;
+                border-radius: 50px;
+                margin-right: 20px;
+                color: rgba(0, 0, 0, 0.5);
+                background-color: #F2F4F8;
+                transition: 0.3s;
+                user-select: none;
+            }
+
+            .button_active {
+                background-color: rgba(114, 175, 211, 0.4);
+                color: white;
+                transition: 0.3s;
+            }
+
+            .type_button:hover {
+                cursor: pointer;
+            }
+
+            .assign_time {
+                position: absolute;
+                right: 50px;
+                background-color: #F2F4F8;
+                border-radius: 50px;
+
+                input {
+                    padding: 8px 15px;
+                    background-color: white;
+                    border: 1px solid rgba(0, 0, 0, 0.2);
+                    border-radius: 10px;
+                }
+            }
+        }
+    }
+}

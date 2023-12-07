@@ -1,18 +1,22 @@
 export const ACCOUNT = {
     STORE: {
-        value: "Store",
+        value: 4,
+        role: "Store",
         name: "cửa hàng",
     },
     ADMIN: {
-        value: "Admin",
-        name: "staff",
+        value: 1,
+        role: "Admin",
+        name: "admin",
     },
     SHIPPER: {
-        value: "Shipper",
+        value: 5,
+        role: "Shipper",
         name: "tài xế",
     },
     STAFF: {
-        value: "Staff",
+        value: 2,
+        role: "Staff",
         name: "quản lý",
     },
 }

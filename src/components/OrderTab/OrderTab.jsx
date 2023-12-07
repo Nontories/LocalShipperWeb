@@ -93,6 +93,10 @@ const OrderTab = (props) => {
         setParentModal({ ...parentModal, confirmDelete: true })
     }
 
+    const handleCloseDropdown = () => {
+        setModalVisible({ ...modalVisible, dropdown: false })
+    }
+
     const dropdownList = [
         {
             name: "Chỉnh sửa đơn hàng",
@@ -117,7 +121,7 @@ const OrderTab = (props) => {
                 <div className="tab_name" onClick={() => setDetail(item)}>#{item?.trackingNumber}</div>
                 <div className="dropdown_list" onClick={handleDropdownVisible}>
                     <img src={threeDotIcon} className='three_dot_icon' alt="" />
-                    <CustomOptionDropdown visible={modalVisible.dropdown} dropdownList={dropdownList} />
+                    <CustomOptionDropdown visible={modalVisible.dropdown} onCancle={handleCloseDropdown} dropdownList={dropdownList} />
                 </div>
 
             </div>
