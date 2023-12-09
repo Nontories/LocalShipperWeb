@@ -191,8 +191,13 @@ const OrderList = () => {
               <input
                 type="number"
                 value={timeAssign}
-                onChange={(e) => { setTimeAssign(e.target.value) }}
-                min={getCurrentDateTime()}
+                onChange={(e) => {
+                  const inputValue = e.target.value;
+                  if (/^[1-9]\d*$/.test(inputValue) || inputValue === '') {
+                    setTimeAssign(inputValue);
+                  }
+                }}
+                defaultValue={6}
               ></input>
             </div>
           </div>

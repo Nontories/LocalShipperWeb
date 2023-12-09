@@ -41,11 +41,11 @@ const trackingImage = [
         imgDefault: inProcessDefaultIcon,
         value: ORDER.INPROCESS.value
     },
-    {
-        img: successIcon,
-        imgDefault: successDefaultIcon,
-        value: ORDER.COMPLETED.value
-    },
+    // {
+    //     img: successIcon,
+    //     imgDefault: successDefaultIcon,
+    //     value: ORDER.COMPLETED.value
+    // },
 ]
 
 const TrackingOrder = () => {
@@ -72,14 +72,22 @@ const TrackingOrder = () => {
         switch (value) {
             case ORDER.IDLE.value:
                 return "Đơn Hàng đã được tạo"
+            case ORDER.ASSIGNING.value:
+                return "Đang tìm tài xế"
+            case ORDER.WAITING.value:
+                return "Đang tìm tài xế"
             case ORDER.ACCEPTED.value:
-                return "Đã tìm được Shipper"
+                return "Đã tìm được tài xế"
             case ORDER.INPROCESS.value:
                 return "Đơn hàng đang được giao"
             case ORDER.COMPLETED.value:
                 return "Giao thành công"
             case ORDER.CANCELLED.value:
                 return "Đơn hàng đã huỷ"
+            case ORDER.DELETED.value:
+                return "Đơn hàng đã xoá"
+            case ORDER.RETURN.value:
+                return "Đã trả hàng"
             default:
                 break;
         }
@@ -96,7 +104,7 @@ const TrackingOrder = () => {
             case ORDER.COMPLETED.value:
                 return order.completeTime
             case ORDER.CANCELLED.value:
-                return order.createTime
+                return order.cancelTime
             default:
                 break;
         }
@@ -135,6 +143,52 @@ const TrackingOrder = () => {
                             )
                         })
                     }
+                    {
+                        order?.status > ORDER.COMPLETED.value ?
+                            <div className="phase">
+                                {
+                                    <div className="dashline" style={{ backgroundColor: "#72AFD3" }}></div>
+                                }
+                                <div className="circle">
+                                    <img
+                                        src={successIcon}
+                                        alt=""
+                                        style={{ borderColor: "#72AFD3" }}
+                                    />
+                                    <div className="detail">
+                                        <div className="detail_name">{getTrackingText(order?.status)}</div>
+                                        <div className="detail_time">{formatDate(getTrackingTime(order?.status))}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            :
+                            <div className="phase">
+                                {
+                                    <div className="dashline" style={{ backgroundColor: order?.status < ORDER.COMPLETED.value ? "rgba(0, 0, 0, 0.5)" : "#72AFD3" }}></div>
+                                }
+                                <div className="circle">
+                                    <img
+                                        src={order?.status < ORDER.COMPLETED.value ? successDefaultIcon : successIcon}
+                                        alt=""
+                                        style={{ borderColor: order?.status < ORDER.COMPLETED.value ? "rgba(0, 0, 0, 0.5)" : "#72AFD3" }}
+                                    />
+                                    <div className="detail">
+                                        <div className="detail_name">{getTrackingText(ORDER.COMPLETED.value)}</div>
+                                        <div className="detail_time">{getTrackingTime(ORDER.COMPLETED.value) ? formatDate(getTrackingTime(ORDER.COMPLETED.value)) : ""}</div>
+                                    </div>
+                                </div>
+                            </div>
+                    }
+                </div>
+                <div className="store_detail">
+                    Liên hệ cửa hàng: {order?.store?.storePhone}
+                </div>
+                <div className="tracking_dashline" />
+                <div className="custommer_detail">
+                    <div className="tracking_title">Địa chỉ Nhận hàng</div>
+                    <div>{order?.customerName}</div>
+                    <div>{order?.customerPhone}</div>
+                    <div className="tracking_address">{order?.customerCommune + ", " + order?.customerDistrict + ", " + order?.customerCity}</div>
                 </div>
             </div>
         </Helmet>
