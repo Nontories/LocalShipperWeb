@@ -291,8 +291,6 @@ const AddOrder = () => {
     return result;
   }
 
-  console.log(store);
-
   function getCurrentDateTime() {
     const now = new Date();
     const formattedDate = now.toISOString().slice(0, 16);
@@ -454,7 +452,7 @@ const AddOrder = () => {
             <input
               type="datetime-local"
               className="input input_date"
-              placeholder='Thời gian bắt buộc shipper giao hàng trước (AM/PM)'
+              placeholder='Thời gian bắt buộc tài xế giao hàng trước (AM/PM)'
               min={getCurrentDateTime()}
               onChange={(e) => setFormInfor({ ...formInfor, date: e.target.value })}
             />

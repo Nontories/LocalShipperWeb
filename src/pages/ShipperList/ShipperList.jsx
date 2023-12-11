@@ -12,6 +12,7 @@ import ShipperStaffTab from '../../components/ShipperStaffTab/ShipperStaffTab';
 import ConfirmModal from "../../components/modal/ConfirmModal/ConfirmModal"
 import ChooseZone from '../../components/modal/ChooseZone/ChooseZone';
 import { GetAllZone } from '../../api/zone';
+import Pagination from '../../components/Pagination/Pagination';
 
 const shipperType = [
     {
@@ -32,6 +33,8 @@ const ShipperList = () => {
     const [focusShipper, setFocusShipper] = useState({})
     const [choosedZone, setChoosedZone] = useState()
     const [searchValue, setSearchValue] = useState("")
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(8);
     const [modalVisible, setModalVisible] = useState({ chooseZone: false, confirmDeactive: false, viewShipper: false })
     const { store, token } = useContext(UserContext);
 
@@ -46,7 +49,7 @@ const ShipperList = () => {
             // console.log(response?.data);
             setShipperList(response?.data)
         } else {
-            toast.warning('Tải thông tin shipper thất bại');
+            toast.warning('Tải thông tin tài xế thất bại');
         }
     }
 
@@ -59,8 +62,17 @@ const ShipperList = () => {
         }
     }
 
+    const getFilterLength = (value) => {
+        return shipperList.filter(item => item?.active === value).length
+    }
+
     const handleFilter = (value) => {
-        return shipperList?.filter(item => item?.active === value)
+        const filteredOrders = shipperList.filter(item => item?.active === value);
+
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+
+        return filteredOrders.slice(startIndex, endIndex);
     }
 
     const handleSearch = (list, value) => {
@@ -140,6 +152,13 @@ const ShipperList = () => {
                             })
                         }
                     </div>
+                    <Pagination
+                        itemsPerPage={itemsPerPage}
+                        positionLength={handleFilter(filterValue).length}
+                        filterLength = {getFilterLength(filterValue)}
+                        currentPage={currentPage}
+                        setCurrentPage={setCurrentPage}
+                    />
                 </div>
                 <ConfirmModal
                     visible={modalVisible.confirmDeactive}

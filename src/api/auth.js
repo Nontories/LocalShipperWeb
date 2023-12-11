@@ -2,7 +2,7 @@ import axios from "axios";
 
 const LINK_API = process.env.REACT_APP_API_LINK;
 const LINK_API_SHIPPER = process.env.REACT_APP_API_LINK_SHIPPER;
-
+const LINK_API_STORE = process.env.REACT_APP_API_LINK_STORE
 const createAxiosInstance = (token) => {
     return axios.create({
         baseURL: LINK_API,
@@ -71,6 +71,15 @@ export const forgotOtp = async (mail, otp) => {
 export const newPassword = async (mail, password) => {
     try {
         const response = await axios.post(`${LINK_API}` + `accounts/reset-password?email=${mail}&newPassword=${password}`);
+        return response;
+    } catch (error) {
+        return error;
+    }
+};
+
+export const ChangePasswordByStore = async (shipperId, password) => {
+    try {
+        const response = await axios.put(`${LINK_API_STORE}` + `accounts/change-password-shipper?shipperId=${shipperId}&newPassword=${password}`);
         return response;
     } catch (error) {
         return error;

@@ -34,22 +34,24 @@ export const GetStore = async (data, token) => {
 };
 
 export const CreateStore = async (data, token) => {
-
-    let path = ""
-
-    for (let key in data) {
-        if (data.hasOwnProperty(key)) {
-            path += `${key}=${data[key]}&`
-        }
-    }
-    // http://localshippercp1-001-site1.htempurl.com/api/stores?accountId=10
     try {
         const instance = createAxiosInstance(token);
-        const response = await instance.get(`${LINK_API}` + "stores?" + path);
+        const response = await instance.post(`${LINK_API}` + "stores", data);
         return response;
     } catch (error) {
-        console.log("GetOrder in api/order.js error : ", error);
-        return [];
+        console.log("CreateStore in api/order.js error : ", error);
+        return error;
+    }
+};
+
+export const UpdateStoreInfor = async (id, data, token) => {
+    try {
+        const instance = createAxiosInstance(token);
+        const response = await instance.put(`${LINK_API}` + "stores?id=" + id, data);
+        return response;
+    } catch (error) {
+        console.log("UpdateStoreInfor in api/order.js error : ", error);
+        return error;
     }
 };
 

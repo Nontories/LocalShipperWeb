@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import './styles.scss'
 
 import { UserContext } from '../../context/StoreContext';
-import { GetOrder, DeleteOrder, InteractOrder } from '../../api/order';
+import { GetOrder, DeleteOrder, InteractOrder, GetTypeList } from '../../api/order';
 import { ORDER } from "../../constants/order"
 
 import OrderTab from '../../components/OrderTab/OrderTab';
@@ -13,6 +13,7 @@ import OrderDetailModal from '../../components/modal/OrderDetailModal/OrderDetai
 import ChooseShipperOrder from '../../components/modal/ChooseShipperOrder/ChooseShipperOrder';
 import ConfirmModal from '../../components/modal/ConfirmModal/ConfirmModal';
 import { UpdateStoreTimeDelivery } from '../../api/store';
+import Pagination from '../../components/Pagination/Pagination';
 
 const orderType = [
   {
@@ -56,13 +57,18 @@ const OrderList = () => {
 
   const [filterValue, setFilterValue] = useState(ORDER.ALL.value)
   const [orderList, setOrderList] = useState([])
+  const [typeList, setTypeList] = useState([]);
   const [orderDetail, setOrderDetail] = useState({})
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(6);
-  const [timeAssign, setTimeAssign] = useState(undefined)
+  const [timeAssign, setTimeAssign] = useState(6)
   const [modalVisible, setModalVisible] = useState({ orderDetail: false, chooseShipper: false, confirmDelete: false })
   const { store, token } = useContext(UserContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    getTypeList()
+  },[])
 
   useEffect(() => {
     if (!token) {
@@ -87,6 +93,13 @@ const OrderList = () => {
       setOrderDetail(updateList[0])
     } else {
       toast.warning('Truy xuất dữ liệu không thành công');
+    }
+  }
+
+  const getTypeList = async () => {
+    const response = await GetTypeList(token)
+    if (response?.status === 200) {
+      setTypeList(response?.data)
     }
   }
 
@@ -135,24 +148,6 @@ const OrderList = () => {
     return filteredOrders.length;
   }
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
-
-  const renderPaginationButtons = () => {
-    const totalPages = Math.ceil(getFilterLength(filterValue) / itemsPerPage);
-
-    return Array.from({ length: totalPages }, (_, index) => index + 1).map(page => (
-      <button
-        key={page}
-        onClick={() => handlePageChange(page)}
-        className={currentPage === page ? 'pagination_button active' : 'pagination_button'}
-      >
-        {page}
-      </button>
-    ));
-  };
-
   const handleSubmitDeleteConfirm = async () => {
     const response = await DeleteOrder(orderDetail.id, token)
     if (response?.status === 200) {
@@ -167,14 +162,6 @@ const OrderList = () => {
     setModalVisible({ ...modalVisible, confirmDelete: false })
   }
 
-  function getCurrentDateTime() {
-    const now = new Date();
-    now.setHours(now.getHours() + 1);
-    now.setDate(now.getDate() + 1);
-    const formattedDate = now.toISOString().slice(0, 16);
-    return formattedDate;
-  }
-
   return (
     <Helmet title={"Order List | "}>
       <div className="order_list">
@@ -184,7 +171,11 @@ const OrderList = () => {
           <div className="order_status">
             {orderType.map((item, key) => {
               return (
-                <div className={`type_button ${filterValue == item.value && "button_active"}`} key={key} onClick={() => { setFilterValue(item.value); handlePageChange(1) }}>{item.name}</div>
+                <div
+                  className={`type_button ${filterValue == item.value && "button_active"}`}
+                  key={key}
+                  onClick={() => { setFilterValue(item.value); setCurrentPage(1) }}>{item.name}
+                </div>
               )
             })}
             <div className="assign_time">
@@ -221,13 +212,36 @@ const OrderList = () => {
               })
             }
           </div>
-          <div className="pagination-buttons">
-            {renderPaginationButtons()}
-          </div>
+          <Pagination
+            itemsPerPage={itemsPerPage}
+            positionLength={handleFilter(filterValue).length}
+            filterLength={getFilterLength(filterValue)}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         </div>
-        <OrderDetailModal visible={modalVisible.orderDetail} order={orderDetail} onCancle={handleModalCancle} />
-        <ChooseShipperOrder visible={modalVisible.chooseShipper} order={orderDetail} orderList={orderList} timeAssign={timeAssign} setOrderList={setOrderList} onCancle={handleShipperCancle} />
-        <ConfirmModal visible={modalVisible.confirmDelete} setVisible={handleCloseDeleteConfirm} title={"Xác nhận"} content={`Xác nhận xoá đơn hàng #${orderDetail?.trackingNumber}`} onConfirm={handleSubmitDeleteConfirm} onCancle={handleCloseDeleteConfirm} />
+        <OrderDetailModal
+          visible={modalVisible.orderDetail}
+          order={orderDetail}
+          onCancle={handleModalCancle}
+          typeList={typeList}
+        />
+        <ChooseShipperOrder
+          visible={modalVisible.chooseShipper}
+          order={orderDetail}
+          orderList={orderList}
+          timeAssign={timeAssign}
+          setOrderList={setOrderList}
+          onCancle={handleShipperCancle}
+        />
+        <ConfirmModal
+          visible={modalVisible.confirmDelete}
+          setVisible={handleCloseDeleteConfirm}
+          title={"Xác nhận"}
+          content={`Xác nhận xoá đơn hàng #${orderDetail?.trackingNumber}`}
+          onConfirm={handleSubmitDeleteConfirm}
+          onCancle={handleCloseDeleteConfirm}
+        />
       </div>
     </Helmet>
   )

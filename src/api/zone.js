@@ -23,3 +23,19 @@ export const GetAllZone = async (token) => {
         return [];
     }
 };
+
+export const UpdateZoneStatus = async (id, status, token) => {
+
+    const data = {
+        status: status
+    }
+
+    try {
+        const instance = createAxiosInstance(token);
+        const response = await instance.put(`${LINK_API}` + "zones?id=" + id, data);
+        return response;
+    } catch (error) {
+        console.log("UpdateZoneStatus in api/zone.js error : ", error);
+        return error;
+    }
+};

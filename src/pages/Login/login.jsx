@@ -49,6 +49,8 @@ const Login = () => {
                 navigate("/add-order");
             } else if (response?.data?.role === ACCOUNT.STAFF.role) {
                 navigate("/zone-list");
+            } else if (response?.data?.role === ACCOUNT.ADMIN.role) {
+                navigate("/account-list");
             } else {
                 toast.warning('Bạn không được cấp quyền vào hệ thông này');
             }
@@ -71,51 +73,35 @@ const Login = () => {
     return (
         <Helmet title={"Login | "}>
             <div className="login">
-                <div className="left">
-                    <div className="form">
-                        <div className="title">
-                            Sign In
-                        </div>
-                        <div className="input_group">
-                            <label className="input_label" htmlFor="email">Email</label>
-                            <input
-                                className="input_bar"
-                                id="email" type="text"
-                                value={form.email}
-                                onChange={handleEmail}
-                            // placeholder="abc@gmail.com"
-                            />
-                        </div>
-
-                        <div className="input_group">
-                            <label className="input_label" htmlFor="password">Password</label>
-                            <input
-                                className="input_bar"
-                                id="password"
-                                type="password"
-                                value={form.password}
-                                onChange={handlePassword}
-                            // placeholder="******"
-                            />
-                        </div>
-
-                        <div className="button" onClick={() => { handleSignin() }}>
-                            ĐĂNG NHẬP
-                        </div>
-
-                        <div className="navigate">
-                            <div className="signup">
-                                Chưa có tài khoản Local Shipper? <span className="signup_nav">Đăng kí ngay</span>
-                            </div>
-                            <div className="forgot">
-                                Quên mật khẩu?
-                            </div>
-                        </div>
+                <div className="form">
+                    <div className="title">
+                        Sign In
                     </div>
-                </div>
-                <div className="right">
-                    <div className="content">
+                    <div className="input_group">
+                        <label className="input_label" htmlFor="email">Email</label>
+                        <input
+                            className="input_bar"
+                            id="email" type="text"
+                            value={form.email}
+                            onChange={handleEmail}
+                        // placeholder="abc@gmail.com"
+                        />
+                    </div>
 
+                    <div className="input_group">
+                        <label className="input_label" htmlFor="password">Password</label>
+                        <input
+                            className="input_bar"
+                            id="password"
+                            type="password"
+                            value={form.password}
+                            onChange={handlePassword}
+                        // placeholder="******"
+                        />
+                    </div>
+
+                    <div className="button" onClick={() => { handleSignin() }}>
+                        ĐĂNG NHẬP
                     </div>
                 </div>
             </div>

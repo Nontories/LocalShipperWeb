@@ -91,7 +91,7 @@ const PaymentModal = ({ visible, onCancle, type }) => {
         <div className="payment_modal">
             <div className="layout" onClick={onCancle} />
             <div className="content">
-                <div className="title">Thêm Shipper của cửa hàng</div>
+                <div className="title">Thêm tài xế của cửa hàng</div>
                 <div className="flex_column">
                     <div className="input_lable">
                         <label htmlFor="name">Họ và tên *</label>

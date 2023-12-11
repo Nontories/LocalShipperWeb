@@ -60,14 +60,14 @@ const ChooseShipperOrder = ({ visible, order, onCancle, orderList, setOrderList,
         if (response?.status === 200) {
             setShipperList(response?.data)
         } else {
-            toast.warning('Cập nhật shipper thất bại');
+            toast.warning('Cập nhật tài xế thất bại');
         }
     }
 
     const handleChooseShipper = (shipper) => {
         setShipper(shipper)
         if (shipper.status !== SHIPPERSTATUS.ONLINE.value) {
-            toast.warning('Shipper không sẵn sàng');
+            toast.warning('Tài xế không sẵn sàng');
         } else {
             setConfirmModal(true)
         }
@@ -101,7 +101,7 @@ const ChooseShipperOrder = ({ visible, order, onCancle, orderList, setOrderList,
             <div className="layout" onClick={onCancle} />
             <div className="content">
                 <div className="choose_shipper_header">
-                    <div className="tracking_number">Chọn Shipper giao đơn hàng</div>
+                    <div className="tracking_number">Chọn tài xế giao đơn hàng</div>
                     <div className="close" onClick={onCancle} >
                         <img src={closeIcon} alt="" />
                     </div>
@@ -109,7 +109,7 @@ const ChooseShipperOrder = ({ visible, order, onCancle, orderList, setOrderList,
                 <div className="table">
                     <div className="column column_head">
                         <div className="index column_head">#</div>
-                        <div className="name column_head">Shipper</div>
+                        <div className="name column_head">Tài xế</div>
                         <div className="type column_head">Loại xe</div>
                         <div className="status column_head">Trạng thái</div>
                     </div>

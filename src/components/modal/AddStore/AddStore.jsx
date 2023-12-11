@@ -9,6 +9,7 @@ import { checkMail } from '../../../api/auth';
 import SpinnerButton from "../../SpinnerButton/SpinnerButton";
 
 import closeIcon from "../../../assets/close.svg"
+import { CreateStore } from '../../../api/store';
 
 
 
@@ -49,19 +50,22 @@ const AddStore = ({ visible, onCancle, zoneList }) => {
                 } else {
                     if (valid) {
                         const data = {
-                            fullName: formInput?.name,
-                            email: formInput?.email,
-                            phone: formInput?.phone,
-                            password: formInput?.shipperPassword,
-                            confirmPassword: formInput?.rePassword,
+                            storeName: formInput?.name,
+                            storeAddress: formInput?.address,
+                            storePhone: formInput?.phone,
+                            storeEmail: formInput?.email,
+                            openTime: formInput?.openTime,
+                            closeTime: formInput?.closeTime,
+                            zoneId: formInput?.zone,
+                            password: formInput?.password,
                         }
-                        // const response = await CreateShipper(store?.id, data, token)
-                        // if (response?.status === 200) {
-                        //     toast.success('Thêm shipper thành công');
-                        //     onCancle()
-                        // } else {
-                        //     toast.error(`Thêm shipper thất bại : ${response?.response?.data}`);
-                        // }
+                        const response = await CreateStore( data, token)
+                        if (response?.status === 200) {
+                            toast.success('Thêm cửa hàng thành công');
+                            onCancle()
+                        } else {
+                            toast.error(`Thêm cửa hàng thất bại : ${response?.response?.data}`);
+                        }
                     } else {
                         toast.warning('Mail đã được đăng ký');
                     }
@@ -90,7 +94,7 @@ const AddStore = ({ visible, onCancle, zoneList }) => {
         <div className="add_shipper">
             <div className="layout" onClick={onCancle} />
             <div className="content">
-                <div className="title">Thêm Shipper của cửa hàng</div>
+                <div className="title">Thêm tài xế của cửa hàng</div>
                 <div className="flex_column">
                     <div className="input_lable">
                         <label htmlFor="name">Họ và tên *</label>

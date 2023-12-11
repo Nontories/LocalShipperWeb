@@ -54,5 +54,44 @@
                 }
             }
         }
+
+        .pagination-buttons {
+            // position: absolute;
+            display: flex;
+            width: fit-content;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+            bottom: 0;
+
+            div {
+                padding: 10px 15px;
+                background-color: var(--grey-background);
+                user-select: none;
+                opacity: 0.8;
+            }
+
+            div:hover {
+                cursor: pointer;
+                opacity: 1;
+            }
+
+            .pagination_button {
+                padding: 10px 15px;
+            }
+
+            .active {
+                background-color: var(--assign);
+            }
+
+            .pagination_button:hover {
+                cursor: pointer;
+                background-color: var(--grey-background);
+            }
+
+            .active:hover {
+                background-color: var(--assign);
+            }
+        }
     }
 }

@@ -1,0 +1,62 @@
+.transaction_list {
+    width: 100%;
+    height: auto;
+
+    .header {
+        width: 100%;
+        padding: 10px;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+        background-color: white;
+    }
+
+    .body {
+        width: 100%;
+        height: auto;
+        min-height: 92vh;
+        padding: 10px;
+        // border: 2px solid rgba(0, 0, 0, 0.3);
+        // margin: 10px;
+        background-color: white;
+
+        .title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .transaction_status {
+            position: relative;
+            display: flex;
+            border-bottom: 3px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 5px -5px rgba(0, 0, 0, 0.1);
+            padding-bottom: 20px;
+            margin: 20px 0;
+            justify-content: space-between;
+            align-items: center;
+
+            .account_money {
+                padding: 10px 50px;
+                border-radius: 50px;
+                background-color: #F2F2F2;
+                text-align: center;
+                font-weight: 600;
+
+                div {
+                    font-weight: 500;
+                    margin-bottom: 5px;
+                }
+            }
+
+            .assign_time {
+                border-radius: 50px;
+                margin-right: 50px;
+
+                input {
+                    padding: 8px 15px;
+                    background-color: white;
+                    border: 1px solid rgba(0, 0, 0, 0.2);
+                    border-radius: 10px;
+                }
+            }
+        }
+    }
+}

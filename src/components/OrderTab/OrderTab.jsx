@@ -118,7 +118,7 @@ const OrderTab = (props) => {
                     item?.status === ORDER.WAITING.value &&
                     <div className="shipper_name">Đang chờ {item?.shipper?.fullName ? item?.shipper?.fullName : "shipper"} Nhận đơn</div>
                 }
-                <div className="tab_name" onClick={() => setDetail(item)}>#{item?.trackingNumber}</div>
+                <div className="tab_name" style={{ cursor: 'pointer' }} onClick={() => setDetail(item)}>#{item?.trackingNumber}</div>
                 <div className="dropdown_list" onClick={handleDropdownVisible}>
                     <img src={threeDotIcon} className='three_dot_icon' alt="" />
                     <CustomOptionDropdown visible={modalVisible.dropdown} onCancle={handleCloseDropdown} dropdownList={dropdownList} />
@@ -168,7 +168,7 @@ const OrderTab = (props) => {
                                         </div>
                                         <div className="assign_button" onClick={() => { hanldeAssign(item) }}>
                                             <img src={addIcon} alt="" />
-                                            Chọn Shipper
+                                            Chọn tài xế
                                         </div>
                                     </>
                                     :

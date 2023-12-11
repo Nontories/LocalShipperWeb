@@ -1,7 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react'
+import { toast } from 'react-toastify'
 import './styles.scss'
 
 import { UserContext } from '../../../context/StoreContext'
+import { ChangePasswordByStore } from '../../../api/auth'
 
 import closeIcon from "../../../assets/close.svg"
 
@@ -17,7 +19,16 @@ const ChangePassword = ({ shipper, visible, onCancle }) => {
     const { store, token } = useContext(UserContext);
 
     const handleSubmit = async () => {
-        console.log(`change Password shiperId = ${shipper?.id}`);
+        if (formInput.shipperPassword === formInput.rePassword) {
+            const response = await ChangePasswordByStore(shipper?.id, formInput.shipperPassword)
+            if (response?.status === 200) {
+                toast.success(`Cập nhật mật khẩu cho ${shipper?.fullname} thành công`);
+            }else{
+                toast.error(`Cập nhật mật khẩu cho thất bại`);
+            }
+        } else {
+            toast.error(`Mật khẩu sai`);
+        }
     }
 
     return (
@@ -25,11 +36,7 @@ const ChangePassword = ({ shipper, visible, onCancle }) => {
         <div className="change_password">
             <div className="layout" onClick={onCancle} />
             <div className="content">
-                <div className="title">Thêm Shipper của cửa hàng</div>
-                <div className="input_lable">
-                    <label htmlFor="store_password">Mật khẩu Store</label>
-                    <input type="password" id='store_password' className='store_password' value={formInput.storePassword} onChange={(e) => setFormInput({ ...formInput, storePassword: e.target.value })} />
-                </div>
+                <div className="title">Đặt lại mật khẩu của tài xế {shipper?.fullname}</div>
                 <div className="input_lable">
                     <label htmlFor="shipper_password">Mật khẩu mới</label>
                     <input type="password" id='shipper_password' className='shipper_password' value={formInput.shipperPassword} onChange={(e) => setFormInput({ ...formInput, shipperPassword: e.target.value })} />

@@ -20,6 +20,8 @@ import transactionIcon from "../../../assets/sidebar/TransactionIcon.svg"
 import storeIcon from "../../../assets/sidebar/storeIcon.svg"
 import zoneList from "../../../assets/sidebar/ZoneList.svg"
 
+import accountIcon from "../../../assets/sidebar/accountIcon.svg"
+
 const itemList = [
   {
     className: "logo defautl_icon",
@@ -38,7 +40,7 @@ const itemList = [
   {
     className: "logo defautl_icon",
     role: ACCOUNT.STORE.role,
-    name: "Danh sách shipper",
+    name: "Danh sách tài xế",
     img: shipperIcon,
     action: "/shipper"
   },
@@ -66,7 +68,7 @@ const itemList = [
   {
     className: "logo defautl_icon",
     role: ACCOUNT.STAFF.role,
-    name: "Danh sách shipper",
+    name: "Danh sách tài xế",
     img: shipperIcon,
     action: "/shipper-list"
   },
@@ -76,6 +78,13 @@ const itemList = [
     name: "Các thanh toán",
     img: transactionIcon,
     action: "/payment-list"
+  },
+  {
+    className: "logo defautl_icon",
+    role: ACCOUNT.ADMIN.role,
+    name: "Danh sách tài khoản",
+    img: accountIcon,
+    action: "/account-list"
   },
 ]
 
@@ -99,11 +108,7 @@ const SideBarDefault = () => {
   }
 
   const getNavList = () => {
-    if (role === ACCOUNT.STAFF.role) {
-      return itemList.filter(item => item.role === ACCOUNT.STAFF.role);
-    } else {
-      return itemList.filter(item => item.role !== ACCOUNT.STAFF.role);
-    }
+      return itemList.filter(item => item.role === role);
   };
 
   return (
@@ -130,7 +135,7 @@ const SideBarDefault = () => {
 
       <div className="item_list">
         {
-          getNavList().map((item, key) => {
+          getNavList(role).map((item, key) => {
             return (
               <div className={`nav_button  ${sideBarWide ? "nav_button-wide" : ""}`} onClick={() => handleItemClick(item, key)} key={key}>
                 <img

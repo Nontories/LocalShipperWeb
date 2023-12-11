@@ -14,6 +14,26 @@ const createAxiosInstance = (token) => {
     });
 };
 
+export const GetTransaction = async (data, token) => {
+
+    let path = ""
+
+    for (let key in data) {
+        if (data.hasOwnProperty(key)) {
+            path += `${key}=${data[key]}&`
+        }
+    }
+
+    try {
+        const instance = createAxiosInstance(token);
+        const response = await instance.get(`${LINK_API}` + "wallets/wallet-transaction?" + path);
+        return response;
+    } catch (error) {
+        console.log("GetTransaction in api/transaction.js error : ", error);
+        return [];
+    }
+};
+
 export const CreateTransaction = async (fromId, toId, amount, token) => {
 
     const data = {

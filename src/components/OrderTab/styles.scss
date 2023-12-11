@@ -93,6 +93,10 @@
                     font-weight: 600;
                 }
 
+                .tab_name:hover {
+                    cursor: pointer !important;
+                }
+
                 .tab_address {
                     margin-top: 5px;
                     color: rgba(0, 0, 0, 0.5);

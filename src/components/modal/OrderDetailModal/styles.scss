@@ -25,5 +25,172 @@
         border-radius: 5px;
         background-color: #FFFFFF;
         z-index: 999;
+
+        .order_detail_header {
+            position: relative;
+
+            .tracking_number {
+                font-size: 25px;
+
+                // font-weight: 600;
+                span {
+                    color: var(--assign);
+                }
+            }
+
+            .status {
+                margin: 5px 0;
+
+                span {
+                    color: rgba(0, 0, 0, 0.5);
+                }
+            }
+
+            .close_icon {
+                position: absolute;
+                right: 0;
+                top: 0;
+                padding: 4px;
+                padding-bottom: 0;
+                background-color: var(--grey-background);
+            }
+
+            .close_icon:hover {
+                cursor: pointer;
+            }
+        }
+
+        .author {
+            display: flex;
+            width: 100%;
+            border: 1px solid var(--grey-background);
+            border-radius: 5px;
+
+            .name{
+                margin-bottom: 5px;
+            }
+
+            .author_content {
+                width: 50%;
+                margin: 5px 10px;
+            }
+
+            .author_custommer {
+                border-right: 1px solid var(--grey-background);
+            }
+
+            .first {
+                margin-top: 5px;
+            }
+
+            .detail {
+                margin: 5px 0;
+                color: rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        .order_infor {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            border: 1px solid var(--grey-background);
+            padding: 5px 0;
+            border-radius: 5px;
+            margin-top: 10px;
+
+            .title {
+                display: inline;
+                width: 100%;
+                margin: 10px;
+                font-weight: 600;
+            }
+
+            .detail_header {
+                width: 45%;
+                margin: 0 10px;
+
+                .detail_flex {
+                    display: flex;
+                    height: 20px;
+                    align-items: center;
+                    margin-bottom: 10px;
+
+                    .detail {
+                        margin-left: 10px;
+                    }
+                }
+            }
+
+            .dashline {
+                width: 100%;
+                margin: 10px;
+                border: 1px solid var(--grey-background);
+            }
+
+            .price_flex {
+                display: flex;
+                width: 100%;
+                margin: 5px 10px;
+                justify-content: space-between;
+                color: rgba(0, 0, 0, 0.5);
+            }
+
+            .total_price {
+                color: black;
+            }
+        }
+
+        .order_route {
+            width: 100%;
+            border: 1px solid var(--grey-background);
+            padding: 5px 0;
+            border-radius: 5px;
+            margin-top: 10px;
+
+            .title {
+                width: 100%;
+                margin: 10px;
+                font-weight: 600;
+            }
+
+            .route_flex {
+                display: flex;
+                flex-wrap: wrap;
+
+                .route_time {
+                    width: 45%;
+                    margin: 5px 10px;
+                    color: rgba(0, 0, 0, 0.5);
+                }
+            }
+        }
+
+        .order_type {
+            width: 100%;
+            border: 1px solid var(--grey-background);
+            padding: 5px 0;
+            padding-bottom: 0;
+            border-radius: 5px;
+            margin-top: 10px;
+
+            .type_flex{
+                display: flex;
+                // width: 90%;
+                padding: 5px 0;
+                border-bottom: 1px solid var(--grey-background);
+                margin: 0 10px;
+                margin-bottom: 5px;
+                justify-content: space-between;
+
+                .value{
+                    width: 30%;
+                    color: rgba(0, 0, 0, 0.5);
+                }
+            }
+
+            .end{
+                border: none
+            }
+        }
     }
 }

@@ -11,6 +11,7 @@ import Helmet from '../../components/shared/Helmet/helmet'
 import AddStore from '../../components/modal/AddStore/AddStore';
 import { GetAllZone } from '../../api/zone';
 import ConfirmModal from "../../components/modal/ConfirmModal/ConfirmModal"
+import Pagination from '../../components/Pagination/Pagination';
 
 const StoreList = () => {
 
@@ -18,6 +19,8 @@ const StoreList = () => {
     const [zoneList, setZoneList] = useState([])
     const [focusStore, setFocusStore] = useState({})
     const [searchValue, setSearchValue] = useState("")
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(8);
     const [modalVisible, setModalVisible] = useState({ chooseZone: false, confirmDeactive: false, viewShipper: false, addStore: false })
     const { store, token } = useContext(UserContext);
 
@@ -45,7 +48,16 @@ const StoreList = () => {
     }
 
     const handleExceptFilter = (value) => {
-        return storeList?.filter(item => item?.active !== value)
+        const displayList = storeList?.filter(item => item?.active !== value)
+
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+
+        return displayList.slice(startIndex, endIndex);
+    }
+
+    const getFilterLength = (value) => {
+        return storeList?.filter(item => item?.active !== value).length
     }
 
     const handleSearch = (list, value) => {
@@ -81,7 +93,7 @@ const StoreList = () => {
     return (
         <Helmet title={"Store list | "}>
             <div className="store_list">
-                <div className="header">Danh sách tài xế của hệ thống</div>
+                <div className="header">Danh sách cửa hàng của hệ thống</div>
                 <div className="body">
                     <div className="store_status">
                         <div className="assign_time">
@@ -114,6 +126,13 @@ const StoreList = () => {
                             })
                         }
                     </div>
+                    <Pagination
+                        itemsPerPage={itemsPerPage}
+                        positionLength={handleExceptFilter(STORE.DELETE.value).length}
+                        filterLength={getFilterLength(STORE.DELETE.value)}
+                        currentPage={currentPage}
+                        setCurrentPage={setCurrentPage}
+                    />
                 </div>
                 <AddStore
                     visible={modalVisible.addStore}

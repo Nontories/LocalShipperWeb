@@ -14,6 +14,7 @@ import ShipperTab from '../../components/ShipperTab/ShipperTab';
 import ConfirmModal from "../../components/modal/ConfirmModal/ConfirmModal"
 import AddShipper from '../../components/modal/AddShipper/AddShipper';
 import ChangePassword from '../../components/modal/ChangePassword/ChangePassword';
+import Pagination from '../../components/Pagination/Pagination';
 
 import searchIcon from "../../assets/search.svg"
 import addIcon from "../../assets/add.svg"
@@ -39,6 +40,8 @@ const Shipper = () => {
   const [searchValue, setSearchValue] = useState("")
   const [shipperList, setShipperList] = useState([])
   const [focusShipper, setFocusShipper] = useState({})
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(7);
   const [modalVisible, setModalVisible] = useState({ confirmDelete: false, addShipper: false, changePassword: false })
   const { store, token } = useContext(UserContext);
   const navigate = useNavigate();
@@ -70,41 +73,50 @@ const Shipper = () => {
   const handleSubmitDeleteConfirm = async () => {
     const response = await DeleteShipper(focusShipper?.id, token)
     if (response?.status === 200) {
-      toast.success('Xoá shipper thành công');
+      toast.success('Xoá tài xế thành công');
     } else {
-      toast.error('Xoá shipper thất bại');
+      toast.error('Xoá tài xế thất bại');
     }
     setModalVisible({ ...modalVisible, confirmDelete: false })
   }
 
   const handleCloseDeleteConfirm = () => {
-    console.log("cancle delete");
     setModalVisible({ ...modalVisible, confirmDelete: false })
   }
 
   const handleFilter = (value) => {
-    // if (value === ORDER.ALL.value) {
-    //   return (
-    //     orderList
-    //   )
-    // } else {
-      return (
-        shipperList.filter(item => item?.status === value)
-      )
-    // }
+    const filteredOrders = shipperList.filter(item => item?.status === value)
+
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+
+    return filteredOrders.slice(startIndex, endIndex);
   }
 
-  const handleSearch = (e) => {
-    const selectedValue = e.target.value;
-    setSearchValue(selectedValue);
+  const getFilterLength = (value) => {
+    return shipperList.filter(item => item?.status === value)
+  }
+
+  const handleSearch = (list, value) => {
+    if (value === "") {
+      return list
+    } else {
+      const newFilteredData = list?.filter(item =>
+        item?.fullName?.toLowerCase().includes(value.toLowerCase()) ||
+        item?.phoneShipper?.toLowerCase().includes(value.toLowerCase()) ||
+        item?.emailShipper?.toLowerCase().includes(value.toLowerCase()) ||
+        item?.addressShipper?.toLowerCase().includes(value.toLowerCase())
+      );
+      return newFilteredData
+    }
   }
 
   return (
     <Helmet title={"Shipper | "}>
       <div className="shipper">
-        <div className="header">Danh sách Shipper của cửa hàng</div>
+        <div className="header">Danh sách tài xế của cửa hàng</div>
         <div className="body">
-          <div className="title">Shipper của cửa hàng</div>
+          <div className="title">tài xế của cửa hàng</div>
           <div className="body_header">
             <div className="shipper_status">
               {shipperType.map((item, key) => {
@@ -115,10 +127,10 @@ const Shipper = () => {
             </div>
             <div className="search">
               <img src={searchIcon} alt="" />
-              <input className="search_field" type="text" value={searchValue} onChange={handleSearch} />
+              <input className="search_field" type="text" value={searchValue} onChange={(e) => { setSearchValue(e.target.value) }} />
               <div className="add_button" onClick={addShipperModal}>
                 <img src={addIcon} alt="" />
-                Shipper
+                Tài xế
               </div>
             </div>
           </div>
@@ -133,17 +145,44 @@ const Shipper = () => {
               <div className="tab_button"></div>
             </div>
             {
-              handleFilter(filterValue)?.map((item, key) => {
+              handleSearch(handleFilter(filterValue), searchValue)?.map((item, key) => {
                 return (
-                  <ShipperTab item={item} setFocusShipper={setFocusShipper} parentModal={modalVisible} setParentModal={setModalVisible} key={key} />
+                  <ShipperTab
+                    item={item}
+                    setFocusShipper={setFocusShipper}
+                    parentModal={modalVisible}
+                    setParentModal={setModalVisible}
+                    key={key}
+                  />
                 )
               })
             }
           </div>
+          <Pagination
+            itemsPerPage={itemsPerPage}
+            positionLength={handleFilter(filterValue).length}
+            filterLength={getFilterLength(filterValue)}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         </div>
-        <ChangePassword visible={modalVisible.changePassword} shipper={focusShipper} onCancle={() => setModalVisible({ ...modalVisible, changePassword: false })} />
-        <AddShipper visible={modalVisible.addShipper} onCancle={() => setModalVisible({ ...modalVisible, addShipper: false })} />
-        <ConfirmModal visible={modalVisible.confirmDelete} setVisible={handleCloseDeleteConfirm} title={"Xác nhận"} content={`Xác nhận xoá shipper ${focusShipper?.fullName}`} onConfirm={handleSubmitDeleteConfirm} onCancle={handleCloseDeleteConfirm} />
+        <ChangePassword
+          visible={modalVisible.changePassword}
+          shipper={focusShipper}
+          onCancle={() => setModalVisible({ ...modalVisible, changePassword: false })}
+        />
+        <AddShipper
+          visible={modalVisible.addShipper}
+          onCancle={() => setModalVisible({ ...modalVisible, addShipper: false })}
+        />
+        <ConfirmModal
+          visible={modalVisible.confirmDelete}
+          setVisible={handleCloseDeleteConfirm}
+          title={"Xác nhận"}
+          content={`Xác nhận xoá tài xế ${focusShipper?.fullName}`}
+          onConfirm={handleSubmitDeleteConfirm}
+          onCancle={handleCloseDeleteConfirm}
+        />
       </div>
     </Helmet>
   )

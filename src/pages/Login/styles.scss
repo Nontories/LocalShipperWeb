@@ -2,126 +2,105 @@
     display: flex;
     width: 100vw;
     height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../../assets/loginBackground.jpg");
+    background-size: cover;
 
-    .left {
-        display: flex;
-        width: 50%;
-        height: 100%;
-        background-color: #F7F9FA;
-        justify-content: space-around;
-        align-items: center;
+    .form {
+        width: 300px;
+        height: 280px;
+        padding: 30px 20px;
+        border-radius: 15px;
+        // background-color: rgba(255, 255, 255, 0.8);
+        background-color: white;
+        box-shadow: 0 5px 5px 5px rgba(0, 0, 0, 0.3);
 
-        .form {
-            position: relative;
-            width: 300px;
-            height: 280px;
-            padding: 30px 20px;
-            border-radius: 15px;
-            background-color: white;
+        .title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
 
-            .title {
-                font-size: 18px;
-                font-weight: 600;
-                margin-bottom: 20px;
+        .input_group {
+            width: 100%;
+            margin-bottom: 20px;
+
+            .input_label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: 500;
+                // font-size: 15px;
             }
 
-            .input_group {
-                width: 100%;
-                margin-bottom: 20px;
-
-                .input_label {
-                    display: block;
-                    margin-bottom: 5px;
-                    font-weight: 500;
-                    // font-size: 15px;
-                }
-
-                .input_bar {
-                    width: 92%;
-                    padding: 7px 10px;
-                    border: 1px solid rgba(0, 0, 0, 0.3);
-                    border-radius: 5px;
-                }
-            }
-
-            .button {
-                width: 93%;
-                padding: 12px 10px 10px 10px;
+            .input_bar {
+                width: 92%;
+                padding: 7px 10px;
+                border: 1px solid rgba(0, 0, 0, 0.3);
                 border-radius: 5px;
-                margin: 40px auto;
-                color: white;
-                font-size: 15px;
-                text-transform: uppercase;
+            }
+        }
+
+        .button {
+            width: 93%;
+            padding: 12px 10px 10px 10px;
+            border-radius: 5px;
+            margin: 40px auto;
+            color: white;
+            font-size: 15px;
+            text-transform: uppercase;
+            text-align: center;
+            background-color: var(--assign);
+            user-select: none;
+        }
+
+        .button:hover {
+            cursor: pointer;
+            background-color: var(--assign-pointer);
+        }
+
+        .navigate {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -80px;
+
+            .signup {
+                display: flex;
+                font-size: 13px;
                 text-align: center;
-                background-color: var(--assign);
-                user-select: none;
-            }
+                justify-content: center;
+                font-weight: 500;
 
-            .button:hover {
-                cursor: pointer;
-                background-color: var(--assign-pointer);
-            }
-
-            .navigate {
-                position: absolute;
-                left: 0;
-                right: 0;
-                bottom: -80px;
-
-                .signup {
-                    display: flex;
-                    font-size: 13px;
-                    text-align: center;
-                    justify-content: center;
-                    font-weight: 500;
-
-                    .signup_nav {
-                        margin-left: 10px;
-                        font-weight: 700;
-                        text-decoration: underline;
-                        color: var(--assign);
-                        opacity: 0.5;
-                    }
-
-                    .signup_nav:hover {
-                        cursor: pointer;
-                        opacity: 1;
-                    }
-                }
-
-                .forgot {
-                    width: fit-content;
-                    margin: 10px auto;
-                    text-align: center;
-                    font-size: 13px;
+                .signup_nav {
+                    margin-left: 10px;
                     font-weight: 700;
                     text-decoration: underline;
                     color: var(--assign);
                     opacity: 0.5;
                 }
 
-                .forgot:hover {
+                .signup_nav:hover {
                     cursor: pointer;
                     opacity: 1;
                 }
             }
-        }
-    }
 
-    .right {
-        display: flex;
-        width: 50%;
-        height: 100%;
-        background-color: var(--assign);
-        justify-content: space-around;
-        align-items: center;
+            .forgot {
+                width: fit-content;
+                margin: 10px auto;
+                text-align: center;
+                font-size: 13px;
+                font-weight: 700;
+                text-decoration: underline;
+                color: var(--assign);
+                opacity: 0.5;
+            }
 
-        .content {
-            width: 200px;
-            height: 200px;
-            padding: 30px 20px;
-            border-radius: 15px;
-            background-color: white;
+            .forgot:hover {
+                cursor: pointer;
+                opacity: 1;
+            }
         }
     }
 }

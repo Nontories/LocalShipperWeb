@@ -8,12 +8,15 @@ import { GetAllZone } from '../../api/zone';
 import Helmet from '../../components/shared/Helmet/helmet'
 import ZoneTab from '../../components/ZoneTab/ZoneTab';
 import ConfirmModal from "../../components/modal/ConfirmModal/ConfirmModal"
+import Pagination from '../../components/Pagination/Pagination';
 
 const ZoneList = () => {
 
     const [zoneList, setZoneList] = useState([])
     const [searchValue, setSearchValue] = useState("")
     const [focusZone, setFocusZone] = useState({})
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(7);
     const [modalVisible, setModalVisible] = useState({ confirmDeactive: false, confirmActive: false })
     const { store, token } = useContext(UserContext);
 
@@ -42,20 +45,39 @@ const ZoneList = () => {
         }
     }
 
-    const handleCloseDeactiveConfirm = () => {
-        setModalVisible({ ...modalVisible, confirmDeactive: false })
+    const handleFilter = () => {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+
+        return zoneList.slice(startIndex, endIndex);
     }
 
-    const handleSubmitDeactiveConfirm = () => {
-        console.log("deactive");
+    const handleCloseDeactiveConfirm = () => {
+        setModalVisible({ ...modalVisible, confirmDeactive: false })
     }
 
     const handleCloseActiveConfirm = () => {
         setModalVisible({ ...modalVisible, confirmActive: false })
     }
 
-    const handleSubmitActiveConfirm = () => {
-        console.log("active");
+    const handleSubmitDeactiveConfirm = async () => {
+        const response = await UpdateZoneStatus(focusZone?.id, false, token)
+        if (response?.status === 200) {
+            toast.success(`Vô hiệu hoá khu vực ${focusZone?.zoneName} thành công`);
+            await loadData()
+        } else {
+            toast.error(`Vô hiệu hoá khu vực thất bại`);
+        }
+    }
+
+    const handleSubmitActiveConfirm = async () => {
+        const response = await UpdateZoneStatus(focusZone?.id, true, token)
+        if (response?.status === 200) {
+            toast.success(`Kích hoạt khu vực ${focusZone?.zoneName} thành công`);
+            await loadData()
+        } else {
+            toast.error(`Kích hoạt khu vực thất bại`);
+        }
     }
 
     return (
@@ -96,6 +118,13 @@ const ZoneList = () => {
                             })
                         }
                     </div>
+                    <Pagination
+                        itemsPerPageitemsPerPage
+                        positionLength={handleFilter().length}
+                        filterLength={zoneList.length}
+                        currentPage={currentPage}
+                        setCurrentPage={setCurrentPage}
+                    />
                 </div>
                 <ConfirmModal
                     visible={modalVisible.confirmDeactive}

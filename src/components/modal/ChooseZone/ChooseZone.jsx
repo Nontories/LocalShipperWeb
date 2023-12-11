@@ -16,9 +16,9 @@ const ChooseZone = ({ visible, zone, setZone, zoneList, onSubmit, onCancle }) =>
         <div className="choose_zone">
             <div className="layout" onClick={onCancle} />
             <div className="content">
-                <div className="title">Chọn Zone cho Shipper</div>
+                <div className="title">Chọn khu vực cho tài xế</div>
                 <div className="input_lable">
-                    <label htmlFor="mail">Chọn zone</label>
+                    <label htmlFor="mail">Chọn khu vực</label>
                     <select
                         type="text"
                         id='mail'

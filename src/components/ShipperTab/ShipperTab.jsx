@@ -66,7 +66,7 @@ const ShipperTab = (props) => {
             action: handleChangePassword
         },
         {
-            name: "Xóa Shipper",
+            name: "Xóa tài xế",
             color: "red",
             action: handleDeleteShipper
         },

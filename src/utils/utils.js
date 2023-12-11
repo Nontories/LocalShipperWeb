@@ -19,14 +19,18 @@ export const formatPhoneNumber = (phoneNumber) => {
 }
 
 export const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = date.getDate();
-    const hours = date.getHours();
-    const minutes = ('0' + date.getMinutes()).slice(-2);
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    const formattedDate = `${day} Th${date.getMonth() + 1}, ${hours}:${minutes} ${ampm}`;
+    if (dateString) {
+        const date = new Date(dateString);
+        const day = date.getDate();
+        const hours = date.getHours();
+        const minutes = ('0' + date.getMinutes()).slice(-2);
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        const formattedDate = `${day} Th${date.getMonth() + 1}, ${hours}:${minutes} ${ampm}`;
 
-    return formattedDate;
+        return formattedDate;
+    } else {
+        return null
+    }
 }
 
 export const formatPrice = (price) => {

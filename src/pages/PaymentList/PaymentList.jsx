@@ -8,11 +8,14 @@ import { GetAllTransaction } from '../../api/transaction';
 import Helmet from '../../components/shared/Helmet/helmet'
 import PaymentTab from '../../components/PaymentTab/PaymentTab';
 import PaymentModal from '../../components/modal/PaymentModal/PaymentModal';
+import Pagination from '../../components/Pagination/Pagination';
 
 const PaymentList = () => {
 
     const [transactionList, setTransactionList] = useState([])
     const [searchValue, setSearchValue] = useState("")
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(8);
     const [modalVisible, setModalVisible] = useState({ paymment: false, type: "" })
     const { store, token } = useContext(UserContext);
 
@@ -34,13 +37,20 @@ const PaymentList = () => {
             return list
         } else {
             const newFilteredData = list?.filter(item =>
-                // item.name.toLowerCase().includes(value) ||
-                // item.email.toLowerCase().includes(value) ||
+                item.sender.toLowerCase().includes(value) ||
+                item.receiver.toLowerCase().includes(value) ||
                 String(item.amount).includes(value.toLowerCase())
             );
 
             return newFilteredData
         }
+    }
+
+    const handleFilter = () => {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+
+        return transactionList.slice(startIndex, endIndex);
     }
 
     const hanldeWithdraw = () => {
@@ -87,13 +97,20 @@ const PaymentList = () => {
                             <div className="tab_collection">Thu hộ cho đơn hàng (Nếu có)</div>
                         </div>
                         {
-                            handleSearch(transactionList, searchValue)?.map((item, index) => {
+                            handleSearch(handleFilter(), searchValue)?.map((item, index) => {
                                 return (
                                     <PaymentTab item={item} index={index} key={index} />
                                 )
                             })
                         }
                     </div>
+                    <Pagination
+                        itemsPerPage={itemsPerPage}
+                        positionLength={handleFilter().length}
+                        filterLength={transactionList.length}
+                        currentPage={currentPage}
+                        setCurrentPage={setCurrentPage}
+                    />
                 </div>
                 <PaymentModal visible={modalVisible.paymment} onCancle={hanldeCancel} type={modalVisible.type} />
             </div>

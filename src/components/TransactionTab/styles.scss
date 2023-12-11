@@ -1,0 +1,80 @@
+.transaction_tab {
+    display: flex;
+    width: 100%;
+    padding: 20px 0;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+
+    .tab_index {
+        width: 5%;
+        text-align: center;
+    }
+
+    .tab_type {
+        width: 10%;
+    }
+
+    .tab_sender {
+        width: 12%;
+        margin-left: 15px;
+    }
+
+    .tab_receiver {
+        width: 12%;
+        margin-left: 15px;
+    }
+
+    .tab_amount {
+        width: 8%;
+        margin-left: 15px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .tab_time {
+        width: 12%;
+        margin-left: 15px;
+    }
+
+    .tab_content {
+        width: 12%;
+        margin-left: 15px;
+    }
+
+    .tab_collection {
+        width: 17%;
+        margin-left: 15px;
+    }
+
+    .tab_button {
+        position: relative;
+        display: flex;
+        width: 3%;
+        height: 20px;
+        justify-content: center;
+
+        .button {
+            display: flex;
+            width: 20px;
+            padding: 0 5px;
+            height: 100%;
+            // border: 1px solid rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.1);
+            justify-content: center;
+            align-items: center;
+
+            .button_circle {
+                width: 4px;
+                height: 4px;
+                border-radius: 50px;
+                background-color: rgba(0, 0, 0, 0.3);
+                margin: 0 1px;
+            }
+        }
+
+        .button:hover {
+            cursor: pointer;
+        }
+    }
+}
