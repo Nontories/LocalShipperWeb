@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import './styles.scss'
 
 import { UserContext } from '../../context/StoreContext';
-import { GetAllZone } from '../../api/zone';
+import { GetAllZone, UpdateZoneStatus } from '../../api/zone';
 
 import Helmet from '../../components/shared/Helmet/helmet'
 import ZoneTab from '../../components/ZoneTab/ZoneTab';
