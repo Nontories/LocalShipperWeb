@@ -132,7 +132,7 @@ const AccountList = () => {
   return (
     <Helmet title={"Account List | "}>
       <div className="account_list">
-        <div className="header">Danh sách cửa hàng của hệ thống</div>
+        <div className="header">Danh sách tài khoản của hệ thống</div>
         <div className="body">
           <div className="account_status">
             <div className="assign_time">

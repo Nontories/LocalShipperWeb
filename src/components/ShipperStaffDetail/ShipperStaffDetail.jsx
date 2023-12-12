@@ -42,7 +42,7 @@ const ShipperStaffDetail = (props) => {
                     </div>
                     <div className="column haft_column">
                         <div className="title">Phương tiện</div>
-                        <div className="value">{getObjectByValueInObj(VEHICLETYPE, focusShipper?.transport?.typeId)?.name}</div>
+                        <div className="value">{ focusShipper?.transport?.typeId ? getObjectByValueInObj(VEHICLETYPE, focusShipper?.transport?.typeId)?.name : "Chưa đăng ký"}</div>
                     </div>
                     <div className="column haft_column">
                         <div className="title">Email</div>
@@ -50,7 +50,7 @@ const ShipperStaffDetail = (props) => {
                     </div>
                     <div className="column haft_column">
                         <div className="title">Biển số</div>
-                        <div className="value">{focusShipper?.transport?.licencePlate}</div>
+                        <div className="value">{focusShipper?.transport?.licencePlate ? focusShipper?.transport?.licencePlate : "Chưa đăng ký"}</div>
                     </div>
                     <div className="column">
                         <div className="title">Địa chỉ</div>

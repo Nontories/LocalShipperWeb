@@ -62,7 +62,7 @@ const TransactionList = () => {
     return (
         <Helmet title={"Transaction List | "}>
             <div className="transaction_list">
-                <div className="header">Danh sách tài xế của hệ thống</div>
+                <div className="header">Danh sách giao dịch của hệ thống</div>
                 <div className="body">
                     <div className="transaction_status">
                         <div className="account_money">

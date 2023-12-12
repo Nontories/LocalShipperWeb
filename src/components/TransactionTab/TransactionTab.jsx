@@ -48,7 +48,7 @@ const TransactionTab = (props) => {
 
     return (
         <div className="transaction_tab">
-            <div className="tab_index">{index}</div>
+            <div className="tab_index">{index + 1}</div>
             <div className="tab_type">{item?.transactionType}</div>
             <div className="tab_sender">{item?.sender}</div>
             <div className="tab_receiver">{item?.receiver}</div>

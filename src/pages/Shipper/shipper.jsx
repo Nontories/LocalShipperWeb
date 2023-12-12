@@ -117,7 +117,7 @@ const Shipper = () => {
       <div className="shipper">
         <div className="header">Danh sách tài xế của cửa hàng</div>
         <div className="body">
-          <div className="title">tài xế của cửa hàng</div>
+          {/* <div className="title">tài xế của cửa hàng</div> */}
           <div className="body_header">
             <div className="shipper_status">
               {shipperType.map((item, key) => {
