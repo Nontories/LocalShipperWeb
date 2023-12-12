@@ -33,6 +33,7 @@ const AddStore = ({ visible, onCancle, zoneList }) => {
     const { store, token } = useContext(UserContext);
 
     const handleSubmit = async () => {
+        console.log(formInput);
         if (!loading) {
             setLoading(true)
             if (
@@ -54,9 +55,9 @@ const AddStore = ({ visible, onCancle, zoneList }) => {
                             storeAddress: formInput?.address,
                             storePhone: formInput?.phone,
                             storeEmail: formInput?.email,
-                            openTime: formInput?.openTime,
-                            closeTime: formInput?.closeTime,
-                            zoneId: formInput?.zone,
+                            openTime: formInput?.openTime + ":00",
+                            closeTime: formInput?.closeTime + ":00",
+                            zoneId: Number(formInput?.zone),
                             password: formInput?.password,
                         }
                         const response = await CreateStore( data, token)
@@ -86,6 +87,7 @@ const AddStore = ({ visible, onCancle, zoneList }) => {
         } else {
             setValid(false)
         }
+        console.log(response?.data);
         setLoading(false)
     }
 
@@ -134,14 +136,14 @@ const AddStore = ({ visible, onCancle, zoneList }) => {
                         <label htmlFor="name">Thời gian đóng mở/cửa</label>
                         <div className="flex_column" style={{ width: "120%"}}>
                             <input
-                                type="date"
+                                type="time"
                                 id='name'
                                 className='name'
                                 value={formInput.openTime}
                                 onChange={(e) => setFormInput({ ...formInput, openTime: e.target.value })}
                             />
                             <input
-                                type="datetime-local"
+                                type="time"
                                 id='name'
                                 className='name'
                                 value={formInput.closeTime}
@@ -173,7 +175,7 @@ const AddStore = ({ visible, onCancle, zoneList }) => {
 
                 <div className="input_lable">
                     <label htmlFor="shipper_password">Mật khẩu tạm thời</label>
-                    <input type="password" id='shipper_password' className='shipper_password' value={formInput.shipperPassword} onChange={(e) => setFormInput({ ...formInput, shipperPassword: e.target.value })} />
+                    <input type="password" id='shipper_password' className='shipper_password' value={formInput.password} onChange={(e) => setFormInput({ ...formInput, password: e.target.value })} />
                 </div>
                 <div className="input_lable">
                     <label htmlFor="repassword">Nhập lại mật khẩu</label>

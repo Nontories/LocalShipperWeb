@@ -14,6 +14,17 @@ const createAxiosInstance = (token) => {
     });
 };
 
+export const GetAllAccount = async (token) => {
+    try {
+        const instance = createAxiosInstance(token);
+        const response = await instance.get(`${LINK_API}` + "accounts");
+        return response;
+    } catch (error) {
+        console.log("GetAllAccount in api/account.js error : ", error);
+        return [];
+    }
+};
+
 export const GetAllShipper = async (token) => {
     try {
         const instance = createAxiosInstance(token);
@@ -22,5 +33,16 @@ export const GetAllShipper = async (token) => {
     } catch (error) {
         console.log("GetAllShipper in api/account.js error : ", error);
         return [];
+    }
+};
+
+export const EditAccount = async (id, data, token) => {
+    try {
+        const instance = createAxiosInstance(token);
+        const response = await instance.put(`${LINK_API}` + "accounts?id=" + id, data);
+        return response;
+    } catch (error) {
+        console.log("EditAccount in api/account.js error : ", error);
+        return "Lỗi EditAccount,", error?.response?.status;
     }
 };

@@ -24,11 +24,11 @@ export const GetAllZone = async (token) => {
     }
 };
 
-export const UpdateZoneStatus = async (id, status, token) => {
+export const UpdateZoneStatus = async (id, data, token) => {
 
-    const data = {
-        status: status
-    }
+    // const data = {
+    //     active: status
+    // }
 
     try {
         const instance = createAxiosInstance(token);
@@ -36,6 +36,6 @@ export const UpdateZoneStatus = async (id, status, token) => {
         return response;
     } catch (error) {
         console.log("UpdateZoneStatus in api/zone.js error : ", error);
-        return error;
+        return error?.response?.status;
     }
 };

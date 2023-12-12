@@ -7,7 +7,7 @@ import CustomOptionDropdown from '../CustomOptionDropdown/CustomOptionDropdown';
 import { UserContext } from '../../context/StoreContext';
 import { ORDER } from "../../constants/order"
 import { InteractOrder } from '../../api/order';
-import { formatDate, formatPrice } from '../../utils/utils';
+import { formatDate, formatPrice, getObjectByValueInObj } from '../../utils/utils';
 
 import threeDotIcon from "../../assets/three_dots.svg"
 import makerIcon from "../../assets/maker.svg"
@@ -110,15 +110,27 @@ const OrderTab = (props) => {
         },
     ]
 
+    const renderOrderStatus = (status) => {
+        switch (status) {
+            case ORDER.WAITING.value:
+                return <div className="shipper_name">Đang chờ {item?.shipper?.fullName ? item?.shipper?.fullName : "shipper"} Nhận đơn</div>
+            case ORDER.ASSIGNING.value:
+                return <div className="shipper_name" style={{ background: "rgba(8, 191, 138, 0.25)", color: "08BF8A" }}>{getObjectByValueInObj(ORDER, status)?.name}</div>
+            case ORDER.CANCELLED.value:
+                return <div className="shipper_name" style={{ background: "rgba(255, 3, 3, 0.25)", color: "rgba(255, 0, 0, 0.5)" }}>{getObjectByValueInObj(ORDER, status)?.name}</div>
+            case ORDER.DELETED.value:
+                return <div className="shipper_name" style={{ background: "rgba(255, 3, 3, 0.25)", color: "rgba(255, 0, 0, 0.5)" }}>{getObjectByValueInObj(ORDER, status)?.name}</div>
+
+            default:
+                return <div className="shipper_name" style={{ background: "#72AFD3", color: "white" }}>{getObjectByValueInObj(ORDER, status)?.name}</div>
+        }
+    }
+
     return (
         <div className="order_tab" key={key}>
             <div className="tab_header">
-                {
-
-                    item?.status === ORDER.WAITING.value &&
-                    <div className="shipper_name">Đang chờ {item?.shipper?.fullName ? item?.shipper?.fullName : "shipper"} Nhận đơn</div>
-                }
                 <div className="tab_name" style={{ cursor: 'pointer' }} onClick={() => setDetail(item)}>#{item?.trackingNumber}</div>
+                {renderOrderStatus(item?.status)}
                 <div className="dropdown_list" onClick={handleDropdownVisible}>
                     <img src={threeDotIcon} className='three_dot_icon' alt="" />
                     <CustomOptionDropdown visible={modalVisible.dropdown} onCancle={handleCloseDropdown} dropdownList={dropdownList} />

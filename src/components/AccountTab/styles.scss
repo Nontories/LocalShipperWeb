@@ -1,4 +1,4 @@
-.store_tab {
+.account_tab {
     display: flex;
     width: 100%;
     padding: 20px 0;
@@ -10,33 +10,28 @@
 
     .tab_phone {
         width: 10%;
-        margin-left: 15px;
+        margin-left: 20px;
     }
 
     .tab_mail {
-        width: 12%;
-        margin-left: 15px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        width: 20%;
+        margin-left: 20px;
     }
 
-    .tab_address {
-        width: 25%;
-        margin-left: 15px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .tab_time {
-        width: 12%;
-        margin-left: 15px;
-    }
-
-    .tab_zone {
+    .tab_date {
         width: 15%;
-        margin-left: 15px;
+        margin-left: 20px;
+    }
+
+    .tab_role {
+        width: 10%;
+        margin-left: 20px;
+        text-transform: capitalize;
+    }
+
+    .tab_status {
+        width: 15%;
+        margin-left: 20px;
     }
 
     .tab_button {

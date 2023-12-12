@@ -87,7 +87,7 @@ export const InteractOrder = async (data, token) => {
         return response;
     } catch (error) {
         console.log("InteractOrder in api/order.js error : ", error);
-        return error;
+        return error?.response?.status;
     }
 };
 

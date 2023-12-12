@@ -34,7 +34,7 @@ const ZoneTab = (props) => {
 
     const dropdownList = [
         {
-            name: !item?.active ? "Hiệu hóa" : "Vô hiệu hóa",
+            name: !item?.active ? "Kích hoạt" : "Vô hiệu hóa",
             color: !item?.active ? "#6DD605" : "#FF0000",
             action: !item?.active ? hanldeActiveShipper : hanldeDeactiveShipper
         },

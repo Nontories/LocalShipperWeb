@@ -14,6 +14,7 @@ const PaymentList = () => {
 
     const [transactionList, setTransactionList] = useState([])
     const [searchValue, setSearchValue] = useState("")
+    const [otpVisible, setOtpVisible] = useState(false)
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(8);
     const [modalVisible, setModalVisible] = useState({ paymment: false, type: "" })
@@ -112,7 +113,13 @@ const PaymentList = () => {
                         setCurrentPage={setCurrentPage}
                     />
                 </div>
-                <PaymentModal visible={modalVisible.paymment} onCancle={hanldeCancel} type={modalVisible.type} />
+                <PaymentModal
+                    visible={modalVisible.paymment}
+                    onCancle={hanldeCancel}
+                    type={modalVisible.type}
+                    otpVisible={otpVisible}
+                    setOtpVisible={setOtpVisible}
+                />
             </div>
         </Helmet>
     )

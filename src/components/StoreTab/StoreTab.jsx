@@ -22,7 +22,6 @@ const StoreTab = (props) => {
     const handleViewStore = () => {
         setFocusStore(item)
         setParentModal({ ...parentModal, viewStore: true })
-        console.log(`view handleViewStore shipperid=${item.id}`);
     }
 
     const hanldeEditStore = () => {
@@ -37,6 +36,14 @@ const StoreTab = (props) => {
 
     const handleCloseDropdown = () => {
         setModalVisible({ ...modalVisible, dropdown: false })
+    }
+
+    function getTimeWithoutSeconds(timeString) {
+        if (!timeString) {
+            return ""
+        } else {
+            return timeString?.substring(0, 5);
+        }
     }
 
     const dropdownList = [
@@ -63,7 +70,7 @@ const StoreTab = (props) => {
             <div className="tab_phone">{item?.storePhone}</div>
             <div className="tab_mail">{item?.storeEmail}</div>
             <div className="tab_address">{item?.storeAddress}</div>
-            <div className="tab_time"> Thời gian </div>
+            <div className="tab_time"> {getTimeWithoutSeconds(item?.openTime) + " - " + getTimeWithoutSeconds(item?.closeTime)} </div>
             <div className="tab_zone">{item?.zone?.zoneName}</div>
             <div className="tab_button" onClick={handleDropdownVisible}>
                 <div className="button">

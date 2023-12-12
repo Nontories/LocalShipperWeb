@@ -13,6 +13,8 @@ import ConfirmModal from "../../components/modal/ConfirmModal/ConfirmModal"
 import ChooseZone from '../../components/modal/ChooseZone/ChooseZone';
 import { GetAllZone } from '../../api/zone';
 import Pagination from '../../components/Pagination/Pagination';
+import ShipperDetail from '../../components/ShipperDetail/ShipperDetail';
+import ShipperStaffDetail from '../../components/ShipperStaffDetail/ShipperStaffDetail';
 
 const shipperType = [
     {
@@ -92,11 +94,11 @@ const ShipperList = () => {
         const response = await DeactiveShipper(focusShipper?.id, token)
         if (response?.status === 200) {
             toast.success("Vô hiệu hoá thành công")
-            loadShipperData()
+            await loadShipperData()
         } else {
             toast.error("Vô hiệu hoá Thất bại")
         }
-        setModalVisible({ ...modalVisible, confirmDeactive: false })
+        setModalVisible({ ...modalVisible, confirmDeactive: false, viewShipper: false })
     }
 
     const handleActiveShipper = async () => {
@@ -104,11 +106,11 @@ const ShipperList = () => {
         console.log(focusShipper?.id, choosedZone);
         if (response?.status === 200) {
             toast.success("Kích hoạt thành công")
-            loadShipperData()
+            await loadShipperData()
         } else {
             toast.error("Kích hoạt Thất bại")
         }
-        setModalVisible({ ...modalVisible, chooseZone: false })
+        setModalVisible({ ...modalVisible, chooseZone: false, viewShipper: false })
     }
 
     const handleCloseChooseZone = () => {
@@ -123,7 +125,7 @@ const ShipperList = () => {
                     <div className="shipper_status">
                         {shipperType.map((item, key) => {
                             return (
-                                <div className={`type_button ${filterValue == item.value && "button_active"}`} onClick={() => { setFilterValue(item.value) }} key={key} >{item.name}</div>
+                                <div className={`type_button ${filterValue == item.value && "button_active"}`} onClick={() => { setFilterValue(item.value); setCurrentPage(1) }} key={key} >{item.name}</div>
                             )
                         })}
                         <div className="assign_time">
@@ -155,11 +157,18 @@ const ShipperList = () => {
                     <Pagination
                         itemsPerPage={itemsPerPage}
                         positionLength={handleFilter(filterValue).length}
-                        filterLength = {getFilterLength(filterValue)}
+                        filterLength={getFilterLength(filterValue)}
                         currentPage={currentPage}
                         setCurrentPage={setCurrentPage}
                     />
                 </div>
+                <ShipperStaffDetail
+                    focusShipper={focusShipper}
+                    parentModal={modalVisible}
+                    setParentModal={setModalVisible}
+                    visible={modalVisible.viewShipper}
+                    onCancle={() => setModalVisible({ ...modalVisible, viewShipper: false })}
+                />
                 <ConfirmModal
                     visible={modalVisible.confirmDeactive}
                     setVisible={() => { setModalVisible({ ...modalVisible, confirmDeactive: false }) }}

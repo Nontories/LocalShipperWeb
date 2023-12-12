@@ -1,4 +1,4 @@
-.payment_otp_modal {
+.update_store {
     position: fixed;
     display: flex;
     top: 0;
@@ -7,7 +7,6 @@
     right: 0;
     align-items: center;
     justify-content: center;
-    z-index: 999;
 
     .layout {
         position: absolute;
@@ -16,11 +15,11 @@
         left: 0;
         right: 0;
         background-color: var(--grey-background);
-        z-index: 999;
+        z-index: 998;
     }
 
     .content {
-        width: fit-content;
+        width: 600px;
         padding: 20px 30px;
         border: 1px solid var(--grey-background);
         border-radius: 5px;
@@ -35,15 +34,6 @@
 
         .input_lable {
             width: 97%;
-
-            .otp_input {
-                width: fit-content;
-                margin: 0 auto;
-
-                span{
-                    margin: 0 10px;
-                }
-            }
 
             input {
                 width: 100%;

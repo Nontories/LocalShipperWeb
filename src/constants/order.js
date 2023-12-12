@@ -6,7 +6,7 @@ export const ORDER = {
     },
     IDLE: {
         value: 1,
-        name: "Rảnh",
+        name: "Đã Tạo",
         sign: "IDLE"
     },
     ASSIGNING: {

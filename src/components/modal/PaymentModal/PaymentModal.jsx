@@ -17,13 +17,16 @@ const formInputDefault = {
     amount: 0,
 }
 
-const PaymentModal = ({ visible, onCancle, type }) => {
+const PaymentModal = ({ visible, onCancle, type, otpVisible, setOtpVisible }) => {
 
     const [formInput, setFormInput] = useState(formInputDefault)
-    const [otpVisible, setOtpVisible] = useState(false)
     const [otp, setOtp] = useState()
     const [loading, setLoading] = useState(false)
     const { store, token } = useContext(UserContext);
+    
+    useEffect(() => {
+        setFormInput(formInputDefault)
+    }, [])
 
     // type = 1 là nạp 2 là rút
 
@@ -45,7 +48,7 @@ const PaymentModal = ({ visible, onCancle, type }) => {
                         setOtpVisible(true)
                     }
                 } else {
-                    toast.error(`Gửi OTP xác nhận thất bại : ${response?.response?.data}`);
+                    toast.error(`Gửi OTP xác nhận thất bại`);
                 }
             } else {
                 toast.warning('Thông tin chưa đủ');
@@ -75,9 +78,10 @@ const PaymentModal = ({ visible, onCancle, type }) => {
         const response = await UpdateWalletBalance(data, token)
         if (response?.status === 200) {
             toast.success('Giao dịch thành công');
-            setOtpVisible(true)
+            onCancle()
+            setOtpVisible(false)
         } else {
-            toast.error(`Giao dịch thất bại : ${response?.response?.data}`);
+            toast.error(`Giao dịch thất bại`);
         }
         setLoading(false)
     }
@@ -91,7 +95,7 @@ const PaymentModal = ({ visible, onCancle, type }) => {
         <div className="payment_modal">
             <div className="layout" onClick={onCancle} />
             <div className="content">
-                <div className="title">Thêm tài xế của cửa hàng</div>
+                <div className="title">{type === "withdraw" ? "Rút tiền" : "Nạp tiền"}</div>
                 <div className="flex_column">
                     <div className="input_lable">
                         <label htmlFor="name">Họ và tên *</label>

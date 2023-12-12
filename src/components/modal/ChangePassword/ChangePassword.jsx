@@ -13,21 +13,22 @@ const formInputDefault = {
     rePassword: "",
 }
 
-const ChangePassword = ({ shipper, visible, onCancle }) => {
+const ChangePassword = ({ shipper, visible, onCancle, parentModal, setParentModal }) => {
 
     const [formInput, setFormInput] = useState(formInputDefault)
     const { store, token } = useContext(UserContext);
 
     const handleSubmit = async () => {
         if (formInput.shipperPassword === formInput.rePassword) {
-            const response = await ChangePasswordByStore(shipper?.id, formInput.shipperPassword)
+            const response = await ChangePasswordByStore(shipper?.id, formInput.shipperPassword, token)
             if (response?.status === 200) {
-                toast.success(`Cập nhật mật khẩu cho ${shipper?.fullname} thành công`);
-            }else{
-                toast.error(`Cập nhật mật khẩu cho thất bại`);
+                toast.success(`Cập nhật mật khẩu cho ${shipper?.fullName} thành công`);
+                setParentModal({ ...parentModal, changePassword: false })
+            } else {
+                toast.error(`Cập nhật mật khẩu thất bại`);
             }
         } else {
-            toast.error(`Mật khẩu sai`);
+            toast.error(`Mật khẩu không khớp`);
         }
     }
 

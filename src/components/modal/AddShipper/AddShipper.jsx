@@ -45,10 +45,10 @@ const AddShipper = ({ visible, onCancle }) => {
                     }
                     const response = await CreateShipper(store?.id, data, token)
                     if (response?.status === 200) {
-                        toast.success('Thêm shipper thành công');
+                        toast.success('Thêm tài xế thành công');
                         onCancle()
                     } else {
-                        toast.error(`Thêm shipper thất bại : ${response?.response?.data}`);
+                        toast.error(`Thêm tài xế thất bại : ${response?.response?.data}`);
                     }
                 } else {
                     toast.warning('Mail đã được đăng ký');

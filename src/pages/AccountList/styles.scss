@@ -1,0 +1,97 @@
+.account_list {
+    width: 100%;
+    height: auto;
+
+    .header {
+        width: 100%;
+        padding: 10px;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+        background-color: white;
+    }
+
+    .body {
+        width: 100%;
+        height: auto;
+        min-height: 92vh;
+        padding: 10px;
+        // border: 2px solid rgba(0, 0, 0, 0.3);
+        // margin: 10px;
+        background-color: white;
+
+        .account_status {
+            position: relative;
+            display: flex;
+            justify-content: end;
+            border-bottom: 3px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 5px -5px rgba(0, 0, 0, 0.1);
+            padding-bottom: 20px;
+            margin: 20px 0;
+
+            .button_payment {
+                padding: 10px 15px;
+                padding-bottom: 12px;
+                border-radius: 5px;
+                margin-right: 20px;
+                background-color: #72AFD3;
+                color: white;
+            }
+
+            .button_payment:hover {
+                cursor: pointer;
+                background-color: var(--assign-pointer);
+            }
+
+            .assign_time {
+                background-color: #F2F4F8;
+                border-radius: 50px;
+                margin-right: 50px;
+
+                input {
+                    padding: 8px 15px;
+                    background-color: white;
+                    border: 1px solid rgba(0, 0, 0, 0.2);
+                    border-radius: 10px;
+                }
+            }
+        }
+
+        .pagination-buttons {
+            // position: absolute;
+            display: flex;
+            width: fit-content;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+            bottom: 0;
+
+            div {
+                padding: 10px 15px;
+                background-color: var(--grey-background);
+                user-select: none;
+                opacity: 0.8;
+            }
+
+            div:hover {
+                cursor: pointer;
+                opacity: 1;
+            }
+
+            .pagination_button {
+                padding: 10px 15px;
+            }
+
+            .active {
+                background-color: var(--assign);
+            }
+
+            .pagination_button:hover {
+                cursor: pointer;
+                background-color: var(--grey-background);
+            }
+
+            .active:hover {
+                background-color: var(--assign);
+            }
+        }
+    }
+}

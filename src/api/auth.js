@@ -17,10 +17,10 @@ export const signIn = async (data) => {
         const response = await axios.post(`${LINK_API}` + "logins", data);
         return response;
     } catch (error) {
-        return error;
+        return "Lỗi sign in", error?.response?.status;
     }
 };
-
+    
 export const signInWithOtp = async (mail) => {
     try {
         const response = await axios.post(`${LINK_API}` + `logins/otp?email=${mail}`);
@@ -35,7 +35,7 @@ export const verifyOtp = async (mail, otp) => {
         const response = await axios.get(`${LINK_API}` + `logins/verify-otp?email=${mail}&otp=${otp}`);
         return response;
     } catch (error) {
-        return error;
+        return error?.response?.status;
     }
 };
 
@@ -46,7 +46,7 @@ export const signUp = async (data) => {
         return response;
     } catch (error) {
         console.error("Error singup:", error);
-        return error;
+        return error?.response?.status;
     }
 };
 
@@ -64,7 +64,7 @@ export const forgotOtp = async (mail, otp) => {
         const response = await axios.get(`${LINK_API}` + `accounts/verify-forgot?email=${mail}&otp=${otp}`);
         return response;
     } catch (error) {
-        return error;
+        return error?.response?.status;
     }
 };
 
@@ -73,16 +73,17 @@ export const newPassword = async (mail, password) => {
         const response = await axios.post(`${LINK_API}` + `accounts/reset-password?email=${mail}&newPassword=${password}`);
         return response;
     } catch (error) {
-        return error;
+        return error?.response?.status;
     }
 };
 
-export const ChangePasswordByStore = async (shipperId, password) => {
+export const ChangePasswordByStore = async (shipperId, password, token) => {
     try {
-        const response = await axios.put(`${LINK_API_STORE}` + `accounts/change-password-shipper?shipperId=${shipperId}&newPassword=${password}`);
+        const instance = createAxiosInstance(token);
+        const response = await instance.put(`${LINK_API_STORE}` + `accounts/change-password-shipper?shipperId=${shipperId}&newPassword=${password}`);
         return response;
     } catch (error) {
-        return error;
+        return error?.response?.status;
     }
 };
 
@@ -92,7 +93,7 @@ export const getStoreInfor = async (token) => {
         const response = await instance.get(`${LINK_API}` + "logins/accesstoken-to-infostore");
         return response;
     } catch (error) {
-        return error;
+        return error?.response?.status;
     }
 };
 
@@ -102,7 +103,7 @@ export const getRole = async (token) => {
         const response = await instance.get(`${LINK_API}` + "logins/accesstoken-to-role");
         return response;
     } catch (error) {
-        return error;
+        return error?.response?.status;
     }
 };
 
@@ -112,7 +113,7 @@ export const checkMail = async (email, token) => {
         const response = await instance.get(`${LINK_API}logins/check-email?email=${email}`);
         return response;
     } catch (error) {
-        return error;
+        return error?.response?.status;
     }
 };
 

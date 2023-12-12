@@ -61,9 +61,19 @@ const ZoneList = () => {
     }
 
     const handleSubmitDeactiveConfirm = async () => {
-        const response = await UpdateZoneStatus(focusZone?.id, false, token)
+        const data = {
+            zoneName: focusZone?.zoneName,
+            zoneDescription: focusZone?.zoneDescription,
+            latitude: focusZone?.latitude,
+            longitude: focusZone?.longitude,
+            radius: focusZone?.radius,
+            active: false
+        }
+
+        const response = await UpdateZoneStatus(focusZone?.id, data, token)
         if (response?.status === 200) {
             toast.success(`Vô hiệu hoá khu vực ${focusZone?.zoneName} thành công`);
+            setModalVisible({ ...modalVisible, confirmDeactive: false })
             await loadData()
         } else {
             toast.error(`Vô hiệu hoá khu vực thất bại`);
@@ -71,9 +81,19 @@ const ZoneList = () => {
     }
 
     const handleSubmitActiveConfirm = async () => {
-        const response = await UpdateZoneStatus(focusZone?.id, true, token)
+        const data = {
+            zoneName: focusZone?.zoneName,
+            zoneDescription: focusZone?.zoneDescription,
+            latitude: focusZone?.latitude,
+            longitude: focusZone?.longitude,
+            radius: focusZone?.radius,
+            active: true
+        }
+
+        const response = await UpdateZoneStatus(focusZone?.id, data, token)
         if (response?.status === 200) {
             toast.success(`Kích hoạt khu vực ${focusZone?.zoneName} thành công`);
+            setModalVisible({ ...modalVisible, confirmActive: false })
             await loadData()
         } else {
             toast.error(`Kích hoạt khu vực thất bại`);

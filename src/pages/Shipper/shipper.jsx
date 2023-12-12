@@ -6,7 +6,7 @@ import './styles.scss'
 import { UserContext } from '../../context/StoreContext';
 import { SHIPPERSTATUS } from "../../constants/shipper"
 import { VEHICLETYPE } from '../../constants/vehicle';
-import { GetShipper, CreateShipper, DeleteShipper } from "../../api/shipper"
+import { GetShipper, CreateShipper, DeleteShipper, UpdateStatusShipper } from "../../api/shipper"
 import { getObjectByValue, getObjectByValueInObj } from '../../utils/utils';
 
 import Helmet from '../../components/shared/Helmet/helmet'
@@ -18,6 +18,7 @@ import Pagination from '../../components/Pagination/Pagination';
 
 import searchIcon from "../../assets/search.svg"
 import addIcon from "../../assets/add.svg"
+import ShipperDetail from '../../components/ShipperDetail/ShipperDetail';
 
 const shipperType = [
   {
@@ -42,7 +43,7 @@ const Shipper = () => {
   const [focusShipper, setFocusShipper] = useState({})
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(7);
-  const [modalVisible, setModalVisible] = useState({ confirmDelete: false, addShipper: false, changePassword: false })
+  const [modalVisible, setModalVisible] = useState({ confirmDeactive: false, addShipper: false, changePassword: false, viewShipper: false })
   const { store, token } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -71,17 +72,17 @@ const Shipper = () => {
   }
 
   const handleSubmitDeleteConfirm = async () => {
-    const response = await DeleteShipper(focusShipper?.id, token)
+    const response = await UpdateStatusShipper(focusShipper?.id, SHIPPERSTATUS.DEACTIVE.value, token)
     if (response?.status === 200) {
       toast.success('Xoá tài xế thành công');
     } else {
       toast.error('Xoá tài xế thất bại');
     }
-    setModalVisible({ ...modalVisible, confirmDelete: false })
+    setModalVisible({ ...modalVisible, confirmDeactive: false, viewShipper: false })
   }
 
   const handleCloseDeleteConfirm = () => {
-    setModalVisible({ ...modalVisible, confirmDelete: false })
+    setModalVisible({ ...modalVisible, confirmDeactive: false })
   }
 
   const handleFilter = (value) => {
@@ -166,17 +167,26 @@ const Shipper = () => {
             setCurrentPage={setCurrentPage}
           />
         </div>
+        <ShipperDetail
+          focusShipper={focusShipper}
+          parentModal={modalVisible}
+          setParentModal={setModalVisible}
+          visible={modalVisible.viewShipper}
+          onCancle={() => setModalVisible({ ...modalVisible, viewShipper: false })}
+        />
         <ChangePassword
           visible={modalVisible.changePassword}
           shipper={focusShipper}
           onCancle={() => setModalVisible({ ...modalVisible, changePassword: false })}
+          parentModal={modalVisible}
+          setParentModal={setModalVisible}
         />
         <AddShipper
           visible={modalVisible.addShipper}
           onCancle={() => setModalVisible({ ...modalVisible, addShipper: false })}
         />
         <ConfirmModal
-          visible={modalVisible.confirmDelete}
+          visible={modalVisible.confirmDeactive}
           setVisible={handleCloseDeleteConfirm}
           title={"Xác nhận"}
           content={`Xác nhận xoá tài xế ${focusShipper?.fullName}`}

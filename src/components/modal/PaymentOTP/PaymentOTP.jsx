@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
+import OtpInput from 'react-otp-input';
 import './styles.scss'
 import { toast } from 'react-toastify';
 
@@ -30,17 +31,20 @@ const PaymentOTP = ({ visible, otp, setOtp, onCancle, onSubmit }) => {
     return (
         visible &&
         <div className="payment_otp_modal">
+            <div className="layout"></div>
             <div className="content">
                 <div className="title">Xác nhận giao dịch</div>
                 <div className="input_lable">
                     <label htmlFor="mail">Mã OTP</label>
-                    <input
-                        type="text"
-                        id='mail'
-                        className='mail'
-                        value={otp}
-                        onChange={(e) => setOtp(e.target.value)}
-                    />
+                    <div className="otp_input">
+                        <OtpInput
+                            value={otp}
+                            onChange={setOtp}
+                            numInputs={4}
+                            renderSeparator={<span>-</span>}
+                            renderInput={(props) => <input {...props} />}
+                        />
+                    </div>
                 </div>
                 <div className="button_pack">
                     <div className="cancle_button" onClick={onCancle}>Hủy</div>

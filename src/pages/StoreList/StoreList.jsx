@@ -3,15 +3,17 @@ import { toast } from 'react-toastify';
 import './styles.scss'
 
 import { UserContext } from '../../context/StoreContext';
-import { GetStore, UpdateStore } from '../../api/store';
+import { GetStore } from '../../api/store';
+import { GetAllZone } from '../../api/zone';
 import { STORE } from "../../constants/store"
 
 import StoreTab from "../../components/StoreTab/StoreTab"
 import Helmet from '../../components/shared/Helmet/helmet'
 import AddStore from '../../components/modal/AddStore/AddStore';
-import { GetAllZone } from '../../api/zone';
 import ConfirmModal from "../../components/modal/ConfirmModal/ConfirmModal"
 import Pagination from '../../components/Pagination/Pagination';
+import StoreDetail from '../../components/StoreDetail/StoreDetail';
+import UpdateStore from '../../components/modal/UpdateStore/UpdateStore';
 
 const StoreList = () => {
 
@@ -21,7 +23,7 @@ const StoreList = () => {
     const [searchValue, setSearchValue] = useState("")
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(8);
-    const [modalVisible, setModalVisible] = useState({ chooseZone: false, confirmDeactive: false, viewShipper: false, addStore: false })
+    const [modalVisible, setModalVisible] = useState({ chooseZone: false, confirmDeactive: false, viewStore: false, addStore: false, editStore: false })
     const { store, token } = useContext(UserContext);
 
     useEffect(() => {
@@ -32,7 +34,7 @@ const StoreList = () => {
     const loadStoreData = async () => {
         const response = await GetStore({}, token)
         if (response?.status === 200) {
-            setStoreList(response?.data)
+            setStoreList(response?.data?.reverse())
         } else {
             toast.warning("Tải thông tin của hàng thất bại")
         }
@@ -48,7 +50,8 @@ const StoreList = () => {
     }
 
     const handleExceptFilter = (value) => {
-        const displayList = storeList?.filter(item => item?.active !== value)
+        const displayList = storeList?.filter(item => item?.status !== value)
+        // console.log(storeList?.filter(item => item?.active === value));
 
         const startIndex = (currentPage - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
@@ -74,9 +77,12 @@ const StoreList = () => {
     }
 
     const handleConfirmStoreDeactive = async () => {
+        console.log(focusStore?.id, " value", STORE.DELETE.value);
         const response = await UpdateStore(focusStore?.id, STORE.DELETE.value, token)
         if (response?.status === 200) {
-            toast.warning("Xoá cửa hàng thành công")
+            await loadStoreData()
+            toast.success("Xoá cửa hàng thành công")
+            setModalVisible({ ...modalVisible, confirmDeactive: false, viewStore: false })
         } else {
             toast.warning("Xoá cửa hàng thất bại")
         }
@@ -134,6 +140,19 @@ const StoreList = () => {
                         setCurrentPage={setCurrentPage}
                     />
                 </div>
+                <StoreDetail
+                    focusStore={focusStore}
+                    parentModal={modalVisible}
+                    setParentModal={setModalVisible}
+                    visible={modalVisible.viewStore}
+                    onCancle={() => setModalVisible({ ...modalVisible, viewStore: false })}
+                />
+                <UpdateStore
+                    visible={modalVisible.editStore}
+                    focusStore={focusStore}
+                    onCancle={() => setModalVisible({ ...modalVisible, editStore: false })}
+                    reLoad={loadStoreData}
+                />
                 <AddStore
                     visible={modalVisible.addStore}
                     onCancle={handleCancleAddStore}

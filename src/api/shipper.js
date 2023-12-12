@@ -43,7 +43,7 @@ export const CreateShipper = async (id, data, token) => {
         return response;
     } catch (error) {
         console.log("GetOrder in api/order.js error : ", error);
-        return error;
+        return error?.response?.status;
     }
 };
 
@@ -55,7 +55,21 @@ export const DeleteShipper = async (id, token) => {
         return response;
     } catch (error) {
         console.log("DeleteShipper in api/order.js error : ", error);
-        return error;
+        return error?.response?.status;
+    }
+};
+
+export const UpdateStatusShipper = async (id, status, token) => {
+    const data = {
+        status: status
+    }
+    try {
+        const instance = createAxiosInstance(token);
+        const response = await instance.put(`${LINK_API}` + "shippers/status?id=?" + id, data);
+        return response;
+    } catch (error) {
+        console.log("UpdateStatusShipper in api/order.js error : ", error);
+        return error?.response?.status;
     }
 };
 
@@ -67,7 +81,7 @@ export const ActiveShipper = async (accountId, zoneId, token) => {
         return response;
     } catch (error) {
         console.log("ActiveShipper in api/shipper.js error : ", error);
-        return error;
+        return error?.response?.status;
     }
 };
 
@@ -79,6 +93,8 @@ export const DeactiveShipper = async (accountId, token) => {
         return response;
     } catch (error) {
         console.log("DeactiveShipper in api/shipper.js error : ", error);
-        return error;
+        return error?.response?.status;
     }
 };
+
+

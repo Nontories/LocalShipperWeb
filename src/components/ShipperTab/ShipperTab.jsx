@@ -36,7 +36,7 @@ const ShipperTab = (props) => {
 
     const handleViewShipper = () => {
         setFocusShipper(item)
-        console.log(`view shipper shipperid=${item.id}`);
+        setParentModal({ ...parentModal, viewShipper: true })
     }
 
     const handleChangePassword = () => {
