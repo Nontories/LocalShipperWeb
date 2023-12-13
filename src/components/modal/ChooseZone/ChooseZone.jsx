@@ -26,7 +26,7 @@ const ChooseZone = ({ visible, zone, setZone, zoneList, onSubmit, onCancle }) =>
                         value={zone}
                         onChange={handleChangeZone}
                     >
-                        {zoneList.map((item, key) => {
+                        {zoneList?.filter(item => item.active)?.map((item, key) => {
                             return (
                                 <option className="input_option" value={item.id} key={key}>
                                     {item.zoneName}

@@ -23,7 +23,7 @@ const PaymentModal = ({ visible, onCancle, type, otpVisible, setOtpVisible }) =>
     const [otp, setOtp] = useState()
     const [loading, setLoading] = useState(false)
     const { store, token } = useContext(UserContext);
-    
+
     useEffect(() => {
         setFormInput(formInputDefault)
     }, [])
@@ -48,7 +48,7 @@ const PaymentModal = ({ visible, onCancle, type, otpVisible, setOtpVisible }) =>
                         setOtpVisible(true)
                     }
                 } else {
-                    toast.error(`Gửi OTP xác nhận thất bại`);
+                    toast.error(`Gửi OTP xác nhận thất bại : ${response?.data}`);
                 }
             } else {
                 toast.warning('Thông tin chưa đủ');
@@ -81,7 +81,7 @@ const PaymentModal = ({ visible, onCancle, type, otpVisible, setOtpVisible }) =>
             onCancle()
             setOtpVisible(false)
         } else {
-            toast.error(`Giao dịch thất bại`);
+            toast.error(`Giao dịch thất bại : ${response?.data}`);
         }
         setLoading(false)
     }

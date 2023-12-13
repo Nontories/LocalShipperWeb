@@ -27,7 +27,7 @@ const PaymentList = () => {
     const loadData = async () => {
         const response = await GetAllTransaction(token)
         if (response?.status === 200) {
-            setTransactionList(response?.data)
+            setTransactionList(response?.data?.reverse())
         } else {
             toast.warning('Tải thông tin giao dịch thât bại');
         }
@@ -95,7 +95,6 @@ const PaymentList = () => {
                             <div className="tab_level">Mức giao dịch</div>
                             <div className="tab_time">Thời gian</div>
                             <div className="tab_content">Nội dung</div>
-                            <div className="tab_collection">Thu hộ cho đơn hàng (Nếu có)</div>
                         </div>
                         {
                             handleSearch(handleFilter(), searchValue)?.map((item, index) => {

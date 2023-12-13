@@ -48,7 +48,7 @@ const AddShipper = ({ visible, onCancle }) => {
                         toast.success('Thêm tài xế thành công');
                         onCancle()
                     } else {
-                        toast.error(`Thêm tài xế thất bại : ${response?.response?.data}`);
+                        toast.error(`Thêm tài xế thất bại : ${response?.data}`);
                     }
                 } else {
                     toast.warning('Mail đã được đăng ký');
@@ -100,7 +100,7 @@ const AddShipper = ({ visible, onCancle }) => {
                     {
                         formInput.email !== "" ?
                             !valid &&
-                            <div className="error_message">Email đã được đăng ký</div>
+                            <div className="error_message">Email không tồn tại</div>
                             :
                             ""
                     }

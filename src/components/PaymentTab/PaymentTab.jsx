@@ -15,7 +15,6 @@ const PaymentTab = (props) => {
             <div className="tab_level">{formatPrice(item?.amount)} đ</div>
             <div className="tab_time">{formatDate(item?.transactionTime)}</div>
             <div className="tab_content">{item?.description}</div>
-            <div className="tab_collection"></div>
         </div>
     )
 }
