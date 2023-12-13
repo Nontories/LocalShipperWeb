@@ -102,7 +102,6 @@ const AccountList = () => {
       fcm_token: focusAccount?.fcm_token,
       active: true
     }
-    console.log(data);
     const response = await EditAccount(focusAccount?.id, data, token)
     if (response?.status === 200) {
       await loadAccountData()

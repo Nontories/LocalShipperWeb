@@ -40,7 +40,7 @@ const PaymentOTP = ({ visible, otp, setOtp, onCancle, onSubmit }) => {
                         <OtpInput
                             value={otp}
                             onChange={setOtp}
-                            numInputs={4}
+                            numInputs={6}
                             renderSeparator={<span>-</span>}
                             renderInput={(props) => <input {...props} />}
                         />
