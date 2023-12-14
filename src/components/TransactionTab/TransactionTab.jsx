@@ -55,8 +55,8 @@ const TransactionTab = (props) => {
             <div className="tab_amount">{item?.amount}</div>
             <div className="tab_time">{formatDate(item?.transactionTime)}</div>
             <div className="tab_content">{item?.description}</div>
-            <div className="tab_collection"></div>
-            <div className="tab_button" onClick={handleDropdownVisible}>
+            {/* <div className="tab_collection"></div> */}
+            <div className="tab_button" style={{ display: "none" }} onClick={handleDropdownVisible}>
                 <div className="button">
                     <div className="button_circle"></div>
                     <div className="button_circle"></div>

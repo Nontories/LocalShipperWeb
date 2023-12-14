@@ -27,29 +27,19 @@ const orderType = [
     sign: ORDER.IDLE.sign,
   },
   {
-    value: ORDER.WAITING.value,
-    name: "Đơn đang đợi",
-    sign: ORDER.WAITING.sign,
-  },
-  {
     value: ORDER.ACCEPTED.value,
-    name: "Đơn đang lấy",
+    name: "Đơn đã nhận",
     sign: ORDER.ACCEPTED.sign,
-  },
-  {
-    value: ORDER.INPROCESS.value,
-    name: "Đơn đang giao",
-    sign: ORDER.INPROCESS.sign,
-  },
-  {
-    value: ORDER.COMPLETED.value,
-    name: "Đơn đã hoàn thành",
-    sign: ORDER.COMPLETED.sign,
   },
   {
     value: ORDER.CANCELLED.value,
     name: "Đơn đã hủy",
     sign: ORDER.CANCELLED.sign,
+  },
+  {
+    value: ORDER.COMPLETED.value,
+    name: "Đơn đã hoàn thành",
+    sign: ORDER.COMPLETED.sign,
   },
 ]
 
@@ -68,7 +58,7 @@ const OrderList = () => {
 
   useEffect(() => {
     getTypeList()
-  },[])
+  }, [])
 
   useEffect(() => {
     if (!token) {
@@ -77,10 +67,6 @@ const OrderList = () => {
       getOrderList()
     }
   }, [currentPage])
-
-  useEffect(() => {
-    UpdateStoreTimeDelivery(store?.id, timeAssign, token)
-  }, [timeAssign])
 
   const getOrderList = async () => {
     const data = {
@@ -130,9 +116,29 @@ const OrderList = () => {
   }
 
   const handleFilter = (value) => {
-    const filteredOrders = value === ORDER.ALL.value
-      ? orderList
-      : orderList.filter(item => item?.status === value);
+    let filteredOrders = []
+
+    if (value === ORDER.COMPLETED.value) {
+      filteredOrders = orderList.filter(item => item?.status === ORDER.COMPLETED.value);
+    } else if (value === ORDER.IDLE.value || value === ORDER.WAITING.value || value === ORDER.ASSIGNING.value) {
+      filteredOrders = orderList.filter(item =>
+        item?.status === ORDER.IDLE.value ||
+        item?.status === ORDER.WAITING.value ||
+        item?.status === ORDER.ASSIGNING.value
+      )
+    } else if (value === ORDER.INPROCESS.value || value === ORDER.ACCEPTED.value) {
+      filteredOrders = orderList.filter(item =>
+        item?.status === ORDER.INPROCESS.value ||
+        item?.status === ORDER.ACCEPTED.value
+      )
+    } else if (value === ORDER.CANCELLED.value || value === ORDER.RETURN.value) {
+      filteredOrders = orderList.filter(item =>
+        item?.status === ORDER.CANCELLED.value ||
+        item?.status === ORDER.RETURN.value
+      )
+    } else {
+      filteredOrders = orderList;
+    }
 
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -179,20 +185,23 @@ const OrderList = () => {
               )
             })}
             <div className="assign_time">
+              <label htmlFor="time_value">Giao hàng trong: </label>
               <input
+                name="time_value"
                 type="number"
                 value={timeAssign}
                 onChange={(e) => {
                   const inputValue = e.target.value;
-                  if (/^[1-9]\d*$/.test(inputValue) || inputValue === '') {
+                  if (/^\d*$/.test(inputValue) || inputValue === '') {
                     setTimeAssign(inputValue);
                   }
                 }}
+                onBlur={() => UpdateStoreTimeDelivery(store?.id, timeAssign, token)}
                 defaultValue={6}
-              ></input>
+              />
             </div>
           </div>
-          <div className="order_list">
+          <div className="order_list" style={{ marginBottom: handleFilter(filterValue).length < itemsPerPage ? 50 : 0 }}>
             {
               handleFilter(filterValue)?.map((item, key) => {
                 return (

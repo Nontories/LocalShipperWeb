@@ -97,6 +97,54 @@ const OrderTab = (props) => {
         setModalVisible({ ...modalVisible, dropdown: false })
     }
 
+    const renderOrderButton = () => {
+        switch (item?.status) {
+            case ORDER.IDLE.value:
+                return (
+                    <div className="assign">
+                        <div className="assign_button" style={{ marginRight: 20 }} onClick={() => { hanldePublic(item) }}>
+                            {/* <img src={addIcon} alt="" /> */}
+                            Công Khai
+                        </div>
+                        <div className="assign_button" onClick={() => { hanldeAssign(item) }}>
+                            <img src={addIcon} alt="" />
+                            Chọn Tài Xế
+                        </div>
+                    </div>
+                )
+            case ORDER.WAITING.value:
+                return (
+                    <div className="assign">
+                        <div className="assign_button assigned" onClick={() => { hanldeUnAssign() }}>
+                            Bỏ Chọn
+                        </div>
+                    </div>
+                )
+            case ORDER.ASSIGNING.value:
+                return (
+                    <div className="assign">
+                        <div className="assign_button assigned" onClick={() => { hanldeUnAssign() }}>
+                            Huỷ Công Khai
+                        </div>
+                    </div>
+                )
+            case ORDER.CANCELLED.value:
+                return (
+                    <div className="assign">
+                        <div className="assign_button" style={{ marginRight: 20 }} onClick={() => { hanldePublic(item) }}>
+                            Đăng Lại
+                        </div>
+                        <div className="assign_button" onClick={() => { hanldeAssign(item) }}>
+                            <img src={addIcon} alt="" />
+                            Chọn Tài Xế
+                        </div>
+                    </div>
+                )
+            default:
+                break;
+        }
+    }
+
     const dropdownList = [
         {
             name: "Chỉnh sửa đơn hàng",
@@ -115,12 +163,13 @@ const OrderTab = (props) => {
             case ORDER.WAITING.value:
                 return <div className="shipper_name">Đang chờ {item?.shipper?.fullName ? item?.shipper?.fullName : "shipper"} Nhận đơn</div>
             case ORDER.ASSIGNING.value:
-                return <div className="shipper_name" style={{ background: "rgba(8, 191, 138, 0.25)", color: "08BF8A" }}>{getObjectByValueInObj(ORDER, status)?.name}</div>
+                return <div className="shipper_name" style={{ background: "rgba(8, 191, 138, 0.25)", color: "#08BF8A" }}>{getObjectByValueInObj(ORDER, status)?.name}</div>
             case ORDER.CANCELLED.value:
                 return <div className="shipper_name" style={{ background: "rgba(255, 3, 3, 0.25)", color: "rgba(255, 0, 0, 0.5)" }}>{getObjectByValueInObj(ORDER, status)?.name}</div>
-            case ORDER.DELETED.value:
+            case ORDER.RETURN.value:
                 return <div className="shipper_name" style={{ background: "rgba(255, 3, 3, 0.25)", color: "rgba(255, 0, 0, 0.5)" }}>{getObjectByValueInObj(ORDER, status)?.name}</div>
-
+            case ORDER.COMPLETED.value:
+                return <div className="shipper_name" style={{ background: "#08BF8A", color: "white" }}>{getObjectByValueInObj(ORDER, status)?.name}</div>
             default:
                 return <div className="shipper_name" style={{ background: "#72AFD3", color: "white" }}>{getObjectByValueInObj(ORDER, status)?.name}</div>
         }
@@ -168,30 +217,7 @@ const OrderTab = (props) => {
                         <span className="total_price"> {formatPrice(item?.distancePrice + item?.subtotalPrice + item?.cod)} đ</span>
                     </div>
                 </div>
-                {
-                    item?.status === ORDER.WAITING.value || item?.status === ORDER.IDLE.value ?
-                        <div className="assign">
-                            {
-                                item?.status !== ORDER.WAITING.value ?
-                                    <>
-                                        <div className="assign_button" style={{ marginRight: 20 }} onClick={() => { hanldePublic(item) }}>
-                                            {/* <img src={addIcon} alt="" /> */}
-                                            Công Khai
-                                        </div>
-                                        <div className="assign_button" onClick={() => { hanldeAssign(item) }}>
-                                            <img src={addIcon} alt="" />
-                                            Chọn tài xế
-                                        </div>
-                                    </>
-                                    :
-                                    <div className="assign_button assigned" onClick={() => { hanldeUnAssign() }}>
-                                        Bỏ Chọn
-                                    </div>
-                            }
-                        </div>
-                        :
-                        ""
-                }
+                {renderOrderButton()}
             </div>
         </div>
     )

@@ -26,16 +26,23 @@ const TransactionList = () => {
     }, [])
 
     const loadTransactionData = async () => {
-        const data = {
-            id: store?.wallet?.id
-        }
+        let transactionList = []
 
-        const response = await GetTransaction(data, token)
+        const response = await GetTransaction({ fromWallet: store?.wallet?.id }, token)
+        const rep = await GetTransaction({ toWallet: store?.wallet?.id }, token)
         if (response?.status === 200) {
-            setTransactionList(response?.data)
+            transactionList = [...response?.data]
         } else {
             toast.warning('Tải thông tin giao dịch thất bại');
         }
+
+        if (rep?.status === 200) {
+            transactionList = [...transactionList, ...rep?.data]
+        } else {
+            toast.warning('Tải thông tin giao dịch thất bại');
+        }
+
+        setTransactionList(transactionList)
     }
 
     const handleFilter = (value) => {
@@ -87,7 +94,6 @@ const TransactionList = () => {
                             <div className="tab_amount">Số tiền</div>
                             <div className="tab_time">Thời gian</div>
                             <div className="tab_content">Nội dung</div>
-                            <div className="tab_collection">Thu hộ cho đơn hàng(nếu có)</div>
                             <div className="tab_button"></div>
                         </div>
                         {
@@ -105,14 +111,14 @@ const TransactionList = () => {
                             })
                         }
                     </div>
-                </div>
-                <Pagination
-                    itemsPerPage={itemsPerPage}
-                    positionLength={handleFilter().length}
-                    filterLength={transactionList.length}
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                />
+                    <Pagination
+                        itemsPerPage={itemsPerPage}
+                        positionLength={handleFilter().length}
+                        filterLength={transactionList.length}
+                        currentPage={currentPage}
+                        setCurrentPage={setCurrentPage}
+                    />
+                </div>  
             </div>
         </Helmet>
     )

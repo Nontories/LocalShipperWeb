@@ -26,7 +26,7 @@ export const ORDER = {
     },
     CANCELLED: {
         value: 5,
-        name: "Đã Huỷ",
+        name: "Từ Chối",
         sign: "CANCELLED"
     },
     INPROCESS: {
@@ -46,7 +46,7 @@ export const ORDER = {
     },
     RETURN: {
         value: 9,
-        name: "Từ Chối",
+        name: "Hàng Trả",
         sign: "RETURN"
     },
 }

@@ -28,7 +28,7 @@ const formData = {
   volume: "",
   price: "",
   type: "1",
-  action: 1,
+  action: 2,
   payment: "",
   other: "",
   date: null,

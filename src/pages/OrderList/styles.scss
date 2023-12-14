@@ -55,16 +55,27 @@
 
             .assign_time {
                 position: absolute;
-                width: 70px !important;
+                display: flex;
+                width: 200px !important;
+                padding: 5px 15px;
+                padding-right: 0;
                 right: 70px;
                 background-color: #F2F4F8;
                 border-radius: 50px;
+                transform: translateY(10px);
 
                 input {
-                    width: 100%;
-                    padding: 15px;
+                    width: 20%;
+                    padding: 0 15px;
+                    padding-right: 0;
+                    margin-left: 10px;
                     background-color: #F2F4F8;
                     border-radius: 50px;
+                    border: 'none'
+                }
+
+                input:focus {
+                    border: none !important;
                 }
             }
         }

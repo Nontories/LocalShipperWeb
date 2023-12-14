@@ -91,10 +91,10 @@ const OrderDetailModal = ({ visible, order, onCancle, typeList }) => {
                 <div className="order_route">
                     <div className="title">Lộ trình</div>
                     <div className="route_flex">
-                        <div className="route_time">Thời gian tạo đơn: {formatDate( order?.createTime)}</div>
-                        <div className="route_time">Thời gian nhận đơn: {formatDate( order?.acceptTime)}</div>
-                        <div className="route_time">Thời gian lấy hàng: {formatDate( order?.pickupTime)}</div>
-                        <div className="route_time">Thời gian hoàn thành: {formatDate( order?.completeTime)}</div>
+                        <div className="route_time">Thời gian tạo đơn: {formatDate(order?.createTime)}</div>
+                        <div className="route_time">Thời gian nhận đơn: {formatDate(order?.acceptTime)}</div>
+                        <div className="route_time">Thời gian lấy hàng: {formatDate(order?.pickupTime)}</div>
+                        <div className="route_time">Thời gian hoàn thành: {formatDate(order?.completeTime)}</div>
                         <div className="route_time">Shipper: {order?.shipper ? order?.shipper?.fullName : "Chưa được chỉ định"}</div>
                     </div>
                 </div>
@@ -107,10 +107,17 @@ const OrderDetailModal = ({ visible, order, onCancle, typeList }) => {
                         <div className="type_name">Ghi chú</div>
                         <div className="value">{order?.other}</div>
                     </div>
-                    <div className="type_flex end">
+                    <div className={`type_flex ${(order?.status === ORDER.RETURN.value || order?.status === ORDER.CANCELLED.value) ? "" : "end"}`}>
                         <div className="type_name">Giao trước</div>
-                        <div className="value">{formatDate( order?.orderTime)}</div>
+                        <div className="value">{formatDate(order?.orderTime)}</div>
                     </div>
+                    {
+                        (order?.status === ORDER.RETURN.value || order?.status === ORDER.CANCELLED.value) &&
+                        <div className="type_flex end">
+                            <div className="type_name">Lý do thất bại</div>
+                            <div className="value">{order?.cancelReason}</div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
