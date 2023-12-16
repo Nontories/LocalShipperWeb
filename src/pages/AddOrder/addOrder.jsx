@@ -147,12 +147,22 @@ const AddOrder = () => {
         formInfor.height !== "" &&
         formInfor.length !== ""
       ) {
-        console.log(data);
-        const response = await CreateOrder(data, token)
-        if (response?.status === 200) {
-          toast.success('Tạo đơn hàng thành công');
+
+        if (formInfor.capacity > 30) {
+          if (formInfor.width < 40 &&
+            formInfor.height < 50 &&
+            formInfor.length < 50) {
+            const response = await CreateOrder(data, token)
+            if (response?.status === 200) {
+              toast.success('Tạo đơn hàng thành công');
+            } else {
+              toast.warning('Tạo đơn hàng thất bại');
+            }
+          } else {
+            toast.warning('Đơn hàng quá lớn để giao hàng');
+          }
         } else {
-          toast.warning('Tạo đơn hàng thất bại');
+          toast.warning('Cân nặng khổng thể quá 30kg');
         }
       } else {
         toast.warning('Thông tin tạo đơn hàng chưa đủ');

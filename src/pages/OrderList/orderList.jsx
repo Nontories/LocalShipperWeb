@@ -14,6 +14,7 @@ import ChooseShipperOrder from '../../components/modal/ChooseShipperOrder/Choose
 import ConfirmModal from '../../components/modal/ConfirmModal/ConfirmModal';
 import { UpdateStoreTimeDelivery } from '../../api/store';
 import Pagination from '../../components/Pagination/Pagination';
+import UpdateOrderModal from '../../components/modal/UpdateOrder/UpdateOrderModal';
 
 const orderType = [
   {
@@ -52,7 +53,7 @@ const OrderList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(6);
   const [timeAssign, setTimeAssign] = useState(6)
-  const [modalVisible, setModalVisible] = useState({ orderDetail: false, chooseShipper: false, confirmDelete: false })
+  const [modalVisible, setModalVisible] = useState({ orderDetail: false, chooseShipper: false, confirmDelete: false, updateOrder: false })
   const { store, token } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -168,6 +169,10 @@ const OrderList = () => {
     setModalVisible({ ...modalVisible, confirmDelete: false })
   }
 
+  const handleCloseUpdateOrder = () => {
+    setModalVisible({ ...modalVisible, updateOrder: false })
+  }
+
   return (
     <Helmet title={"Order List | "}>
       <div className="order_list">
@@ -250,6 +255,12 @@ const OrderList = () => {
           content={`Xác nhận xoá đơn hàng #${orderDetail?.trackingNumber}`}
           onConfirm={handleSubmitDeleteConfirm}
           onCancle={handleCloseDeleteConfirm}
+        />
+        <UpdateOrderModal
+          visible={modalVisible.updateOrder}
+          onCancle={handleCloseUpdateOrder}
+          focusOrder={orderDetail}
+          reLoad={getOrderList}
         />
       </div>
     </Helmet>

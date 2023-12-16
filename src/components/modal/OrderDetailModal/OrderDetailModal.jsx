@@ -21,6 +21,11 @@ const OrderDetailModal = ({ visible, order, onCancle, typeList }) => {
         return null;
     };
 
+    const openNewWindow = (event, url) => {
+        event.preventDefault();
+        window.open(url, '_blank', 'noopener,noreferrer');
+    };
+
     return (
         visible &&
         <div className="order_detail">
@@ -107,7 +112,7 @@ const OrderDetailModal = ({ visible, order, onCancle, typeList }) => {
                         <div className="type_name">Ghi chú</div>
                         <div className="value">{order?.other}</div>
                     </div>
-                    <div className={`type_flex ${(order?.status === ORDER.RETURN.value || order?.status === ORDER.CANCELLED.value) ? "" : "end"}`}>
+                    <div className={`type_flex ${(order?.status === ORDER.RETURN.value || order?.status === ORDER.CANCELLED.value || order?.status === ORDER.COMPLETED.value) ? "" : "end"}`}>
                         <div className="type_name">Giao trước</div>
                         <div className="value">{formatDate(order?.orderTime)}</div>
                     </div>
@@ -116,6 +121,20 @@ const OrderDetailModal = ({ visible, order, onCancle, typeList }) => {
                         <div className="type_flex end">
                             <div className="type_name">Lý do thất bại</div>
                             <div className="value">{order?.cancelReason}</div>
+                        </div>
+                    }
+                    {
+                        (order?.status === ORDER.COMPLETED.value) &&
+                        <div className="type_flex end">
+                            <div className="type_name">Ảnh bằng chứng</div>
+                            <a
+                                className="value link"
+                                href={order?.evidence}
+                                target="_blank" rel="noopener noreferrer"
+                                onClick={(e) => openNewWindow(e, order?.evidence)}
+                            >
+                                Ảnh bằng chứng
+                            </a>
                         </div>
                     }
                 </div>

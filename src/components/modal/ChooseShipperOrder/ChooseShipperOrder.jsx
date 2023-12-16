@@ -58,7 +58,9 @@ const ChooseShipperOrder = ({ visible, order, onCancle, orderList, setOrderList,
 
         const response = await GetShipper(data, token)
         if (response?.status === 200) {
-            setShipperList(response?.data)
+            let sortedArray = response?.data?.filter(item => item.status !== SHIPPERSTATUS.DEACTIVE.value)
+            sortedArray = sortedArray.sort((a, b) => (a.status === SHIPPERSTATUS.ONLINE.value ? -1 : b.status === SHIPPERSTATUS.ONLINE.value ? 1 : 0));
+            setShipperList(sortedArray)
         } else {
             toast.warning('Cập nhật tài xế thất bại');
         }

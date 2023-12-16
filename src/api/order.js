@@ -91,6 +91,18 @@ export const InteractOrder = async (data, token) => {
     }
 };
 
+export const UpdateOrder = async (orderId, data, token) => {
+
+    try {
+        const instance = createAxiosInstance(token);
+        const response = await instance.put(`${LINK_API}orders?id=${orderId}`, data);
+        return response;
+    } catch (error) {
+        console.log("UpdateOrder in api/order.js error : ", error);
+        return error?.response?.status;
+    }
+};
+
 export const CreateOrder = async (data, token) => {
 
     try {
@@ -126,7 +138,7 @@ export const GetTypeList = async (token) => {
     }
 };
 
-export const GetDistainPrice = async (data,token) => {
+export const GetDistainPrice = async (data, token) => {
 
     let path = ""
 

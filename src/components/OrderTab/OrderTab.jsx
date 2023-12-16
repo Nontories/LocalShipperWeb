@@ -85,7 +85,8 @@ const OrderTab = (props) => {
     }
 
     const handleEditOrder = () => {
-        console.log(`edit order id = ${item.id}`);
+        setOrder(item)
+        setParentModal({ ...parentModal, updateOrder: true })
     }
 
     const hanldeDeleteOrder = () => {
@@ -132,7 +133,7 @@ const OrderTab = (props) => {
                 return (
                     <div className="assign">
                         <div className="assign_button" style={{ marginRight: 20 }} onClick={() => { hanldePublic(item) }}>
-                            Đăng Lại
+                            Công Khai
                         </div>
                         <div className="assign_button" onClick={() => { hanldeAssign(item) }}>
                             <img src={addIcon} alt="" />

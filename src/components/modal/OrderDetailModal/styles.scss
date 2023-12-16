@@ -188,6 +188,11 @@
                     margin-right: 20px;
                     color: rgba(0, 0, 0, 0.5);
                 }
+
+                .link {
+                    color: var(--assign);
+                    text-decoration: underline !important; 
+                }
             }
 
             .end {
