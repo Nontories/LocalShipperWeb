@@ -18,7 +18,7 @@ const formInputDefault = {
     rePassword: "",
 }
 
-const AddShipper = ({ visible, onCancle }) => {
+const AddShipper = ({ visible, onCancle, reload }) => {
 
     const [formInput, setFormInput] = useState(formInputDefault)
     const [valid, setValid] = useState(false)
@@ -45,10 +45,11 @@ const AddShipper = ({ visible, onCancle }) => {
                     }
                     const response = await CreateShipper(store?.id, data, token)
                     if (response?.status === 200) {
+                        await reload()
                         toast.success('Thêm tài xế thành công');
                         onCancle()
                     } else {
-                        toast.error(`Thêm tài xế thất bại : ${response?.data}`);
+                        toast.error(`Thêm tài xế thất bại : ${response?.response?.data}`);
                     }
                 } else {
                     toast.warning('Mail đã được đăng ký');

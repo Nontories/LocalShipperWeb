@@ -91,6 +91,6 @@ export const UpdateWalletBalance = async (data, token) => {
         return response;
     } catch (error) {
         console.log("UpdateWalletBalance in api/transaction.js error : ", error);
-        return error?.response?.status;
+        return error;
     }
 };

@@ -48,7 +48,7 @@ const PaymentModal = ({ visible, onCancle, type, otpVisible, setOtpVisible }) =>
                         setOtpVisible(true)
                     }
                 } else {
-                    toast.error(`Gửi OTP xác nhận thất bại : ${response?.data}`);
+                    toast.error(`Xác nhận giao dịch thất bại : ${response?.response?.data}`);
                 }
             } else {
                 toast.warning('Thông tin chưa đủ');
@@ -81,7 +81,7 @@ const PaymentModal = ({ visible, onCancle, type, otpVisible, setOtpVisible }) =>
             onCancle()
             setOtpVisible(false)
         } else {
-            toast.error(`Giao dịch thất bại : ${response?.data}`);
+            toast.error(`Giao dịch thất bại : ${response?.response?.data}`);
         }
         setLoading(false)
     }

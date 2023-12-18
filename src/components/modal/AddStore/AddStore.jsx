@@ -13,7 +13,7 @@ import { CreateStore } from '../../../api/store';
 
 
 
-const AddStore = ({ visible, onCancle, zoneList }) => {
+const AddStore = ({ visible, onCancle, zoneList, reload }) => {
 
     const formInputDefault = {
         name: "",
@@ -62,6 +62,7 @@ const AddStore = ({ visible, onCancle, zoneList }) => {
                         }
                         const response = await CreateStore( data, token)
                         if (response?.status === 200) {
+                            await reload()
                             toast.success('Thêm cửa hàng thành công');
                             onCancle()
                         } else {

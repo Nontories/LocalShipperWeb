@@ -40,7 +40,7 @@ export const CreateStore = async (data, token) => {
         return response;
     } catch (error) {
         console.log("CreateStore in api/order.js error : ", error);
-        return error?.response?.status;
+        return error;
     }
 };
 

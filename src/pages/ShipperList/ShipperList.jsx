@@ -49,7 +49,7 @@ const ShipperList = () => {
         const response = await GetAllShipper(token)
         if (response?.status === 200) {
             // console.log(response?.data);
-            setShipperList(response?.data)
+            setShipperList(response?.data?.reverse())
         } else {
             toast.warning('Tải thông tin tài xế thất bại');
         }

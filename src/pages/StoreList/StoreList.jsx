@@ -6,6 +6,7 @@ import { UserContext } from '../../context/StoreContext';
 import { GetStore } from '../../api/store';
 import { GetAllZone } from '../../api/zone';
 import { STORE } from "../../constants/store"
+import { UpdateStore } from '../../api/store';
 
 import StoreTab from "../../components/StoreTab/StoreTab"
 import Helmet from '../../components/shared/Helmet/helmet'
@@ -13,7 +14,7 @@ import AddStore from '../../components/modal/AddStore/AddStore';
 import ConfirmModal from "../../components/modal/ConfirmModal/ConfirmModal"
 import Pagination from '../../components/Pagination/Pagination';
 import StoreDetail from '../../components/StoreDetail/StoreDetail';
-import UpdateStore from '../../components/modal/UpdateStore/UpdateStore';
+import UpdateStoreModal from '../../components/modal/UpdateStore/UpdateStore';
 
 const StoreList = () => {
 
@@ -34,7 +35,8 @@ const StoreList = () => {
     const loadStoreData = async () => {
         const response = await GetStore({}, token)
         if (response?.status === 200) {
-            setStoreList(response?.data?.reverse())
+            const filterArray = response?.data?.filter(item => item?.status !== STORE.DELETE.value)
+            setStoreList(filterArray?.reverse())
         } else {
             toast.warning("Tải thông tin của hàng thất bại")
         }
@@ -147,7 +149,7 @@ const StoreList = () => {
                     visible={modalVisible.viewStore}
                     onCancle={() => setModalVisible({ ...modalVisible, viewStore: false })}
                 />
-                <UpdateStore
+                <UpdateStoreModal
                     visible={modalVisible.editStore}
                     focusStore={focusStore}
                     onCancle={() => setModalVisible({ ...modalVisible, editStore: false })}
@@ -157,6 +159,7 @@ const StoreList = () => {
                     visible={modalVisible.addStore}
                     onCancle={handleCancleAddStore}
                     zoneList={zoneList}
+                    reload={loadStoreData}
                 />
                 <ConfirmModal
                     visible={modalVisible.confirmDeactive}

@@ -18,13 +18,13 @@ const formInputDefault = {
     closeTime: undefined,
 }
 
-const UpdateStore = ({ visible, onCancle, focusStore, reLoad }) => {
+const UpdateStoreModal = ({ visible, onCancle, focusStore, reLoad }) => {
 
     const [formInput, setFormInput] = useState({
-        storeName: focusStore.storeName,
-        storePhone: focusStore.storePhone,
-        openTime: focusStore.openTime,
-        closeTime: focusStore.closeTime,
+        storeName: focusStore?.storeName,
+        storePhone: focusStore?.storePhone,
+        openTime: focusStore?.openTime,
+        closeTime: focusStore?.closeTime,
     })
     const [loading, setLoading] = useState(false)
     const { store, token } = useContext(UserContext);
@@ -118,4 +118,4 @@ const UpdateStore = ({ visible, onCancle, focusStore, reLoad }) => {
     )
 }
 
-export default UpdateStore
+export default UpdateStoreModal

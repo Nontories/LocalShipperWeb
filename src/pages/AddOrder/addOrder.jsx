@@ -148,7 +148,7 @@ const AddOrder = () => {
         formInfor.length !== ""
       ) {
 
-        if (formInfor.capacity > 30) {
+        if (formInfor.capacity < 30) {
           if (formInfor.width < 40 &&
             formInfor.height < 50 &&
             formInfor.length < 50) {

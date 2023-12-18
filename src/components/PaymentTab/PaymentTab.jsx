@@ -9,7 +9,7 @@ const PaymentTab = (props) => {
 
     return (
         <div className="payment_tab">
-            <div className="tab_id">{index}</div>
+            <div className="tab_id">{index + 1}</div>
             <div className="tab_transfer">{item?.sender}</div>
             <div className="tab_receive">{item?.receiver}</div>
             <div className="tab_level">{formatPrice(item?.amount)} đ</div>

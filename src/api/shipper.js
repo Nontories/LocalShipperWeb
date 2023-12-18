@@ -43,7 +43,7 @@ export const CreateShipper = async (id, data, token) => {
         return response;
     } catch (error) {
         console.log("GetOrder in api/order.js error : ", error);
-        return error?.response?.status;
+        return error;
     }
 };
 

@@ -184,6 +184,7 @@ const Shipper = () => {
         <AddShipper
           visible={modalVisible.addShipper}
           onCancle={() => setModalVisible({ ...modalVisible, addShipper: false })}
+          reload={loadData}
         />
         <ConfirmModal
           visible={modalVisible.confirmDeactive}
