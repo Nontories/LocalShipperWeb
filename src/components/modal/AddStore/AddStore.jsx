@@ -60,7 +60,7 @@ const AddStore = ({ visible, onCancle, zoneList, reload }) => {
                             zoneId: Number(formInput?.zone),
                             password: formInput?.password,
                         }
-                        const response = await CreateStore( data, token)
+                        const response = await CreateStore(data, token)
                         if (response?.status === 200) {
                             await reload()
                             toast.success('Thêm cửa hàng thành công');
@@ -135,7 +135,7 @@ const AddStore = ({ visible, onCancle, zoneList, reload }) => {
                 <div className="flex_column">
                     <div className="input_lable">
                         <label htmlFor="name">Thời gian đóng mở/cửa</label>
-                        <div className="flex_column" style={{ width: "120%"}}>
+                        <div className="flex_column" style={{ width: "120%" }}>
                             <input
                                 type="time"
                                 id='name'
@@ -149,7 +149,7 @@ const AddStore = ({ visible, onCancle, zoneList, reload }) => {
                                 className='name'
                                 value={formInput.closeTime}
                                 onChange={(e) => setFormInput({ ...formInput, closeTime: e.target.value })}
-                                style={{marginLeft: 10}}
+                                style={{ marginLeft: 10 }}
                             />
                         </div>
 
@@ -163,7 +163,7 @@ const AddStore = ({ visible, onCancle, zoneList, reload }) => {
                             value={formInput.zone}
                             onChange={(e) => setFormInput({ ...formInput, zone: e.target.value })}
                         >
-                            {zoneList.map((item, key) => {
+                            {zoneList?.filter(item => item.active).map((item, key) => {
                                 return (
                                     <option className="input_option" value={item.id} key={key}>
                                         {item.zoneName}
