@@ -121,7 +121,7 @@ const ChooseShipperOrder = ({ visible, order, onCancle, orderList, setOrderList,
                                 <div className="column" key={index} onClick={() => handleChooseShipper(item)}>
                                     <div className="index">{index + 1}</div>
                                     <div className="name">{item.fullName}</div>
-                                    <div className="type">{getObjectByValueInObj(VEHICLETYPE, item?.transport?.typeId)?.name}</div>
+                                    <div className="type">{item?.transport?.typeId ? getObjectByValueInObj(VEHICLETYPE, item?.transport?.typeId)?.name : "Xe máy"}</div>
                                     <div className="status">{getObjectByValue(shipperType, item?.status)?.name}</div>
                                 </div>
                             )

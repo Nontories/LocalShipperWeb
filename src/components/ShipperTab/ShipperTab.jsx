@@ -46,8 +46,7 @@ const ShipperTab = (props) => {
 
     const handleDeleteShipper = () => {
         setFocusShipper(item)
-        setParentModal({ ...parentModal, confirmDelete: true})
-        console.log(`delete shipper shipperid=${item.id}`);
+        setParentModal({ ...parentModal, confirmDeactive: true})
     }
 
     const handleCloseDropdown = () => {
@@ -78,7 +77,7 @@ const ShipperTab = (props) => {
             <div className="tab_phone">{item?.phoneShipper}</div>
             <div className="tab_mail">{item?.emailShipper}</div>
             <div className="tab_address">{item?.addressShipper}</div>
-            <div className="tab_vehicle">{getObjectByValueInObj(VEHICLETYPE, item?.transport?.typeId)?.name}</div>
+            <div className="tab_vehicle">{item?.transport?.typeId ? getObjectByValueInObj(VEHICLETYPE, item?.transport?.typeId)?.name : "Xe máy"}</div>
             <div className="tab_status">{getObjectByValue(shipperType, item?.status)?.name}</div>
             <div className="tab_button" onClick={handleDropdownVisible}>
                 <div className="button">

@@ -26,7 +26,8 @@ const PaymentModal = ({ visible, onCancle, type, otpVisible, setOtpVisible }) =>
 
     useEffect(() => {
         setFormInput(formInputDefault)
-    }, [])
+        setOtp(undefined)
+    }, [visible])
 
     // type = 1 là nạp 2 là rút
 
@@ -39,16 +40,17 @@ const PaymentModal = ({ visible, onCancle, type, otpVisible, setOtpVisible }) =>
                 formInput?.phone !== "" &&
                 formInput?.amount !== 0
             ) {
-                const response = await SendTransactionOtp(formInput?.email, token)
-                if (response?.status === 200) {
-                    if (type !== "withdraw") {
-                        await handleTransaction()
-                    } else {
+                if (type === "withdraw") {
+                    const response = await SendTransactionOtp(formInput?.email, token)
+                    if (response?.status === 200) {
+                        // await handleTransaction()
                         toast.success('Đã gửi OTP xác nhận');
                         setOtpVisible(true)
+                    } else {
+                        toast.error(`Gửi OTP thất bại : ${response?.response?.data}`);
                     }
                 } else {
-                    toast.error(`Xác nhận giao dịch thất bại : ${response?.response?.data}`);
+                    handleTransaction()
                 }
             } else {
                 toast.warning('Thông tin chưa đủ');

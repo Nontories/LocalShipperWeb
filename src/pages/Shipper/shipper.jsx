@@ -6,7 +6,7 @@ import './styles.scss'
 import { UserContext } from '../../context/StoreContext';
 import { SHIPPERSTATUS } from "../../constants/shipper"
 import { VEHICLETYPE } from '../../constants/vehicle';
-import { GetShipper, CreateShipper, DeleteShipper, UpdateStatusShipper } from "../../api/shipper"
+import { GetShipper, CreateShipper, DeleteShipper, UpdateStatusShipper, DeactiveShipper } from "../../api/shipper"
 import { getObjectByValue, getObjectByValueInObj } from '../../utils/utils';
 
 import Helmet from '../../components/shared/Helmet/helmet'
@@ -72,8 +72,11 @@ const Shipper = () => {
   }
 
   const handleSubmitDeleteConfirm = async () => {
-    const response = await UpdateStatusShipper(focusShipper?.id, SHIPPERSTATUS.DEACTIVE.value, token)
+    // const response = await UpdateStatusShipper(focusShipper?.id, SHIPPERSTATUS.DEACTIVE.value, token)
+    const response = await DeactiveShipper(focusShipper?.accountId, token)
+    // console.log(focusShipper?.id, SHIPPERSTATUS.DEACTIVE.value);
     if (response?.status === 200) {
+      await loadData()
       toast.success('Xoá tài xế thành công');
     } else {
       toast.error('Xoá tài xế thất bại');

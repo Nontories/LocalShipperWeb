@@ -65,7 +65,7 @@ export const UpdateStatusShipper = async (id, status, token) => {
     }
     try {
         const instance = createAxiosInstance(token);
-        const response = await instance.put(`${LINK_API}` + "shippers/status?id=?" + id, data);
+        const response = await instance.put(`${LINK_API}` + "shippers/status?id=" + id, data);
         return response;
     } catch (error) {
         console.log("UpdateStatusShipper in api/order.js error : ", error);
